@@ -89,7 +89,7 @@
                             <div class="products__cell"><span
                                     class="products__note">stock</span><span>{{ $item->email }}</span></div>
                             <div class="products__cell">
-                                <a href='{{ $url . '/' . $item->id . 'edit' }}' class='toggle' data-target='editClass'><em
+                                <a href='{{ $url . '/' . $item->id . '/edit' }}' class='toggle' data-target='editClass'><em
                                         class='icon ni ni-edit'></em><span>Edit</span></a>
                                 <a href='javascript:'   onclick='deleteRecordAjax("{{$url."/".$item->id}}")' class='toggle' data-target='editClass'><em
                                         class='icon ni ni-edit'></em><span>Delete</span></a>

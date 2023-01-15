@@ -1,7 +1,6 @@
 @extends('admin.layout.master')
 @section('style')
     <title>{{ $title }}</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 @stop
 @section('content')
     <div class="sorting1">
@@ -78,7 +77,4 @@
     </div>
 @stop
 @section('script')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
-
-    <script></script>
 @stop
