@@ -24,9 +24,10 @@ class AdminUsersSeeder extends Seeder
         $user = User::create([
             'first_name' => 'Super',
             'last_name' => 'Admin',
-            'email' => 'admin@gmail.com',
+            'email' => 'admin@ruptate.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => bcrypt('Yuvie121314'),
+            // 'password' => bcrypt('Yuvie121314'),
             'is_admin' => true,
         ]);
         // $role=Role::where('name','Super Admin')->first();

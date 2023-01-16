@@ -23,13 +23,13 @@
                             <div class="login__title login__title_sm">Login to your acount</div>
                             <div class="login__field field">
                                 <small class="login__link">{{ $errors->first('email') }}</small>
+                                <small class="login__link">{{ $errors->first('password') }}</small>
                             </div>
                             <div class="login__field field">
                                 <div class="field__wrap">
                                     <input class="field__input" required type="email" name="email"
                                         placeholder="Your email">
                                 </div>
-
                             </div>
                             <div class="login__field field">
                                 <div class="field__wrap">
