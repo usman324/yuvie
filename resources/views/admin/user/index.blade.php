@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 @section('style')
-    <title>{{ $title }}</title>
+    <title>{{'YuVie-Business:'. $title }}</title>
 @stop
 @section('content')
     <div class="sorting1">
@@ -70,6 +70,7 @@
                         <div class="products__cell">First Name</div>
                         <div class="products__cell">Last Name</div>
                         <div class="products__cell">Email</div>
+                        <div class="products__cell"></div>
                         <div class="products__cell">Action</div>
                     </div>
                     @foreach ($records as $item)
@@ -78,16 +79,15 @@
                                         class="checkbox__input" type="checkbox"><span class="checkbox__in"><span
                                             class="checkbox__tick"></span></span></label></div>
                             <div class="products__cell">
-                                <div class="products__details">
-                                    <div class="products__preview"></div>
                                     <div class="products__title">{{ $item->id }}</div>
-                                </div>
                             </div>
                             <div class="products__cell">{{ $item->first_name }}</div>
                             <div class="products__cell"><span
                                     class="products__note">id</span><span>{{ $item->last_name }}</span></div>
                             <div class="products__cell"><span
                                     class="products__note">stock</span><span>{{ $item->email }}</span></div>
+                                     <div class="products__cell"><span
+                                    class="products__note">stock</span><span></span></div>
                             <div class="products__cell">
                                 <a href='{{ $url . '/' . $item->id . '/edit' }}' class='toggle' data-target='editClass'><em
                                         class='icon ni ni-edit'></em><span>Edit</span></a>

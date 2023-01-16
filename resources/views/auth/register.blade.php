@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Sign Up</title>
+    <title>YuVie-Business: Sign Up</title>
     @include('admin.layout.partials.style')
 </head>
 
@@ -14,7 +14,7 @@
                 <div class="login__wrap">
                     <div class="login__head">
                         <a class="login__logo" href="#">
-                            <img class="login__pic" src="{{ asset('theme/img/logo-white.svg') }}" alt="">
+                            <img class="login__pic w-50" src="{{ asset('theme/img/logo.png') }}" alt="">
                         </a>
                     </div>
                     <form class="login__form" action="{{ url('register') }}" method="post">

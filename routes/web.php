@@ -31,5 +31,32 @@ Route::middleware('super_admin')->prefix('admin')->group(function () {
     Route::post('users/{id}', [UserController::class, 'update']);
     Route::delete('users/{id}', [UserController::class, 'destroy']);
 });
+Route::get('clear-cache', function () {
+    \Artisan::call('optimize:clear');
+    return back();
+});
+
+Route::get('migrate-fresh', function () {
+    \Artisan::call('migrate:fresh');
+    dd("Migration Freshed");
+});
+Route::get('migrate', function () {
+    \Artisan::call('migrate');
+    dd("Migration Completed");
+});
+
+Route::get('seed', function () {
+    \Artisan::call('db:seed');
+    dd("Seeding Completed");
+});
+
+Route::get('storage-link', function () {
+    \Artisan::call('storage:link');
+    dd("links Completed");
+});
+Route::get('passport-install', function () {
+    \Artisan::call('passport-install');
+    dd("links Completed");
+});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

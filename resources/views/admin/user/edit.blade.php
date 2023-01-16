@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 @section('style')
-    <title>{{ $title }}</title>
+<title>{{'YuVie-Business:'. $title }}</title>
 @stop
 @section('content')
     <div class="sorting1">

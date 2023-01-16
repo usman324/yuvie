@@ -1,124 +1,41 @@
 @extends('admin.layout.master')
 @section('style')
-    <title>Dashboard</title>
+    <title>YuVie-Business: Admin</title>
 @stop
 @section('content')
     <div class="page__content">
         <div class="dashboard">
-            <div class="dashboard__start"><strong>Hi James,</strong> here’s your currently projects</div>
+            <div class="dashboard__start"><strong>Dashboard</strong></div>
             <div class="dashboard__container">
                 <div class="dashboard__section">
                     <div class="dashboard__head">
-                        <div class="dashboard__category">Team</div>
-                        <div class="options js-options"><button class="options__btn js-options-btn"><svg
-                                    class="icon icon-dots">
-                                    <use xlink:href="img/sprite.svg#icon-dots"></use>
-                                </svg></button>
-                            <div class="options__dropdown js-options-dropdown">
-                                <div class="options__stage">List Actions<button class="options__close js-options-close"><svg
-                                            class="icon icon-close">
-                                            <use xlink:href="img/sprite.svg#icon-close"></use>
-                                        </svg></button></div>
-                                <div class="options__group"><a class="options__link" href="#">Add New Teams… </a><a
-                                        class="options__link" href="#">Edit Current Teams…</a><a class="options__link"
-                                        href="#">Add New Member…</a><a class="options__link" href="#">Remove
-                                        Current Member…</a></div>
-                            </div>
-                        </div>
+                        
                     </div>
                     <div class="dashboard__body">
                         <div class="dashboard__list">
                             <div class="card card_big">
                                 <div class="card__team">
-                                    <div class="card__logo"><img class="card__pic" src="img/logo-team-1.png"></div>
-                                    <div class="card__title">Sebo Studio</div>
-                                    <div class="options js-options"><button class="options__btn js-options-btn"><svg
-                                                class="icon icon-dots">
-                                                <use xlink:href="img/sprite.svg#icon-dots"></use>
-                                            </svg></button>
-                                        <div class="options__dropdown js-options-dropdown">
-                                            <div class="options__stage">Option<button
-                                                    class="options__close js-options-close"><svg class="icon icon-close">
-                                                        <use xlink:href="img/sprite.svg#icon-close"></use>
-                                                    </svg></button></div>
-                                            <div class="options__group"><a class="options__item" href="#">
-                                                    <div class="options__info">Add New Projects…</div>
-                                                    <div class="options__text">In this menu you can add new projects. It can
-                                                        make easlily you to make your projects more organize</div>
-                                                </a><a class="options__item" href="#">
-                                                    <div class="options__info">Import Project from Outside…</div>
-                                                    <div class="options__text">In this menu you can add new projects. It can
-                                                        make easlily you to make your projects.</div>
-                                                </a><a class="options__item" href="#">
-                                                    <div class="options__info">Share Your Projects to…</div>
-                                                    <div class="options__text">In this menu you can add new projects. It can
-                                                        make easlily you to make your projects.</div>
-                                                </a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="users">
-                                    <div class="users__item" style="background-color: #FFC542">KA</div>
-                                    <div class="users__item" style="background-color: #A461D8">RR</div>
-                                    <div class="users__item"><img class="users__pic" src="img/ava-1.png" alt="">
-                                    </div>
-                                    <div class="users__item"><img class="users__pic" src="img/ava-2.png" alt="">
-                                    </div>
-                                    <div class="users__item"><img class="users__pic" src="img/ava-3.png" alt="">
-                                    </div>
-                                    <div class="users__item" style="background-color: #82C43C">EL</div>
-                                    <div class="users__item users__item_counter">+3</div>
+                                    <div class="card__logo"><img class="card__pic" src="{{asset("theme/img/logo-team-1.png")}}"></div>
+                                    <div class="card__title">Company</div>
                                 </div>
                             </div>
                             <div class="card card_big">
                                 <div class="card__team">
-                                    <div class="card__logo"><img class="card__pic" src="img/logo-team.png"></div>
-                                    <div class="card__title">Iconspace Team</div>
-                                    <div class="options js-options"><button class="options__btn js-options-btn"><svg
-                                                class="icon icon-dots">
-                                                <use xlink:href="img/sprite.svg#icon-dots"></use>
-                                            </svg></button>
-                                        <div class="options__dropdown js-options-dropdown">
-                                            <div class="options__stage">Option<button
-                                                    class="options__close js-options-close"><svg class="icon icon-close">
-                                                        <use xlink:href="img/sprite.svg#icon-close"></use>
-                                                    </svg></button></div>
-                                            <div class="options__group"><a class="options__item" href="#">
-                                                    <div class="options__info">Add New Projects…</div>
-                                                    <div class="options__text">In this menu you can add new projects. It can
-                                                        make easlily you to make your projects more organize</div>
-                                                </a><a class="options__item" href="#">
-                                                    <div class="options__info">Import Project from Outside…</div>
-                                                    <div class="options__text">In this menu you can add new projects. It can
-                                                        make easlily you to make your projects.</div>
-                                                </a><a class="options__item" href="#">
-                                                    <div class="options__info">Share Your Projects to…</div>
-                                                    <div class="options__text">In this menu you can add new projects. It
-                                                        can make easlily you to make your projects.</div>
-                                                </a></div>
-                                        </div>
-                                    </div>
+                                    <div class="card__logo"><img class="card__pic" src="{{asset("theme/img/logo-team-1.png")}}"></div>
+                                    <div class="card__title">Users</div>
                                 </div>
-                                <div class="users">
-                                    <div class="users__item" style="background-color: #50B5FF">AF</div>
-                                    <div class="users__item" style="background-color: #FFC542">KA</div>
-                                    <div class="users__item"><img class="users__pic" src="img/ava-1.png" alt="">
-                                    </div>
-                                    <div class="users__item"><img class="users__pic" src="img/ava-2.png" alt="">
-                                    </div>
+                            </div>
+                            <div class="card card_big">
+                                <div class="card__team">
+                                    <div class="card__logo"><img class="card__pic" src="{{asset("theme/img/logo-team-1.png")}}"></div>
+                                    <div class="card__title">Videos</div>
                                 </div>
-                            </div><a class="card card_add" href="#">
-                                <div class="card__add">
-                                    <div class="card__icon"><svg class="icon icon-plus">
-                                            <use xlink:href="img/sprite.svg#icon-plus"></use>
-                                        </svg></div>
-                                    <div class="card__text">Add team</div>
-                                </div>
-                            </a>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
-                <div class="dashboard__section">
+                {{-- <div class="dashboard__section">
                     <div class="dashboard__head">
                         <div class="dashboard__category">Projects</div>
                         <div class="options js-options"><button class="options__btn js-options-btn"><svg
@@ -405,7 +322,7 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
