@@ -17,18 +17,22 @@
                                 <div class="card__team">
                                     <div class="card__logo"><img class="card__pic" src="{{asset("theme/img/logo-team-1.png")}}"></div>
                                     <div class="card__title">Company</div>
+                                    <div class="card__parameter text-black ml-5"><strong>12</strong></div>
                                 </div>
+                                
                             </div>
                             <div class="card card_big">
                                 <div class="card__team">
                                     <div class="card__logo"><img class="card__pic" src="{{asset("theme/img/logo-team-1.png")}}"></div>
                                     <div class="card__title">Users</div>
+                                    <div class="card__parameter text-black ml-5"><strong>2</strong></div>
                                 </div>
                             </div>
                             <div class="card card_big">
                                 <div class="card__team">
                                     <div class="card__logo"><img class="card__pic" src="{{asset("theme/img/logo-team-1.png")}}"></div>
                                     <div class="card__title">Videos</div>
+                                    <div class="card__parameter text-black ml-5"><strong>6</strong></div>
                                 </div>
                             </div>
                             

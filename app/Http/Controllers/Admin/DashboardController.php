@@ -29,7 +29,13 @@ class DashboardController extends Controller
     }
     public function login()
     {
-        return view(self::VIEW . '.auth.login');
+        if(auth()->user() && auth()->user()->is_admin == true ){
+            return redirect('admin/dashboard');
+            
+        }else{
+             return view(self::VIEW . '.auth.login');
+        }
+       
     }
 
 }

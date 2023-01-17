@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 
 Route::get('/', [DashboardController::class, 'login']);
-// Route::get('admin/login', [DashboardController::class, 'login']);
+Route::get('admin/login', [DashboardController::class, 'login']);
 Route::post('admin/login', [LoginController::class, 'adminlogin']);
-Route::middleware('super_admin')->prefix('admin')->group(function () {
+Route::middleware('prevent-back-history','super_admin')->prefix('admin')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index']);
     // users
     Route::get('users', [UserController::class, 'index']);
@@ -58,5 +58,9 @@ Route::get('passport-install', function () {
     \Artisan::call('passport-install');
     dd("links Completed");
 });
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

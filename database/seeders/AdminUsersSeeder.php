@@ -23,7 +23,7 @@ class AdminUsersSeeder extends Seeder
 
         $user = User::create([
             'first_name' => 'Super',
-            'last_name' => 'Admin',
+            'last_name' => 'admin',
             'email' => 'admin@ruptate.com',
             'email_verified_at' => now(),
             'password' => bcrypt('Yuvie121314'),

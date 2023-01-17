@@ -89,10 +89,12 @@
                                      <div class="products__cell"><span
                                     class="products__note">stock</span><span></span></div>
                             <div class="products__cell">
-                                <a href='{{ $url . '/' . $item->id . '/edit' }}' class='toggle' data-target='editClass'><em
-                                        class='icon ni ni-edit'></em><span>Edit</span></a>
-                                <a href='javascript:'   onclick='deleteRecordAjax("{{$url."/".$item->id}}")' class='toggle' data-target='editClass'><em
-                                        class='icon ni ni-edit'></em><span>Delete</span></a>
+                                <a href='{{ $url . '/' . $item->id . '/edit' }}' class='toggle' data-target='editClass'><svg class="icon icon-arrow-prev">
+                                    <use xlink:href="{{asset("theme/img/sprite.svg#icon-edit")}}"></use>
+                                </svg></a>
+                                <a href='javascript:'   onclick='deleteRecordAjax("{{$url."/".$item->id}}")' class='toggle' data-target='editClass'><svg class="icon icon-arrow-prev">
+                                    <use xlink:href="{{asset("theme/img/sprite.svg#icon-trash")}}"></use>
+                                </svg></a>
                             </div>
                         </div>
                     @endforeach

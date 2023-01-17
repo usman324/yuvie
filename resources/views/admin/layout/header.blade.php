@@ -60,11 +60,11 @@
         </form>
         <a class="header7__user" href="#">
             <div class="ava">
-                <img class="ava__pic" src="{{ asset('theme/img/ava-9.png') }}" alt="" />
+                <img class="ava__pic" src="{{ asset('theme/img/user.jpeg') }}" alt="" />
             </div>
             <div class="header7__box">
-                <div class="header7__man">{{ auth()->user()->first_name }}</div>
-                <div class="header7__post">{{ auth()->user()->last_name . '' . auth()->user()->first_name }}</div>
+                <div class="header7__man">{{ auth()->user()->first_name.' '.auth()->user()->last_name }}</div>
+                {{-- <div class="header7__post">{{ auth()->user()->last_name . '' . auth()->user()->first_name }}</div> --}}
             </div>
         </a>
     </div>
