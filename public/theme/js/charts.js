@@ -533,10 +533,10 @@ Apex.chart = {
   var options = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     series: [{
-      name: 'Marketing Sales',
+      name: 'Users',
       data: [442, 380, 275, 430, 509, 463, 407, 533, 470, 412, 343, 472]
     }, {
-      name: 'Cases Sale',
+      name: 'Videos',
       data: [375, 370, 435, 570, 425, 595, 631, 580, 401, 467, 402, 380]
     }],
     colors: [blue, green],

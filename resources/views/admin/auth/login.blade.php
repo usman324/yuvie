@@ -38,19 +38,19 @@
                                 </div>
                             </div>
                             <button class="login__btn btn  rounded-pill text-white " style="background-color:#ff5926 " type="submit">Login</button>
-                            <div class="login__or">or</div>
-                            <div class="login__btns">
-                                <button class="login__btn btn btn btn_border-gray" type="button">
-                                    <img class="btn__pic" src="{{ asset('theme/img/google.svg') }}" alt=""
-                                        width="16">
-                                    <span class="btn__text">Continue with Google</span>
-                                </button>
-                                <button class="login__btn btn btn btn_border-gray" type="button">
-                                    <img class="btn__pic" src="{{ asset('theme/img/facebook.svg') }}" alt=""
-                                        width="16">
-                                    <span class="btn__text">Continue with Facebook</span>
-                                </button>
-                            </div>
+                            <!--<div class="login__or">or</div>-->
+                            <!--<div class="login__btns">-->
+                            <!--    <button class="login__btn btn btn btn_border-gray" type="button">-->
+                            <!--        <img class="btn__pic" src="{{ asset('theme/img/google.svg') }}" alt=""-->
+                            <!--            width="16">-->
+                            <!--        <span class="btn__text">Continue with Google</span>-->
+                            <!--    </button>-->
+                            <!--    <button class="login__btn btn btn btn_border-gray" type="button">-->
+                            <!--        <img class="btn__pic" src="{{ asset('theme/img/facebook.svg') }}" alt=""-->
+                            <!--            width="16">-->
+                            <!--        <span class="btn__text">Continue with Facebook</span>-->
+                            <!--    </button>-->
+                            <!--</div>-->
                             <ul class="login__links">
                                 <li><a class="login__link" href="#">Can’t login?</a></li>
                                 <li><a class="login__link" href="{{url('register')}}">Sign up for new user?</a></li>

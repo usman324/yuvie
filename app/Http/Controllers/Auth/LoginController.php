@@ -49,13 +49,54 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
     }
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
+        if (
+            method_exists($this, 'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)
+        ) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+        $user = User::where('email', $request->email)->first();
+        if ($user && $user->getRoleNames()->first() == 'User' && $user->is_admin != true) {
+            if ($this->attemptLogin($request)) {
+                if ($request->hasSession()) {
+                    $request->session()->put('auth.password_confirmed_at', time());
+                }
+
+                return $this->sendLoginResponse($request);
+            }
+            $this->incrementLoginAttempts($request);
+            return $this->sendFailedLoginResponse($request);
+        } else {
+            return $this->sendFailedLoginResponse($request);
+        }
+    }
+    protected function sendLoginResponse(Request $request)
+    {
+        if ($request->is('api/*') == false) {
+            $request->session()->regenerate();
+            $this->clearLoginAttempts($request);
+        }
+
+        if ($request->is('api/*')) {
+            $this->attemptLogin($request);
+            $user = auth()->user();
+            $token = auth()->user()->createToken('Personal Access Token')->accessToken;
+            $user['token'] = $token;
+            return response()->json(['status' => true, 'message' => 'Login Successfully', 'data' => $user], 200);
+        }
+
+        return $request->wantsJson()
+            ? new JsonResponse([], 204)
+            : redirect()->intended($this->redirectPath());
+    }
     public function adminlogin(Request $request)
     {
         $this->validateLogin($request);
-
-        // If the class is using the ThrottlesLogins trait, we can automatically throttle
-        // the login attempts for this application. We'll key this by the username and
-        // the IP address of the client making these requests into this application.
         if (
             method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)
@@ -72,12 +113,7 @@ class LoginController extends Controller
                 }
                 return $this->adminSendLoginResponse($request);
             }
-            // If the login attempt was unsuccessful we will increment the number of attempts
-            // to login and redirect the user back to the login form. Of course, when this
-            // user surpasses their maximum number of attempts they will get locked out.
             $this->incrementLoginAttempts($request);
-
-            // return back()->with('message', 'Credential Not Match');
             return $this->sendFailedLoginResponse($request);
         } else {
             return $this->sendFailedLoginResponse($request);
@@ -93,10 +129,30 @@ class LoginController extends Controller
         if ($response = $this->authenticated($request, $this->guard()->user())) {
             return $response;
         }
-
-        
         return $request->wantsJson()
             ? new JsonResponse([], 204)
             : redirect('admin/dashboard');
+    }
+    public function logout(Request $request)
+    {
+        if (!$request->header('Authorization')) {
+            $this->guard()->logout();
+
+            $request->session()->invalidate();
+
+            $request->session()->regenerateToken();
+        }
+
+        if ($request->header('Authorization')) {
+
+            if (!is_null(auth()->guard('api')->user())) {
+                auth()->guard('api')->user()->token()->revoke();
+            }
+            return response()->json(['status' => true, 'message' => 'Logout Successfully'], 200);
+        }
+
+        return $request->wantsJson()
+            ? new JsonResponse([], 204)
+            : redirect('/');
     }
 }

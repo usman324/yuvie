@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 @section('style')
-<title>{{'YuVie-Business:'. $title }}</title>
+    <title>{{ 'YuVie-Business:' . $title }}</title>
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"> --}}
 @stop
 @section('content')
@@ -35,11 +35,30 @@
                             </div>
 
                         </div>
-                        <div class="login__field field">
-                            <div class="field__wrap">
-                                <input class="field__input" required type="email" name="email" placeholder="Your email">
+                        <div class="row login__field field">
+                            <div class="col-6">
+                                <div class="login__field field">
+                                    <div class="field__wrap">
+                                        <input class="field__input" required type="email" name="email"
+                                            placeholder="Your email">
+                                    </div>
+                                </div>
                             </div>
+                            <div class="col-6">
+                                <div class="login__field field">
+                                    <div class="field__wrap">
+                                        <select name="user_type" class="form-control">
+                                            <option value="">select type </option>
+                                            <option value="2">Executive</option>
+                                            <option value="3">Management</option>
+                                            <option value="4">Staff</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
+
                         <div class="row login__field field">
 
                             <div class="col-6">
@@ -63,10 +82,9 @@
                         <div class="login__field field">
                             <button type="button"
                                 onclick="addFormData(event,'post','{{ url('admin/users') }}','{{ url('admin/users') }}','add-user')"
-                                class="btn btn-sm rounded-pill text-white" style="background-color:#ff5926 "
-                               >Add
+                                class="btn btn-sm rounded-pill text-white" style="background-color:#ff5926 ">Add
                             </button>
-                            <a href="{{$url}}" class="btn btn-sm  rounded-pill border-info" style=""
+                            <a href="{{ $url }}" class="btn btn-sm  rounded-pill border-info" style=""
                                 type="submit">Cancel
                             </a>
                         </div>
@@ -78,5 +96,5 @@
     </div>
 @stop
 @section('script')
-{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script> --}}
 @stop

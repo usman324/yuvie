@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
@@ -30,6 +31,15 @@ Route::middleware('prevent-back-history','super_admin')->prefix('admin')->group(
     Route::get('users/{id}/edit', [UserController::class, 'edit']);
     Route::post('users/{id}', [UserController::class, 'update']);
     Route::delete('users/{id}', [UserController::class, 'destroy']);
+    // end users
+    // companies
+    Route::get('companies', [CompanyController::class, 'index']);
+    Route::get('companies/create', [CompanyController::class, 'create']);
+    Route::post('companies', [CompanyController::class, 'store']);
+    Route::get('companies/{id}/edit', [CompanyController::class, 'edit']);
+    Route::post('companies/{id}', [CompanyController::class, 'update']);
+    Route::delete('companies/{id}', [CompanyController::class, 'destroy']);
+    // end companies
 });
 Route::get('clear-cache', function () {
     \Artisan::call('optimize:clear');

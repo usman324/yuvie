@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 @section('style')
-<title>{{'YuVie-Business:'. $title }}</title>
+    <title>{{ 'YuVie-Business:' . $title }}</title>
 @stop
 @section('content')
     <div class="sorting1">
@@ -34,12 +34,34 @@
                             </div>
 
                         </div>
-                        <div class="login__field field">
-                            <div class="field__wrap">
-                                <input class="field__input" required type="email" name="email"
-                                    value="{{ $record->email }}" placeholder="Your email">
+                        <div class="row login__field field">
+                            <div class="col-6">
+                                <div class="login__field field">
+                                    <div class="field__wrap">
+                                        <input class="field__input" required type="email" name="email"
+                                            value="{{ $record->email }}" placeholder="Your email">
+                                    </div>
+                                </div>
                             </div>
+                            <div class="col-6">
+                                <div class="login__field field">
+                                    <div class="field__wrap">
+                                        <select name="user_type" class="form-control">
+                                            <option value="">select type </option>
+                                            <option value="2" @if ($record->getRoleNames()->first() === 'Executive') selected @endif>
+                                                Executive</option>
+                                            <option value="3" @if ($record->getRoleNames()->first() === 'Management') selected @endif>
+                                                Management</option>
+                                            <option value="4" @if ($record->getRoleNames()->first() === 'Staff') selected @endif>Staff
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
+
                         <div class="row login__field field">
 
                             <div class="col-6">

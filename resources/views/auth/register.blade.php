@@ -63,7 +63,7 @@
 
                             <button class="login__btn btn btn  rounded-pill text-white "
                                 style="background-color:#ff5926 " type="submit">Submit</button>
-                            <div class="login__or">or</div>
+                            {{-- <div class="login__or">or</div>
                             <div class="login__btns">
                                 <button class="login__btn btn btn btn_border-gray" type="button">
                                     <img class="btn__pic" src="{{ asset('theme/img/google.svg') }}" alt=""
@@ -75,7 +75,7 @@
                                         width="16">
                                     <span class="btn__text">Continue with Facebook</span>
                                 </button>
-                            </div>
+                            </div> --}}
                             <ul class="login__links">
                                 <li><a class="login__link" href="{{ url('/') }}">Sign in?</a></li>
                             </ul>

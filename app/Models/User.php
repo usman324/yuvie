@@ -4,9 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
@@ -43,4 +44,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    /**
+     * Scope a query get user who have roles.
+     *
+     * @param Builder $query
+     * @param string $role
+     * @return Builder
+     */
+    public function scopeWhereRole(Builder $query, string $role): Builder
+    {
+        $query->whereHas(
+            'roles',
+            function ($q) use ($role) {
+                return $q->where('name', $role);
+            }
+        );
+
+        return $query;
+    }
+
 }

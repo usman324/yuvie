@@ -25,6 +25,7 @@ class DashboardController extends Controller
     }
     public function index(Request $request)
     {
+        $users=User::count();
         return view(self::VIEW . '.dashboard.index',get_defined_vars());
     }
     public function login()

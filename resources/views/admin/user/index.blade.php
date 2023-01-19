@@ -52,9 +52,12 @@
         <div class="products__container">
             <div class="products__body">
                 <div class="products__head">
-                    <div class="products__search"><button class="products__open"><svg class="icon icon-search">
+                    <div class="products__search">
+                        <button class="products__open">
+                            <svg class="icon icon-search">
                                 <use xlink:href="img/sprite.svg#icon-search"></use>
-                            </svg></button><input class="products__input" type="text" placeholder="Search…"></div><select
+                            </svg></button><input class="products__input" type="text" placeholder="Search…"></div>
+                            <select
                         class="products__select">
                         <option>Action</option>
                         <option>Action</option>

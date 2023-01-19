@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 class UserController extends Controller
 {
@@ -46,7 +47,8 @@ class UserController extends Controller
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'user_type' => 'required',
         ]);
         $user=User::create([
             'first_name'=>$request->first_name,
@@ -54,6 +56,7 @@ class UserController extends Controller
             'email'=>$request->email,
             'password' => Hash::make($request->password),
         ]);
+        $user->assignRole($request->user_type);
         return response()->json(
             [
                 'success' => true,
@@ -73,6 +76,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $record=User::find($id);
+        $roles=Role::where('name','!=','Super Admin')->get();
         return view(self::VIEW . '.edit', get_defined_vars());
     }
 
@@ -84,14 +88,17 @@ class UserController extends Controller
             'first_name' => 'required|string|min:2|max:200',
             'last_name' => 'required|string|min:2|max:200',
             'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
+            'user_type' => 'required',
         ]);
         $record=User::find($id);
+        $record->removeRole($record->getRoleNames()->first());
         $record->update([
             'first_name'=>$request->first_name?$request->first_name:$record->first_name,
             'last_name'=>$request->last_name?$request->last_name:$record->last_name,
             'email' => $request->email ? $request->email : $record->email,
             'password' => $request->password ? Hash::make($request->password) : $record->password,
         ]);
+        $record->assignRole($request->user_type);
         return response()->json(
             [
                 'success' => true,
