@@ -108,3 +108,22 @@ function addFormData(e, method, url, redirectUrl, data) {
     });
 
 }
+function getCities(e, url) {
+    let state_id=e.target.value;
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            state_id: state_id,
+        },
+        success: function (response) {
+            $("#cityDetail").html();
+            $("#cityDetail").html(response);
+        },
+    });
+}

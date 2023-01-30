@@ -16,6 +16,22 @@
                         <div class="login__title login__title_sm ">User Detail</div>
                         <hr>
                         <div class="row login__field field">
+                            <div class="col-12">
+                                <div class="login__field field">
+                                    <div class="field__wrap">
+                                        <select name="company_id" class="form-control select2">
+                                            <option value="">select company </option>
+                                            @foreach ($companies as $item)
+                                                <option value="{{ $item->id }}"
+                                                    @if ($item->id == $record->company_id) selected @endif>{{ $item->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row login__field field">
                             <div class="col-6">
                                 <div class="login__field field">
                                     <div class="field__wrap">
@@ -52,7 +68,10 @@
                                                 Executive</option>
                                             <option value="3" @if ($record->getRoleNames()->first() === 'Management') selected @endif>
                                                 Management</option>
-                                            <option value="4" @if ($record->getRoleNames()->first() === 'Staff') selected @endif>Staff
+                                            {{-- <option value="4" @if ($record->getRoleNames()->first() === 'Staff') selected @endif>Staff
+                                            </option> --}}
+                                            <option value="6" @if ($record->getRoleNames()->first() === 'Mobile User') selected @endif>Mobile
+                                                User
                                             </option>
 
                                         </select>

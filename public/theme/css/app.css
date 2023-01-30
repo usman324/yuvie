@@ -6844,7 +6844,6 @@ body.dark .search__info {
   cursor: pointer;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-
 .checkbox__input {
   position: absolute;
   top: 0;

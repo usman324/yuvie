@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\VideoController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -39,7 +40,17 @@ Route::middleware('prevent-back-history','super_admin')->prefix('admin')->group(
     Route::get('companies/{id}/edit', [CompanyController::class, 'edit']);
     Route::post('companies/{id}', [CompanyController::class, 'update']);
     Route::delete('companies/{id}', [CompanyController::class, 'destroy']);
-    // end companies
+    Route::post('get-cities', [CompanyController::class, 'getCities']);
+    // end companies 
+    // videos
+    Route::get('videos', [VideoController::class, 'index']);
+    Route::get('videos/create', [VideoController::class, 'create']);
+    Route::post('videos', [VideoController::class, 'store']);
+    Route::get('videos/{id}/edit', [VideoController::class, 'edit']);
+    Route::post('videos/{id}', [VideoController::class, 'update']);
+    Route::delete('videos/{id}', [VideoController::class, 'destroy']);
+   
+    // end videos
 });
 Route::get('clear-cache', function () {
     \Artisan::call('optimize:clear');

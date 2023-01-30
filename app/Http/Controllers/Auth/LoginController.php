@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -61,7 +62,7 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);
         }
         $user = User::where('email', $request->email)->first();
-        if ($user && $user->getRoleNames()->first() == 'User' && $user->is_admin != true) {
+        if ($user && $user->getRoleNames()->first() == 'Mobile User' && $user->is_admin != true) {
             if ($this->attemptLogin($request)) {
                 if ($request->hasSession()) {
                     $request->session()->put('auth.password_confirmed_at', time());
@@ -84,9 +85,11 @@ class LoginController extends Controller
 
         if ($request->is('api/*')) {
             $this->attemptLogin($request);
+            $companies = Company::all();
             $user = auth()->user();
             $token = auth()->user()->createToken('Personal Access Token')->accessToken;
             $user['token'] = $token;
+            $user['companies'] = $companies;
             return response()->json(['status' => true, 'message' => 'Login Successfully', 'data' => $user], 200);
         }
 

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
 use App\Models\Company;
+use App\Models\CompanyBranding;
+use App\Models\CompanyDetail;
+use App\Models\State;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
@@ -28,13 +32,109 @@ class CompanyController extends Controller
    
     public function create()
     {
+        $states=State::all();
         return view(self::VIEW . '.create', get_defined_vars());
+    } 
+    public function getCities(Request $request)
+    {
+        $records=City::where('state_id',$request->state_id)->get();
+        return view(self::VIEW . '.partial.city', get_defined_vars());
     }
 
     
     public function store(Request $request)
     {
-        
+
+        $request->validate([
+            'name'=>'required',
+            'first_name'=>'required',
+            'last_name'=>'required',
+            'state_id'=>'required',
+            'city_id'=>'required',
+            'zip'=>'required',
+            'description'=>'required',
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:companies'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'profile_logo' => ['nullable','file', 'mimes:jpg,png'],
+            'social_media_logo_small' => ['nullable', 'file','mimes:jpg,png'],
+            'social_media_logo_large' => ['nullable', 'file','mimes:jpg,png'],
+            'video_watermark' => ['nullable','file', 'mimes:jpg,png'],
+            'background_music' => ['nullable', 'file','mimes:mp3'],
+        ]);
+        $profile_logo=$request->profile_logo;
+        $social_media_logo_small=$request->social_media_logo_small;
+        $social_media_logo_large=$request->social_media_logo_large;
+        $video_watermark=$request->video_watermark;
+        $background_music=$request->background_music;
+        $profile_logo_name="";
+        $social_media_logo_small_name="";
+        $social_media_logo_large_name="";
+        $video_watermark_name = "";
+        $background_music_name = "";
+
+        if($profile_logo){
+            $name = rand(10, 100) . time() . '.' . $profile_logo->getClientOriginalExtension();
+            $profile_logo->storeAs('public/company_branding', $name);
+            $profile_logo_name = $name;
+        }
+        if($social_media_logo_small){
+            $name = rand(10, 100) . time() . '.' . $social_media_logo_small->getClientOriginalExtension();
+            $social_media_logo_small->storeAs('public/company_branding', $name);
+            $social_media_logo_small_name = $name;
+        }
+        if($social_media_logo_large){
+            $name = rand(10, 100) . time() . '.' . $social_media_logo_large->getClientOriginalExtension();
+            $social_media_logo_large->storeAs('public/company_branding', $name);
+            $social_media_logo_large_name = $name;
+        }
+        if($video_watermark){
+            $name = rand(10, 100) . time() . '.' . $video_watermark->getClientOriginalExtension();
+            $video_watermark->storeAs('public/company_branding', $name);
+            $video_watermark_name = $name;
+        }
+        if($background_music){
+            $name = rand(10, 100) . time() . '.' . $background_music->getClientOriginalExtension();
+            $background_music->storeAs('public/company_branding', $name);
+            $background_music_name = $name;
+        }
+        $company=Company::create([
+            'name'=>$request->name,
+            'first_name'=>$request->first_name,
+            'last_name'=>$request->last_name,
+            'state_id'=>$request->state_id,
+            'city_id'=>$request->city_id,
+            'zip'=>$request->zip,
+            'email'=>$request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        CompanyDetail::create([
+            'company_id'=>$company->id,
+            'company_location_state'=>$request->company_location_state,
+            'company_location_title'=>$request->company_location_title,
+            'company_location_event'=>$request->company_location_event,
+            'company_location_group'=>$request->company_location_group,
+            'latitude'=>$request->latitude,
+            'longitude'=>$request->longitude,
+            'company_website_url'=>$request->company_website_url,
+            'company_destination_url'=>$request->company_destination_url,
+            'company_button_text'=>$request->company_button_text,
+            'company_ftp_protocol'=>$request->company_ftp_protocol,
+            'company_ftp_host'=>$request->company_ftp_host,
+            'company_ftp_username'=>$request->company_ftp_username,
+            'company_ftp_password'=>$request->company_ftp_password,
+            'company_ftp_directory' => $request->company_ftp_directory,
+        ]);
+        CompanyBranding::create([
+            'company_id'=>$company->id,
+            'profile_logo' => $profile_logo_name ? $profile_logo_name : null,
+            'social_media_logo_small'=>$social_media_logo_small_name?$social_media_logo_small_name:null,
+            'social_media_logo_large'=>$social_media_logo_large_name?$social_media_logo_large_name:null,
+            'video_watermark'=>$video_watermark_name?$video_watermark_name:null,
+            'background_music'=>$background_music_name?$background_music_name:null,
+        ]);
+        return response()->json(['status' => true, 'message' => 'Company Add Successfully'], 200);
+
     }
 
    

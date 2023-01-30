@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\VideoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -16,4 +17,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
+
+Route::namespace('Api')->middleware('user')->group(function(){
+
+    // videos controller api's
+    Route::post('get_videos', [VideoController::class, 'getVideos']);
+    Route::post('upload_video', [VideoController::class, 'uploadVideo']);
+    Route::post('get_company_videos', [VideoController::class, 'getCompanyVideos']);
+});
 

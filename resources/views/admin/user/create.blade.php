@@ -17,6 +17,20 @@
                         <div class="login__title login__title_sm ">User Detail</div>
                         <hr>
                         <div class="row login__field field">
+                            <div class="col-12">
+                                <div class="login__field field">
+                                    <div class="field__wrap">
+                                        <select name="company_id" class="form-control select2">
+                                            <option value="">select company </option>
+                                            @foreach ($companies as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row login__field field">
                             <div class="col-6">
                                 <div class="login__field field">
                                     <div class="field__wrap">
@@ -51,7 +65,8 @@
                                             <option value="">select type </option>
                                             <option value="2">Executive</option>
                                             <option value="3">Management</option>
-                                            <option value="4">Staff</option>
+                                            {{-- <option value="4">Staff</option> --}}
+                                            <option value="6">Mobile User</option>
                                         </select>
                                     </div>
                                 </div>
