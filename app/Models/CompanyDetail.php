@@ -23,6 +23,6 @@ class CompanyDetail extends Model
         'company_ftp_host',
         'company_ftp_username',
         'company_ftp_password',
-        'company_ftp_directorys',
+        'company_ftp_directory',
     ];
 }

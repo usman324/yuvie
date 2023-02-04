@@ -31,10 +31,10 @@
                                     <a class="nav-link" data-toggle="tab" href="#branding" role="tab">Branding
                                     </a>
                                 </li>
-                                {{-- <li class="nav-item">
+                                <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#videos" role="tab">Videos
                                     </a>
-                                </li> --}}
+                                </li>
                             </ul>
                             <form id="add-company" enctype="multipart/form-data">
                                
@@ -312,49 +312,47 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- <div class="tab-pane " id="videos" role="tabpanel">
-                                        <div class="row mt-2">
-                                           
-                                            <div class="col-6">
+                                    <div class="tab-pane " id="videos" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-12">
                                                 <div class="form-group">
-                                                    <label for="title">Intro Video
+                                                    <label for="title">Title</label>
+                                                    <input type="text" class=" form-control " name="title"
+                                                         required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+    
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="title">Video
                                                         <small>(MP4 1280 x 720)</small>
                                                     </label>
                                                     <input type="file" class="dropify form-control " data-height="100"
-                                                        name="image" required>
+                                                        name="video" required>
                                                 </div>
                                             </div>
-                                            <div class="col-6">
+                                            {{-- <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="title">Thumbnail image <small>(JPG or PNG
                                                             1280 x 720)</small></label>
                                                     <input type="file" class="dropify form-control " data-height="100"
-                                                        name="image" required>
+                                                        data-default-file="{{ $video_url . '/' . $record->thumbnail_image }}"
+                                                        name="thumbnail_image" required>
                                                 </div>
-                                            </div>
-
+                                            </div> --}}
+    
                                         </div>
-                                        {{-- <div class="row mt-2">
-                                            
-                                            <div class="col-6">
+                                        <div class="row">
+                                            <div class="col-12">
                                                 <div class="form-group">
-                                                    <label for="title">Outer Video<small>(MP4 1280 x 720)</small>
-                                                    </label>
-                                                    <input type="file" class="dropify form-control " data-height="100"
-                                                        name="image" required>
+                                                    <label for="short_description">Description</label>
+                                                    <textarea name="video_description" class="form-control" id="" cols="25" rows="5"></textarea>
                                                 </div>
                                             </div>
-                                           
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <label for="title">Thumbnail image<small>(JPG or PNG
-                                                            1280 x 720)</small></label>
-                                                    <input type="file" class="dropify form-control " data-height="100"
-                                                        name="image" required>
-                                                </div>
-                                            </div>
-                                        </div> --}}
-                                    {{-- </div> --}} 
+                                        </div>
+                                    </div>
 
                                 </div>
                               

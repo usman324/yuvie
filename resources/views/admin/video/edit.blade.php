@@ -25,22 +25,31 @@
                             <form id="add-video" enctype="multipart/form-data">
                                 <div class="tab-pane active" id="videos" role="tabpanel">
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-6">
                                             <div class="form-group">
                                                 <label for="title">Comapny
                                                 </label>
                                                 <select name="company_id" class="form-control select2">
                                                     <option value="">select company </option>
                                                     @foreach ($companies as $item)
-                                                        <option value="{{ $item->id }}" @if($item->id == $record->company_id) selected @endif>{{ $item->name }}</option>
+                                                        <option value="{{ $item->id }}"
+                                                            @if ($item->id == $record->company_id) selected @endif>
+                                                            {{ $item->name }}</option>
                                                     @endforeach
                                                 </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="title">Title</label>
+                                                <input type="text" class=" form-control " name="title"
+                                                    value="{{ $record->title }}" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mt-2">
 
-                                        <div class="col-6">
+                                        <div class="col-12">
                                             <div class="form-group">
                                                 <label for="title">Video
                                                     <small>(MP4 1280 x 720)</small>
@@ -50,7 +59,7 @@
                                                     name="video" required>
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        {{-- <div class="col-6">
                                             <div class="form-group">
                                                 <label for="title">Thumbnail image <small>(JPG or PNG
                                                         1280 x 720)</small></label>
@@ -58,10 +67,17 @@
                                                     data-default-file="{{ $video_url . '/' . $record->thumbnail_image }}"
                                                     name="thumbnail_image" required>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                     </div>
-
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="short_description">Description</label>
+                                                <textarea name="description" class="form-control" id="" cols="25" rows="5">{{ $record->description }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="login__field field">

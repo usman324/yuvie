@@ -17,6 +17,7 @@
                         <div class="dropdown__text">Sort by:</div>
                         <div class="dropdown__category">Default</div>
                     </a>
+
                     <div class="dropdown__body js-dropdown-body">
                         <label class="checkbox checkbox_sm checkbox_green">
                             <input class="checkbox__input" type="checkbox" />
@@ -51,52 +52,53 @@
     <div class="products">
         <div class="products__container">
             <div class="products__body">
-                <div class="products__head">
-                    <div class="products__search"><button class="products__open"><svg class="icon icon-search">
-                                <use xlink:href="img/sprite.svg#icon-search"></use>
-                            </svg></button><input class="products__input" type="text" placeholder="Search…"></div><select
-                        class="products__select">
-                        <option>Action</option>
-                        <option>Action</option>
-                        <option>Action</option>
-                    </select>
-                </div>
-                <div class="products__table">
-                    <div class="products__row products__row_head">
-                        <div class="products__cell"><label class="checkbox checkbox_green checkbox_big"><input
-                                    class="checkbox__input" type="checkbox"><span class="checkbox__in"><span
-                                        class="checkbox__tick"></span></span></label></div>
-                        <div class="products__cell">#Id</div>
-                        <div class="products__cell">First Name</div>
-                        <div class="products__cell">Last Name</div>
-                        <div class="products__cell">Email</div>
-                        <div class="products__cell"></div>
-                        <div class="products__cell">Action</div>
-                    </div>
-                  
-                </div>
+                <table id="myTable" class="table rounded table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>#Id</th>
+                            <th>Name</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>State</th>
+                            <th>City</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $i = 1;
+                        ?>
+                        @foreach ($records as $item)
+                            <tr>
+                                <td>{{ $i }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->first_name }}</td>
+                                <td>{{ $item->last_name }}</td>
+                                <td>{{ $item->email }}</td>
+                                <td>{{ $item->state->name }}</td>
+                                <td>{{ $item->city->name }}</td>
+                                <td>
+                                    <a href='{{ $url . '/' . $item->id . '/edit' }}' class='toggle'
+                                        data-target='editClass'><svg class="icon icon-arrow-prev">
+                                            <use xlink:href="{{ asset('theme/img/sprite.svg#icon-edit') }}"></use>
+                                        </svg></a>
+                                    <a href='javascript:' onclick='deleteRecordAjax("{{ $url . "/" . $item->id }}")'
+                                        class='toggle' data-target='editClass'><svg class="icon icon-arrow-prev">
+                                            <use xlink:href="{{ asset('theme/img/sprite.svg#icon-trash') }}"></use>
+                                        </svg></a>
+                                </td>
+                            </tr>
+                            <?php
+                            $i++;
+                            ?>
+                        @endforeach
+
+
+                    </tbody>
+                </table>
+
             </div>
-            {{-- <div class="products__foot">
-            <div class="products__counter">1-10 of 195 items</div>
-            <div class="pagination">
-              <div class="pagination__wrap"><a class="pagination__arrow" href="#"><svg class="icon icon-arrow-prev">
-                    <use xlink:href="img/sprite.svg#icon-arrow-prev"></use>
-                  </svg></a>
-                <div class="pagination__list"><a class="pagination__link active" href="#">1</a><a class="pagination__link" href="#">2</a><a class="pagination__link" href="#">3</a><a class="pagination__link" href="#">4</a><a class="pagination__link" href="#">5</a><a class="pagination__link" href="#">...</a><a class="pagination__link" href="#">19</a></div><a class="pagination__arrow" href="#"><svg class="icon icon-arrow-next">
-                    <use xlink:href="img/sprite.svg#icon-arrow-next"></use>
-                  </svg></a>
-              </div>
-              <div class="pagination__view"><select class="pagination__select">
-                  <option>10</option>
-                  <option>20</option>
-                  <option>30</option>
-                </select>
-                <div class="pagination__icon"><svg class="icon icon-arrows">
-                    <use xlink:href="img/sprite.svg#icon-arrows"></use>
-                  </svg></div>
-              </div>
-            </div>
-          </div> --}}
         </div>
     </div>
 @stop

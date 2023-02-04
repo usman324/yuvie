@@ -85,10 +85,11 @@ class LoginController extends Controller
 
         if ($request->is('api/*')) {
             $this->attemptLogin($request);
-            $companies = Company::all();
+            $companies = Company::with('companyDetail','companyBranding')->get();
             $user = auth()->user();
             $token = auth()->user()->createToken('Personal Access Token')->accessToken;
             $user['token'] = $token;
+            $user['image_url'] = env('APP_IMAGE_URL').'company';
             $user['companies'] = $companies;
             return response()->json(['status' => true, 'message' => 'Login Successfully', 'data' => $user], 200);
         }

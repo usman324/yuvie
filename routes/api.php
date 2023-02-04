@@ -24,5 +24,7 @@ Route::namespace('Api')->middleware('user')->group(function(){
     Route::post('get_videos', [VideoController::class, 'getVideos']);
     Route::post('upload_video', [VideoController::class, 'uploadVideo']);
     Route::post('get_company_videos', [VideoController::class, 'getCompanyVideos']);
+    Route::post('delete_video', [VideoController::class, 'destroy']);
+    Route::post('update_video', [VideoController::class, 'updateVideo']);
 });
 

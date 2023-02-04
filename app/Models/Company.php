@@ -17,5 +17,23 @@ class Company extends Model
         'email',
         'password',
         'zip',
+        'description',
     ];
+    public function companyDetail(){
+        return $this->hasOne(CompanyDetail::class,'company_id');
+    }
+    public function companyBranding()
+    {
+        return $this->hasOne(CompanyBranding::class, 'company_id');
+    }
+    public function videos()
+    {
+        return $this->hasMany(Video::class);
+    }
+    public function state(){
+        return $this->belongsTo(State::class, 'state_id');
+    }
+    public function city(){
+        return $this->belongsTo(City::class, 'city_id');
+    }
 }

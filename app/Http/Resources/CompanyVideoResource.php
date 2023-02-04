@@ -18,10 +18,12 @@ class CompanyVideoResource extends JsonResource
       
         return [
             'id'=>$this->id,
-            'user' => $this->user->first_name.' '.$this->user->last_name,
-            'company' => $this->company->name,
+            'user' => $this->user,
+            'company' => $this->company?->name,
+            'title' => $this->title,
+            'description' => $this->description,
             'video' =>env('APP_IMAGE_URL').'video/'.$this->video,
-            'thumbnail_image' =>env('APP_IMAGE_URL').'video/'.$this->thumbnail_image,
+            // 'thumbnail_image' =>env('APP_IMAGE_URL').'video/'.$this->thumbnail_image,
             ];
       
 

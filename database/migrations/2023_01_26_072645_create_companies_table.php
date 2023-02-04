@@ -23,6 +23,7 @@ class CreateCompaniesTable extends Migration
             $table->string('email');
             $table->string('password');
             $table->string('zip');
+            $table->tex('description');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
