@@ -127,3 +127,32 @@ function getCities(e, url) {
         },
     });
 }
+function videoApproved(e, url) {
+    e.preventDefault();
+    if(e.target.value == 'approved'){
+        is_approve='pending';
+    }else{
+        is_approve = 'approved';
+
+    }
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: url,
+        method: 'post',
+        data: {
+            is_approve: is_approve,
+        },
+        success: function (response) {
+            showSuccess(response.message, 'success')
+                setTimeout(function () {
+                        location.reload();
+                }, 1500)
+        }
+    });
+    
+
+}

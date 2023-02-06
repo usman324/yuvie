@@ -49,6 +49,7 @@ Route::middleware('prevent-back-history','super_admin')->prefix('admin')->group(
     Route::get('videos/{id}/edit', [VideoController::class, 'edit']);
     Route::post('videos/{id}', [VideoController::class, 'update']);
     Route::delete('videos/{id}', [VideoController::class, 'destroy']);
+    Route::post('video_approved/{id}', [VideoController::class, 'videoApproved']);
    
     // end videos
 });

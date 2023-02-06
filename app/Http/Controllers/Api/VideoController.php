@@ -7,6 +7,7 @@ use App\Http\Resources\CompanyVideoCollection;
 use App\Http\Resources\VideoCollection;
 use App\Models\User;
 use App\Models\Video;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -17,11 +18,47 @@ class VideoController extends Controller
 
     public function getVideos(Request $request)
     {
-        $user=User::find($request->user_id);
-        return new VideoCollection(
-            Video::where('company_id', $user->company_id)->get(),
-        );
-    } 
+        $user = User::find($request->user_id);
+        $videos = Video::with('user', 'company')->where('company_id', $user->company_id)->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
+            return Carbon::parse($date->created_at)->format('D d M');
+        });
+        $records = [];
+        foreach ($videos as $key => $datas) {
+            $videos_by_date = [];
+            $now = Carbon::now();
+            $yesterday = Carbon::yesterday();
+
+            // $date_object = $now->format('D d M') == $key ? 'Today' : $key;
+            $date_object = '';
+            if ($now->format('D d M') == $key) {
+                $date_object = 'Today';
+            } elseif ($yesterday->format('D d M') == $key) {
+                $date_object = 'Yesterday';
+            } else {
+                $date_object = $key;
+            }
+            foreach ($datas as $video) {
+                $record = [
+                    'date' => $date_object,
+                    'video' => [
+                        [
+                            'id' => $video->id,
+                            'user' => $video->user,
+                            'company' => $video->company?->name,
+                            'title' => $video->title,
+                            'description' => $video->description,
+                            'status' => $video->status,
+                            'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
+                        ]
+                    ]
+                ];
+                $videos_by_date = $record;
+            }
+
+            $records[] = $videos_by_date;
+        }
+        return response()->json(['status' => true, 'message' => 'Record Found', 'data' => $records], 200);
+    }
     public function getCompanyVideos(Request $request)
     {
         // $videos = Video::all();
@@ -48,39 +85,49 @@ class VideoController extends Controller
         $thumbnail_image = $request->thumbnail_image;
 
         $video_name = '';
-            if ($video) {
-                $name = rand(10, 100) . time() . '.' . $video->getClientOriginalExtension();
-                $video->storeAs('public/video', $name);
-                $video_name = $name;
-            }
-            Video::create([
-                'user_id' => $request->user_id,
-                'company_id' => $request->company_id,
-                'title' => $request->title,
-                'description' => $request->description,
-                'video' => $video_name ? $video_name : null,
-                // 'thumbnail_image' => $thumbnail_image_name ? $thumbnail_image_name : null,
-            ]);
+        if ($video) {
+            $name = rand(10, 100) . time() . '.' . $video->getClientOriginalExtension();
+            $video->storeAs('public/video', $name);
+            $video_name = $name;
+        }
+        Video::create([
+            'user_id' => $request->user_id,
+            'company_id' => $request->company_id,
+            'title' => $request->title,
+            'description' => $request->description,
+            'video' => $video_name ? $video_name : null,
+        ]);
         return response()->json(['status' => true, 'message' => 'Video Add Successfully'], 200);
     }
     public function updateVideo(Request $request)
     {
-        $record=Video::find($request->video_id);
+        $record = Video::find($request->video_id);
         $video = $request->video_file;
-            // $video_name = '';
-            //     if ($video) {
-            //         $name = rand(10, 100) . time() . '.' . $video->getClientOriginalExtension();
-            //         $video->storeAs('public/video', $name);
-            //         $video_name = $name;
-            //     }
+        $video_name = '';
+        if ($video) {
+            $name = rand(10, 100) . time() . '.' . $video->getClientOriginalExtension();
+            $video->storeAs('public/video', $name);
+            $video_name = $name;
+        }
         $record->update([
-                'title' => $request->title?$request->title:$record->title,
+            'title' => $request->title ? $request->title : $record->title,
+            'video' => $video_name ? $video_name : $record->video,
             'description' => $request->description ? $request->description : $record->description,
         ]);
         return response()->json(['status' => true, 'message' => 'Video Update Successfully', 'data' => $record], 200);
     }
 
-    public function destroy(Request $request){
+    public function changeStatusVideo(Request $request)
+    {
+
+        $record = Video::find($request->video_id);
+        $record->update([
+            'status' => $request->status,
+        ]);
+        return response()->json(['status' => true, 'message' => 'Status Change'], 200);
+    }
+    public function destroy(Request $request)
+    {
 
         $record = Video::find($request->video_id);
         $record->delete();

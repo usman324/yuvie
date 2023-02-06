@@ -14,6 +14,7 @@ class Video extends Model
         'video',
         'title',
         'description',
+        'status',
         'thumbnail_image',
     ];
 

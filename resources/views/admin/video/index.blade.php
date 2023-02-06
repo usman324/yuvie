@@ -1,6 +1,67 @@
 @extends('admin.layout.master')
 @section('style')
     <title>{{ 'YuVie-Business:' . $title }}</title>
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: lightgreen;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px lightgreen;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
 @stop
 @section('content')
     <div class="sorting1">
@@ -54,11 +115,11 @@
                 <table id="myTable" class="table rounded table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th >#Id</th>
-                            <th >Company</th>
+                            <th>#Id</th>
+                            <th>Company</th>
                             <th>Video</th>
                             <th>Title</th>
-                            {{-- <th>Description</th> --}}
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -67,7 +128,7 @@
                         $i = 1;
                         ?>
                         @foreach ($records as $item)
-                            @if ($item->user->getRoleNames()->first() == 'Mobile User')
+                        @if ($item->user->getRoleNames()->first() == 'Mobile User')
                                 <tr>
                                     <td>{{ $i }}</td>
                                     <td>{{ $item->company?->name }}</td>
@@ -79,9 +140,14 @@
                                     <td>
                                         {{ $item->title }}
                                     </td>
-                                    {{-- <td>
-                                        {{ $item->description }}
-                                    </td> --}}
+                                    <td>
+                                        <label class='switch'>
+                                            <input type='checkbox' value='{{ $item->status }}'
+                                                @if ($item->status == 'approved') checked @endif
+                                                onchange="videoApproved(event,'{{ url('admin/video_approved/' . $item->id) }}')"><span
+                                                class='slider round'></span></label>
+                                        {{-- {{ $item->status }} --}}
+                                    </td>
                                     {{-- <td><img style="width:250px; height:80px;" class="header7__pic header7__pic_white w-25"
                                             src="{{ $video_url . '/' . $item->thumbnail_image }}" alt="">
                                     </td> --}}
@@ -90,7 +156,7 @@
                                             data-target='editClass'><svg class="icon icon-arrow-prev">
                                                 <use xlink:href="{{ asset('theme/img/sprite.svg#icon-edit') }}"></use>
                                             </svg></a>
-                                        <a href='javascript:' onclick='deleteRecordAjax("{{ $url . '/' . $item->id }}")'
+                                        <a href='javascript:' onclick="deleteRecordAjax('{{ $url . '/' . $item->id }}')"
                                             class='toggle' data-target='editClass'><svg class="icon icon-arrow-prev">
                                                 <use xlink:href="{{ asset('theme/img/sprite.svg#icon-trash') }}"></use>
                                             </svg></a>

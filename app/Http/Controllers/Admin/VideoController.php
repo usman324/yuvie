@@ -106,6 +106,13 @@ class VideoController extends Controller
         ]);
         return response()->json(['status' => true, 'message' => 'Video Update Successfully'], 200);
     }
+    public function videoApproved(Request $request, $id)
+    {
+        $record = Video::find($id);
+        $record->update(['status' => $request->is_approve,
+        ]);
+        return response()->json(['status' => true, 'message' => 'Status Change'], 200);
+    }
     public function destroy($id)
     {
         $record = Video::find($id);

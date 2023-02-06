@@ -21,6 +21,7 @@ class CreateVideosTable extends Migration
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->string('thumbnail_image')->nullable();
+            $table->enum('status', ['pending', 'approved', 'archive'])->default('pending');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
