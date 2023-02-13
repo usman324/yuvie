@@ -19,12 +19,16 @@ class VideoController extends Controller
     public function getVideos(Request $request)
     {
         $user = User::find($request->user_id);
-        $videos = Video::with('user', 'company')->where('company_id', $user->company_id)->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
+        $videos = Video::where('company_id', $user->company_id)
+            ->where('user_id', '!=', $user->id)->where('status', 'approved')->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
+            return Carbon::parse($date->created_at)->format('D d M');
+        });
+        $user_videos = Video::where('user_id', $user->id)->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
             return Carbon::parse($date->created_at)->format('D d M');
         });
         $records = [];
+        $user_records = [];
         foreach ($videos as $key => $datas) {
-            $videos_by_date = [];
             $now = Carbon::now();
             $yesterday = Carbon::yesterday();
 
@@ -37,27 +41,58 @@ class VideoController extends Controller
             } else {
                 $date_object = $key;
             }
+            $videos_by_date = [
+                'date' => $date_object,
+            ];
             foreach ($datas as $video) {
                 $record = [
-                    'date' => $date_object,
-                    'video' => [
-                        [
-                            'id' => $video->id,
-                            'user' => $video->user,
-                            'company' => $video->company?->name,
-                            'title' => $video->title,
-                            'description' => $video->description,
-                            'status' => $video->status,
-                            'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
-                        ]
-                    ]
+                    'id' => $video->id,
+                    'user' => $video->user,
+                    'company' => $video->company?->name,
+                    'title' => $video->title,
+                    'description' => $video->description,
+                    'status' => $video->status,
+                    'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
+
                 ];
-                $videos_by_date = $record;
+                $videos_by_date['video'][] = $record;
             }
 
             $records[] = $videos_by_date;
         }
-        return response()->json(['status' => true, 'message' => 'Record Found', 'data' => $records], 200);
+        foreach ($user_videos as $key => $datas) {
+            $now = Carbon::now();
+            $yesterday = Carbon::yesterday();
+
+            // $date_object = $now->format('D d M') == $key ? 'Today' : $key;
+            $date_object = '';
+            if ($now->format('D d M') == $key) {
+                $date_object = 'Today';
+            } elseif ($yesterday->format('D d M') == $key) {
+                $date_object = 'Yesterday';
+            } else {
+                $date_object = $key;
+            }
+            $videos_by_date = [
+                'date' => $date_object,
+            ];
+            foreach ($datas as $video) {
+                $record = [
+                    'id' => $video->id,
+                    'user' => $video->user,
+                    'company' => $video->company?->name,
+                    'title' => $video->title,
+                    'description' => $video->description,
+                    'status' => $video->status,
+                    'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
+
+                ];
+                $videos_by_date['video'][] = $record;
+            }
+
+            $user_records[] = $videos_by_date;
+        }
+        return response()->json(['status' => true, 'message' => 'Record Found', 'data' => $records,'userData'=>$user_records], 200);
     }
     public function getCompanyVideos(Request $request)
     {

@@ -13,8 +13,12 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+    protected $commands = [
+        Commands\DeleteVideo::class,
+    ];
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('delete:video')->everyMinute();
         // $schedule->command('inspire')->hourly();
     }
 
