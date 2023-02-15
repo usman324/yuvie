@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PasswordRequest;
 use App\Models\Company;
 use App\Models\User;
-use App\Rules\MatchOldPassword;
-use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -33,7 +30,7 @@ class UserController extends Controller
         ]);
         return response()->json(
             [
-                'success' => true,
+                'status' => true,
                 'message' => 'Profile Update Successfully',
                 'data'=>$record,
             ],
@@ -50,7 +47,7 @@ class UserController extends Controller
         if(Hash::check($request->previous_password, $record->password) == false){
             return response()->json(
                 [
-                    'success' => false,
+                    'status' => false,
                     'message' => 'The previous password is match not with old password',
                 ],
                 500
@@ -60,7 +57,7 @@ class UserController extends Controller
             ]);
             return response()->json(
                 [
-                    'success' => true,
+                    'status' => true,
                     'message' => 'Password Update Successfully',
                     'data'=>$record,
                 ],

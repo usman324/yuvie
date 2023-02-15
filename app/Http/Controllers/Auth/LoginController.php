@@ -89,7 +89,11 @@ class LoginController extends Controller
             $user = auth()->user();
             $token = auth()->user()->createToken('Personal Access Token')->accessToken;
             $user['token'] = $token;
-            $user['image_url'] = env('APP_IMAGE_URL').'company';
+            if($user->image){
+                $user['image'] = env('APP_IMAGE_URL').'user/'.$user->image;
+            }else{
+                $user['image'] = $user->image;
+            }
             $user['companies'] = $companies;
             return response()->json(['status' => true, 'message' => 'Login Successfully', 'data' => $user], 200);
         }
