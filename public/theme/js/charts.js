@@ -529,77 +529,77 @@ Apex.chart = {
 })();
 
 // chart sales figures (page circle overview)
-(function () {
-  var options = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    series: [{
-      name: 'Users',
-      data: [442, 380, 275, 430, 509, 463, 407, 533, 470, 412, 343, 472]
-    }, {
-      name: 'Videos',
-      data: [375, 370, 435, 570, 425, 595, 631, 580, 401, 467, 402, 380]
-    }],
-    colors: [blue, green],
-    chart: {
-      height: '100%',
-      type: 'line',
-      toolbar: {
-        show: false
-      }
-    },
-    grid: {
-      borderColor: borderColor,
-      strokeDashArray: 0,
-      xaxis: {
-        lines: {
-          show: true
-        }
-      },
-      yaxis: {
-        lines: {
-          show: false
-        }
-      },
-      padding: {
-        top: 0,
-        left: 15,
-        right: 0,
-        bottom: 0
-      }
-    },
-    stroke: {
-      width: 3,
-      curve: 'smooth'
-    },
-    xaxis: {
-      axisBorder: {
-        show: false
-      },
-      axisTicks: {
-        show: false
-      },
-      tooltip: {
-        enabled: false
-      }
-    },
-    legend: {
-      show: false
-    },
-    dataLabels: {
-      enabled: false
-    },
-    tooltip: {
-      x: {
-        show: false
-      }
-    }
-  };
+// (function () {
+//   var options = {
+//     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+//     series: [{
+//       name: 'Users',
+//       data: [442, 380, 275, 430, 509, 463, 407, 533, 470, 412, 343, 472]
+//     }, {
+//       name: 'Videos',
+//       data: [375, 370, 435, 570, 425, 595, 631, 580, 401, 467, 402, 380]
+//     }],
+//     colors: [blue, green],
+//     chart: {
+//       height: '100%',
+//       type: 'line',
+//       toolbar: {
+//         show: false
+//       }
+//     },
+//     grid: {
+//       borderColor: borderColor,
+//       strokeDashArray: 0,
+//       xaxis: {
+//         lines: {
+//           show: true
+//         }
+//       },
+//       yaxis: {
+//         lines: {
+//           show: false
+//         }
+//       },
+//       padding: {
+//         top: 0,
+//         left: 15,
+//         right: 0,
+//         bottom: 0
+//       }
+//     },
+//     stroke: {
+//       width: 3,
+//       curve: 'smooth'
+//     },
+//     xaxis: {
+//       axisBorder: {
+//         show: false
+//       },
+//       axisTicks: {
+//         show: false
+//       },
+//       tooltip: {
+//         enabled: false
+//       }
+//     },
+//     legend: {
+//       show: false
+//     },
+//     dataLabels: {
+//       enabled: false
+//     },
+//     tooltip: {
+//       x: {
+//         show: false
+//       }
+//     }
+//   };
 
-  var chart = document.querySelector('#chart-sales-figures');
-  if (chart != null) {
-    new ApexCharts(chart, options).render();
-  }
-})();
+//   var chart = document.querySelector('#chart-sales-figures');
+//   if (chart != null) {
+//     new ApexCharts(chart, options).render();
+//   }
+// })();
 
 // chart hit rate (page circle overview)
 (function () {

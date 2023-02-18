@@ -11,7 +11,7 @@
                     <div class="overview__title">Companies</div>
                 </div>
                 <div class="overview__flex">
-                    <div class="overview__number">113</div>
+                    <div class="overview__number">{{$companies}}</div>
                     <div class="overview__status overview__status_up">
                       <svg class="icon icon-arrow-top">
                             <use xlink:href="img/sprite.svg#icon-arrow-top"></use>
@@ -38,7 +38,7 @@
                     <div class="overview__title">Videos</div>
                 </div>
                 <div class="overview__flex">
-                    <div class="overview__number">134</div>
+                    <div class="overview__number">{{$videos}}</div>
                     <div class="overview__status overview__status_up">
                       <svg class="icon icon-arrow-top">
                             <use xlink:href="img/sprite.svg#icon-arrow-top"></use>
@@ -85,77 +85,38 @@
                                             Off Notifications from Janeta</a></div>
                                 </div>
                             </div>
-                            <div class="statistics__group">
-                                <div class="statistics__item">
-                                    <div class="ava"><img class="ava__pic" src="img/ava-10.png" alt=""></div>
-                                    <div class="statistics__details">
-                                        <div class="statistics__man">Isabella Moran</div>
-                                        <div class="statistics__id">Customer ID#00222</div>
-                                    </div>
-                                    <div class="statistics__actions"><button class="statistics__action"><svg
-                                                class="icon icon-email">
-                                                <use xlink:href="img/sprite.svg#icon-email"></use>
-                                            </svg></button><button class="statistics__action"><svg class="icon icon-block">
-                                                <use xlink:href="img/sprite.svg#icon-block"></use>
-                                            </svg></button></div>
+                                <div class="statistics__group">
+                                    @foreach ($latest_users as $item)
+                                        <div class="statistics__item">
+                                            <div class="ava">
+                                                @if ($item->image)
+                                                    <img class="ava__pic" src="{{ $image_url . '/' . $item->image }}"
+                                                        alt="">
+                                                @else
+                                                    <img class="ava__pic" src="{{ asset('theme/img/user.jpeg') }}"
+                                                        alt="">
+                                                @endif
+    
+                                            </div>
+                                            <div class="statistics__details">
+                                                <div class="statistics__man">{{ $item->first_name . ' ' . $item->last_name }}
+                                                </div>
+                                                <div class="statistics__id">Customer ID#{{ $item->id }}</div>
+                                            </div>
+                                            <div class="statistics__actions">
+                                                <button class="statistics__action"><svg class="icon icon-email">
+                                                        <use xlink:href="img/sprite.svg#icon-email"></use>
+                                                    </svg></button><button class="statistics__action">
+                                                    <svg class="icon icon-block">
+                                                        <use xlink:href="img/sprite.svg#icon-block"></use>
+                                                    </svg></button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+    
                                 </div>
-                                <div class="statistics__item">
-                                    <div class="ava" style="background-color: #FF9AD5;">WC</div>
-                                    <div class="statistics__details">
-                                        <div class="statistics__man">Warren Craig</div>
-                                        <div class="statistics__id">Customer ID#00221</div>
-                                    </div>
-                                    <div class="statistics__actions"><button class="statistics__action"><svg
-                                                class="icon icon-email">
-                                                <use xlink:href="img/sprite.svg#icon-email"></use>
-                                            </svg></button><button class="statistics__action"><svg class="icon icon-block">
-                                                <use xlink:href="img/sprite.svg#icon-block"></use>
-                                            </svg></button></div>
-                                </div>
-                                <div class="statistics__item">
-                                    <div class="ava"><img class="ava__pic" src="img/ava-11.png" alt=""></div>
-                                    <div class="statistics__details">
-                                        <div class="statistics__man">Andrew Ellis</div>
-                                        <div class="statistics__id">Customer ID#00220</div>
-                                    </div>
-                                    <div class="statistics__actions"><button class="statistics__action"><svg
-                                                class="icon icon-email">
-                                                <use xlink:href="img/sprite.svg#icon-email"></use>
-                                            </svg></button><button class="statistics__action"><svg class="icon icon-block">
-                                                <use xlink:href="img/sprite.svg#icon-block"></use>
-                                            </svg></button></div>
-                                </div>
-                                <div class="statistics__item">
-                                    <div class="ava"><img class="ava__pic" src="img/ava-9.png" alt=""></div>
-                                    <div class="statistics__details">
-                                        <div class="statistics__man">Sam Conner</div>
-                                        <div class="statistics__id">Customer ID#00219</div>
-                                    </div>
-                                    <div class="statistics__actions"><button class="statistics__action"><svg
-                                                class="icon icon-email">
-                                                <use xlink:href="img/sprite.svg#icon-email"></use>
-                                            </svg></button><button class="statistics__action"><svg
-                                                class="icon icon-block">
-                                                <use xlink:href="img/sprite.svg#icon-block"></use>
-                                            </svg></button></div>
-                                </div>
-                                <div class="statistics__item">
-                                    <div class="ava" style="background-color: #50B5FF;">SC</div>
-                                    <div class="statistics__details">
-                                        <div class="statistics__man">Sam Conner</div>
-                                        <div class="statistics__id">Customer ID#00218</div>
-                                    </div>
-                                    <div class="statistics__actions"><button class="statistics__action"><svg
-                                                class="icon icon-email">
-                                                <use xlink:href="img/sprite.svg#icon-email"></use>
-                                            </svg></button><button class="statistics__action"><svg
-                                                class="icon icon-block">
-                                                <use xlink:href="img/sprite.svg#icon-block"></use>
-                                            </svg></button></div>
-                                </div>
-                            </div>
                         </div>
-                        <div class="statistics__foot"><a class="statistics__view" href="#">View more Customers</a>
+                        <div class="statistics__foot"><a class="statistics__view" href="{{url('admin/users')}}">View more Customers</a>
                         </div>
                     </div>
                 </div>
@@ -206,4 +167,7 @@
         </div>
 
     </div>
+@stop
+@section('script')
+@include('admin.dashboard.partial.chart')
 @stop

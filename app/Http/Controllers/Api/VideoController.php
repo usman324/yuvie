@@ -103,8 +103,11 @@ class VideoController extends Controller
         //         $records[] = $record;
         //     }
         // }
+        $users = User::where('is_admin', true)->get();
         return new CompanyVideoCollection(
-            Video::where('company_id', $request->company_id)->get(),
+            Video::where('company_id', $request->company_id)
+            ->whereIn('user_id', $users->pluck('id'))
+            ->get(),
         );
     }
     public function uploadVideo(Request $request)

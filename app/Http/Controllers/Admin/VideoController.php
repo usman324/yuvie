@@ -72,6 +72,11 @@ class VideoController extends Controller
         $record = Video::find($id);
         return view(self::VIEW . '.edit', get_defined_vars());
     }
+    public function show($id)
+    {
+        $record = Video::find($id);
+        return view(self::VIEW . '.show', get_defined_vars());
+    }
     public function update(Request $request, $id)
     {
         ini_set('memory_limit', '1000M');

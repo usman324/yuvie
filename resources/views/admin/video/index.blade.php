@@ -160,6 +160,10 @@
                                             class='toggle' data-target='editClass'><svg class="icon icon-arrow-prev">
                                                 <use xlink:href="{{ asset('theme/img/sprite.svg#icon-trash') }}"></use>
                                             </svg></a>
+                                            {{-- <a href='{{ $url . '/' . $item->id  }}' class='toggle'
+                                                data-target='editClass'><svg class="icon icon-arrow-prev">
+                                                    <use xlink:href="{{ asset('theme/img/sprite.svg#icon-eye') }}"></use>
+                                                </svg></a> --}}
                                     </td>
                                 </tr>
 

@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 
 Route::get('/', [DashboardController::class, 'login']);
+Route::view('/detail', 'detail');
 Route::get('admin/login', [DashboardController::class, 'login']);
 Route::post('admin/login', [LoginController::class, 'adminlogin']);
 Route::middleware('prevent-back-history','super_admin')->prefix('admin')->group(function () {
@@ -47,6 +48,7 @@ Route::middleware('prevent-back-history','super_admin')->prefix('admin')->group(
     Route::get('videos/create', [VideoController::class, 'create']);
     Route::post('videos', [VideoController::class, 'store']);
     Route::get('videos/{id}/edit', [VideoController::class, 'edit']);
+    Route::get('videos/{id}', [VideoController::class, 'show']);
     Route::post('videos/{id}', [VideoController::class, 'update']);
     Route::delete('videos/{id}', [VideoController::class, 'destroy']);
     Route::post('video_approved/{id}', [VideoController::class, 'videoApproved']);
