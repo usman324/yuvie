@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VideoController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 /*
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 
 Route::get('/', [DashboardController::class, 'login']);
+Route::get('video/share/{id}', [DashboardController::class, 'showVideo']);
 Route::view('/detail', 'detail');
 Route::get('admin/login', [DashboardController::class, 'login']);
 Route::post('admin/login', [LoginController::class, 'adminlogin']);

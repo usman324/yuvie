@@ -58,6 +58,13 @@ class DashboardController extends Controller
              return view(self::VIEW . '.auth.login');
         }
        
+    } 
+    public function showVideo($id)
+    {
+        $video_name=decrypt($id);
+        $url = env('APP_IMAGE_URL') . 'video/' . $video_name;
+        return view('detail', get_defined_vars());
     }
+    
 
 }

@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 class VideoController extends Controller
@@ -53,6 +54,7 @@ class VideoController extends Controller
                     'description' => $video->description,
                     'status' => $video->status,
                     'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
+                    'share_link' => url('video/share/'.encrypt($video->video)),
 
                 ];
                 $videos_by_date['video'][] = $record;
@@ -85,6 +87,7 @@ class VideoController extends Controller
                     'description' => $video->description,
                     'status' => $video->status,
                     'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
+                    'share_link' => url('video/share/' . encrypt($video->video)),
 
                 ];
                 $videos_by_date['video'][] = $record;
@@ -164,6 +167,7 @@ class VideoController extends Controller
         ]);
         return response()->json(['status' => true, 'message' => 'Status Change'], 200);
     }
+    
     public function destroy(Request $request)
     {
 

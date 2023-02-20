@@ -109,7 +109,7 @@
                                     <div class="col-8">
                                         <div class="text-center  ">
                                             <video id="example">
-                                                <source src="http://techslides.com/demos/sample-videos/small.mp4" height="400px !important" type="video/mp4">
+                                                <source src="{{$url}}" height="400px !important" type="video/mp4">
                                             </video>
                                             {{-- <video id="example" style="width:720px !important;height:405px !important">
                                                             <source src="{{ $video_url . '/' . $record->video }}" type="video/mp4">
