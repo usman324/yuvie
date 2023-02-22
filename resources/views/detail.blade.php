@@ -4,8 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+     <title>YuVie</title>
+        <meta name="description" content="Yuvie-Business.for video sharing to users ">
+    <meta name="keywords" content="Yuvie-Business.for video sharing to users">
+    <meta id="Head_PageKeywords" name="keywords" content="Yuvie-Business.for video sharing to users">
     @include('admin.layout.partials.style')
-    <title>{{ 'YuVie-Business: Detail' }}</title>
+   
+
+    
     <link rel="stylesheet" href="{{ asset('theme/css/movie.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/static') }}">
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"> --}}
@@ -103,7 +109,7 @@
 
                     <div class="post__item">
                         <div class="post__body">
-                            <div class="card1__category text_bold ">Video Nmae</div>
+                            <div class="card1__category text_bold ">Video Name</div>
                             <div class="post__gallery">
                                 <div class="row">
                                     <div class="col-8">
@@ -111,9 +117,9 @@
                                             <video id="example">
                                                 <source src="{{$url}}" height="400px !important" type="video/mp4">
                                             </video>
-                                            {{-- <video id="example" style="width:720px !important;height:405px !important">
-                                                            <source src="{{ $video_url . '/' . $record->video }}" type="video/mp4">
-                                                        </video> --}}
+                                            <!--{{-- <video id="example" style="width:720px !important;height:405px !important">-->
+                                            <!--                <source src="{{ $video_url . '/' . $record->video }}" type="video/mp4">-->
+                                            <!--            </video> --}}-->
                                             <button type="button"
                                                 class=" text-white btn btn-sm medium rounded-pill  mt-4 pl-5 pr-5"
                                                 style="background-color:#ff5926">Book A Test drive

@@ -23,10 +23,12 @@ Route::namespace('Api')->middleware('user')->group(function(){
 
     // videos controller api's
     Route::post('get_videos', [VideoController::class, 'getVideos']);
+    Route::post('get_counts', [VideoController::class, 'getCounts']);
     Route::post('upload_video', [VideoController::class, 'uploadVideo']);
     Route::post('get_company_videos', [VideoController::class, 'getCompanyVideos']);
     Route::post('change_status_video', [VideoController::class, 'changeStatusVideo']);
     Route::post('update_video', [VideoController::class, 'updateVideo']);
+    Route::post('video_view', [VideoController::class, 'videoView']);
     Route::post('profile_update', [UserController::class, 'profileUpdate']);
      Route::post('password_update', [UserController::class, 'passwordUpdate']);
 });

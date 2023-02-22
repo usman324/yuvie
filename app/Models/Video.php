@@ -26,4 +26,15 @@ class Video extends Model
         
         return $this->belongsTo(Company::class, 'company_id');
     }
+    public function videoView(){
+
+        return $this->hasMany(VideoView::class);
+    }
+    public function totalCounts(){
+        $total=0;
+        foreach($this->videoView as $data){
+            $total += $data->total_counts;
+        }
+        return $total;
+    }
 }

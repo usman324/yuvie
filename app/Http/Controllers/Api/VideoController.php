@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CompanyVideoCollection;
 use App\Http\Resources\VideoCollection;
+use App\Models\Company;
 use App\Models\User;
 use App\Models\Video;
+use App\Models\VideoShare;
+use App\Models\VideoView;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -22,8 +25,8 @@ class VideoController extends Controller
         $user = User::find($request->user_id);
         $videos = Video::where('company_id', $user->company_id)
             ->where('user_id', '!=', $user->id)->where('status', 'approved')->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
-            return Carbon::parse($date->created_at)->format('D d M');
-        });
+                return Carbon::parse($date->created_at)->format('D d M');
+            });
         $user_videos = Video::where('user_id', $user->id)->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
             return Carbon::parse($date->created_at)->format('D d M');
         });
@@ -54,7 +57,7 @@ class VideoController extends Controller
                     'description' => $video->description,
                     'status' => $video->status,
                     'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
-                    'share_link' => url('video/share/'.encrypt($video->video)),
+                    'share_link' => url('video/share/' . ($video->video)),
 
                 ];
                 $videos_by_date['video'][] = $record;
@@ -95,7 +98,7 @@ class VideoController extends Controller
 
             $user_records[] = $videos_by_date;
         }
-        return response()->json(['status' => true, 'message' => 'Record Found', 'data' => $records,'userData'=>$user_records], 200);
+        return response()->json(['status' => true, 'message' => 'Record Found', 'data' => $records, 'userData' => $user_records], 200);
     }
     public function getCompanyVideos(Request $request)
     {
@@ -109,8 +112,8 @@ class VideoController extends Controller
         $users = User::where('is_admin', true)->get();
         return new CompanyVideoCollection(
             Video::where('company_id', $request->company_id)
-            ->whereIn('user_id', $users->pluck('id'))
-            ->get(),
+                ->whereIn('user_id', $users->pluck('id'))
+                ->get(),
         );
     }
     public function uploadVideo(Request $request)
@@ -157,6 +160,22 @@ class VideoController extends Controller
         ]);
         return response()->json(['status' => true, 'message' => 'Video Update Successfully', 'data' => $record], 200);
     }
+    public function videoView(Request $request)
+    {
+        $record = VideoView::where('video_id', $request->video_id)->first();
+        if (isset($record)) {
+            $record->update([
+                'total_counts' => $record->total_counts + 1,
+            ]);
+        } else {
+            VideoView::create([
+                'video_id' => $request->video_id,
+                'total_counts' => 1,
+            ]);
+        }
+
+        return response()->json(['status' => true, 'message' => 'Video View Add Successfully'], 200);
+    }
 
     public function changeStatusVideo(Request $request)
     {
@@ -167,12 +186,49 @@ class VideoController extends Controller
         ]);
         return response()->json(['status' => true, 'message' => 'Status Change'], 200);
     }
-    
+
     public function destroy(Request $request)
     {
 
         $record = Video::find($request->video_id);
         $record->delete();
         return response()->json(['status' => true, 'message' => 'Video Delete Successfully'], 200);
+    }
+    public function getCounts(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $company_users = User::where('company_id', $request->company_id)
+            ->where('id', '!=', $request->user_id)->get();
+        $company_records = [];
+        foreach ($company_users as $company_user) {
+            $company_user_video_total = 0;
+            foreach ($company_user->videos as $company_user_video) {
+                $company_user_video_total = $company_user_video->totalCounts();
+            }
+            $company_record = [
+                'name' => $company_user->first_name,
+                'image' =>$company_user->image? env('APP_IMAGE_URL') . 'user/' . $company_user->image:$company_user->image,
+                'videos' => $company_user->videos->count(),
+                'pending' => $company_user->videos->where('status', 'pending')->count(),
+                'views' => $company_user_video_total,
+                'shares' => 0,
+            ];
+            $company_records[] = $company_record;
+        }
+
+        $user_video_total = 0;
+        foreach ($user->videos as $user_video) {
+            $user_video_total += $user_video->totalCounts();
+        }
+        $data = [
+            'name' => $user->first_name,
+            'videos' => $user->videos->count(),
+            'pending' => $user->videos->where('status', 'pending')->count(),
+            'views' => $user_video_total,
+            'shares' => 0,
+            
+        ];
+        $records[] = ['user' => $data, 'company' => $company_records];
+        return response()->json(['status' => true, 'message' => 'Count Record', 'data' => $records], 200);
     }
 }
