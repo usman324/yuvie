@@ -92,7 +92,7 @@ class LoginController extends Controller
             if($user->image){
                 $user['image'] = env('APP_IMAGE_URL').'user/'.$user->image;
             }else{
-                $user['image'] = $user->image;
+                $user['image'] = asset('theme/img/avatar.png');
             }
             $user['companies'] = $companies;
             return response()->json(['status' => true, 'message' => 'Login Successfully', 'data' => $user], 200);

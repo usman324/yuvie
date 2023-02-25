@@ -21,6 +21,7 @@ class CreateVideosTable extends Migration
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->string('thumbnail_image')->nullable();
+            $table->enum('type', ['landscape', 'portrait'])->nullable();
             $table->enum('status', ['pending', 'approved', 'archive'])->default('pending');
             $table->timestamps();
             $table->softDeletes();

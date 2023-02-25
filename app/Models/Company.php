@@ -17,6 +17,7 @@ class Company extends Model
         'email',
         'password',
         'zip',
+        'city_name',
         'description',
     ];
     public function companyDetail(){

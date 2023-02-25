@@ -15,6 +15,7 @@ class Video extends Model
         'title',
         'description',
         'status',
+        'type',
         'thumbnail_image',
     ];
 
@@ -30,9 +31,20 @@ class Video extends Model
 
         return $this->hasMany(VideoView::class);
     }
+    public function videoShare(){
+
+        return $this->hasMany(VideoShare::class);
+    }
     public function totalCounts(){
         $total=0;
         foreach($this->videoView as $data){
+            $total += $data->total_counts;
+        }
+        return $total;
+    }
+    public function totalShareCounts(){
+        $total=0;
+        foreach($this->videoShare as $data){
             $total += $data->total_counts;
         }
         return $total;

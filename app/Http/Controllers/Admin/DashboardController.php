@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\Video;
+use App\Models\VideoShare;
+use App\Models\VideoView;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,8 +63,20 @@ class DashboardController extends Controller
     } 
     public function showVideo($id)
     {
-        $video_name=decrypt($id);
-        $url = env('APP_IMAGE_URL') . 'video/' . $video_name;
+        $video_id = base64_decode($id);
+        $record=Video::find($video_id);
+        
+        $url = env('APP_IMAGE_URL') . 'video/' . $record->video;
+        $video_view = VideoView::where('video_id', $record->id)->first();
+        if (isset($video_view)) {
+            $video_view->update(['total_counts' => $video_view->total_counts + 1,
+            ]);
+        } else {
+            VideoView::create([
+                'video_id' => $record->id,
+                'total_counts' => 1,
+            ]);
+        }
         return view('detail', get_defined_vars());
     }
     

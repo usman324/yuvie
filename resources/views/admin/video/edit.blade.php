@@ -25,7 +25,7 @@
                             <form id="add-video" enctype="multipart/form-data">
                                 <div class="tab-pane active" id="videos" role="tabpanel">
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <div class="form-group">
                                                 <label for="title">Comapny
                                                 </label>
@@ -39,7 +39,18 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <label for="title">Type
+                                                </label>
+                                                    <select name="type" class="form-control">
+                                                        <option value="">select type </option>
+                                                        <option value="landscape"  @if($record->type == 'landscape') selected @endif>Landscape</option>
+                                                        <option value="portrait" @if($record->type == 'portrait') selected @endif>Portrait</option>
+                                                    </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
                                             <div class="form-group">
                                                 <label for="title">Title</label>
                                                 <input type="text" class=" form-control " name="title"

@@ -65,7 +65,21 @@
 
                                         </div>
                                         <div class="row mt-2">
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label>City</label>
+                                                    <input type="text" name="city_name" class="form-control " value="{{ $record->city_name }}"
+                                                        placeholder="City Name" required>
+                                                        {{-- <select name="city_id" id="cityDetail" class="form-control select2">
+                                                            @foreach ($cities as $city)
+                                                                <option value="{{ $city->id }}"
+                                                                    @if ($city->id == $record->city_id) selected @endif>
+                                                                    {{ $city->name }}</option>
+                                                            @endforeach
+                                                        </select> --}}
 
+                                                </div>
+                                            </div>
                                             <div class="col-4">
                                                 <div class="form-group">
                                                     <label>State</label>
@@ -77,19 +91,6 @@
                                                             <option value="{{ $item->id }}"
                                                                 @if ($item->id == $record->state_id) selected @endif>
                                                                 {{ $item->name }}</option>
-                                                        @endforeach
-                                                    </select>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <label>City</label>
-                                                    <select name="city_id" id="cityDetail" class="form-control select2">
-                                                        @foreach ($cities as $city)
-                                                            <option value="{{ $city->id }}"
-                                                                @if ($city->id == $record->city_id) selected @endif>
-                                                                {{ $city->name }}</option>
                                                         @endforeach
                                                     </select>
 

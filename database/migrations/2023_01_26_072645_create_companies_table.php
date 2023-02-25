@@ -16,10 +16,11 @@ class CreateCompaniesTable extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('state_id');
-            $table->unsignedBigInteger('city_id');
+            $table->unsignedBigInteger('city_id')->nullable();
             $table->string('name');
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('city_name')->nullable();
             $table->string('email');
             $table->string('password');
             $table->string('zip');

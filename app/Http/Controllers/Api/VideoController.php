@@ -57,7 +57,7 @@ class VideoController extends Controller
                     'description' => $video->description,
                     'status' => $video->status,
                     'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
-                    'share_link' => url('video/share/' . ($video->video)),
+                    'share_link' => url('video/share/' . base64_encode($video->id)),
 
                 ];
                 $videos_by_date['video'][] = $record;
@@ -90,7 +90,7 @@ class VideoController extends Controller
                     'description' => $video->description,
                     'status' => $video->status,
                     'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
-                    'share_link' => url('video/share/' . encrypt($video->video)),
+                    'share_link' => url('video/share/' . base64_encode($video->id)),
 
                 ];
                 $videos_by_date['video'][] = $record;
@@ -123,6 +123,7 @@ class VideoController extends Controller
             'user_id' => 'required',
             'video_file' => 'required',
             'title' => 'required',
+            'type' => 'required',
             'description' => 'required',
         ]);
         $video = $request->video_file;
@@ -138,6 +139,7 @@ class VideoController extends Controller
             'user_id' => $request->user_id,
             'company_id' => $request->company_id,
             'title' => $request->title,
+            'type' => $request->type,
             'description' => $request->description,
             'video' => $video_name ? $video_name : null,
         ]);
@@ -162,13 +164,13 @@ class VideoController extends Controller
     }
     public function videoView(Request $request)
     {
-        $record = VideoView::where('video_id', $request->video_id)->first();
+        $record = VideoShare::where('video_id', $request->video_id)->first();
         if (isset($record)) {
             $record->update([
                 'total_counts' => $record->total_counts + 1,
             ]);
         } else {
-            VideoView::create([
+            VideoShare::create([
                 'video_id' => $request->video_id,
                 'total_counts' => 1,
             ]);
@@ -201,32 +203,43 @@ class VideoController extends Controller
             ->where('id', '!=', $request->user_id)->get();
         $company_records = [];
         foreach ($company_users as $company_user) {
-            $company_user_video_total = 0;
-            foreach ($company_user->videos as $company_user_video) {
-                $company_user_video_total = $company_user_video->totalCounts();
+            if ($company_user->getRoleNames()->first() == 'Mobile User') {
+                $company_user_video_total = 0;
+                $company_user_share_total = 0;
+                foreach ($company_user->videos as $company_user_video) {
+                    $company_user_video_total = $company_user_video->totalCounts();
+                }
+                foreach ($company_user->videos as $company_user_share_video) {
+
+                    $company_user_share_total += $company_user_share_video->totalShareCounts();
+                }
+                $company_record = [
+                    'name' => $company_user->first_name,
+                    'image' => $company_user->image ? env('APP_IMAGE_URL') . 'user/' . $company_user->image : asset('theme/img/avatar.png'),
+                    'videos' => $company_user->videos->count(),
+                    'pending' => $company_user->videos->where('status', 'pending')->count(),
+                    'views' => $company_user_video_total,
+                    'shares' => $company_user_share_total,
+                ];
+                $company_records[] = $company_record;
             }
-            $company_record = [
-                'name' => $company_user->first_name,
-                'image' =>$company_user->image? env('APP_IMAGE_URL') . 'user/' . $company_user->image:$company_user->image,
-                'videos' => $company_user->videos->count(),
-                'pending' => $company_user->videos->where('status', 'pending')->count(),
-                'views' => $company_user_video_total,
-                'shares' => 0,
-            ];
-            $company_records[] = $company_record;
         }
 
         $user_video_total = 0;
+        $user_share_total = 0;
         foreach ($user->videos as $user_video) {
             $user_video_total += $user_video->totalCounts();
+        }
+        foreach ($user->videos as $user_share_video) {
+            $user_share_total += $user_share_video->totalShareCounts();
         }
         $data = [
             'name' => $user->first_name,
             'videos' => $user->videos->count(),
             'pending' => $user->videos->where('status', 'pending')->count(),
             'views' => $user_video_total,
-            'shares' => 0,
-            
+            'shares' => $user_share_total,
+
         ];
         $records[] = ['user' => $data, 'company' => $company_records];
         return response()->json(['status' => true, 'message' => 'Count Record', 'data' => $records], 200);

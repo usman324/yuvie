@@ -106,6 +106,7 @@ class VideoController extends Controller
             'company_id' => $request->company_id ? $request->company_id : $record->company_id,
             'video' => $video_name ? $video_name : $record->video,
             'title' => $request->title?$request->title:$request->title,
+            'type' => $request->type,
             'description' => $request->description ? $request->description : $request->description,
             // 'thumbnail_image' => $thumbnail_image_name ? $thumbnail_image_name : $record->thumbnail_image,
         ]);

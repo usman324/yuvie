@@ -76,8 +76,8 @@
                                 <td>{{ $item->first_name }}</td>
                                 <td>{{ $item->last_name }}</td>
                                 <td>{{ $item->email }}</td>
-                                <td>{{ $item->state->name }}</td>
-                                <td>{{ $item->city->name }}</td>
+                                <td>{{ $item->state?->name }}</td>
+                                <td>{{ $item->city_name }}</td>
                                 <td>
                                     <a href='{{ $url . '/' . $item->id . '/edit' }}' class='toggle'
                                         data-target='editClass'><svg class="icon icon-arrow-prev">
