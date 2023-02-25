@@ -66,42 +66,6 @@
                                         <div class="row mt-2">
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label>City</label>
-                                                    <input type="text" name="city_name" class="form-control "
-                                                        placeholder="City Name" required>
-                                                    {{-- <select name="city_id" id="cityDetail" class="form-control select2">
-                                                        <option value="" selected>--- first select state --- </option>
-                                                    </select> --}}
-
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <label>State</label>
-                                                    <select name="state_id" {{-- onchange="getCities(event,'{{ url('admin/get-cities') }}')" --}}
-                                                        class="form-control select2" required>
-                                                        <option value="" selected>--- select state ---</option>
-                                                        @foreach ($states as $item)
-                                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                        @endforeach
-                                                    </select>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <label for="title">Zip</label>
-                                                    <input type="text" name="zip" class="form-control "
-                                                        placeholder="Zip" required>
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="row mt-2">
-                                            <div class="col-4">
-                                                <div class="form-group">
                                                     <label for="title">Email</label>
                                                     <input type="email" name="email" class="form-control "
                                                         placeholder="Email" required>
@@ -123,6 +87,7 @@
                                             </div>
 
                                         </div>
+                                       
                                         <div class="row mt-2">
                                             <div class="col-12">
                                                 <div class="form-group">
@@ -130,7 +95,6 @@
                                                     <textarea name="description" class="form-control" id="" cols="25" rows="5"></textarea>
                                                 </div>
                                             </div>
-
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-12">
@@ -140,17 +104,69 @@
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="form-row">
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <label for="short_description">Address</label>
+                                                                    <textarea name="address" class="form-control" id="" cols="25" rows="5"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                        <div class="form-row">
+                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label>City</label>
+                                                                    <input type="text" name="city_name"
+                                                                        class="form-control " placeholder="City Name"
+                                                                        required>
+                                                                    {{-- <select name="city_id" id="cityDetail" class="form-control select2">
+                                                                        <option value="" selected>--- first select state --- </option>
+                                                                    </select> --}}
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label>State</label>
+                                                                    <select name="state_id" {{-- onchange="getCities(event,'{{ url('admin/get-cities') }}')" --}}
+                                                                        class="form-control select2" required>
+                                                                        <option value="" selected>--- select state
+                                                                            ---</option>
+                                                                        @foreach ($states as $item)
+                                                                            <option value="{{ $item->id }}">
+                                                                                {{ $item->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label for="title">Zip</label>
+                                                                    <input type="text" name="zip"
+                                                                        class="form-control " placeholder="Zip" required>
+
+                                                                </div>
+                                                            </div>
                                                             <div class="col-lg-4 col-md-4 form-group col-sm-12">
                                                                 <label class="text-muted"
-                                                                    for="company_location_state">Location if
-                                                                    different to
-                                                                    company</label>
-                                                                <select class="form-control" id="company_location_state"
-                                                                    name="company_location_state select2">
-                                                                    <option value="">Select</option>
-                                                                    <option value="Alabama">Alabama</option>
-                                                                    <option value="Wyoming">Wyoming</option>
-                                                                </select>
+                                                                    for="phone">Phone</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="phone"
+                                                                    name="phone" placeholder="Title">
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
+                                                                <label class="text-muted" for="latitude">Latitude</label>
+                                                                <input type="text" required="" class="form-control"
+                                                                    id="latitude" name="latitude"
+                                                                    placeholder="Latitude">
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
+                                                                <label class="text-muted"
+                                                                    for="longitude">Longitude</label>
+                                                                <input type="text" required="" class="form-control"
+                                                                    id="longitude" name="longitude"
+                                                                    placeholder="Longitude">
                                                             </div>
                                                             <div class="col-lg-4 col-md-4 form-group col-sm-12">
                                                                 <label class="text-muted"
@@ -174,19 +190,7 @@
                                                                     placeholder="Group">
                                                             </div>
 
-                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
-                                                                <label class="text-muted" for="latitude">Latitude</label>
-                                                                <input type="text" required="" class="form-control"
-                                                                    id="latitude" name="latitude"
-                                                                    placeholder="Latitude">
-                                                            </div>
-                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
-                                                                <label class="text-muted"
-                                                                    for="longitude">Longitude</label>
-                                                                <input type="text" required="" class="form-control"
-                                                                    id="longitude" name="longitude"
-                                                                    placeholder="Longitude">
-                                                            </div>
+
                                                         </div>
                                                     </div>
                                                 </div>

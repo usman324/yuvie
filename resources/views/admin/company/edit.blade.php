@@ -65,46 +65,7 @@
 
                                         </div>
                                         <div class="row mt-2">
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <label>City</label>
-                                                    <input type="text" name="city_name" class="form-control " value="{{ $record->city_name }}"
-                                                        placeholder="City Name" required>
-                                                        {{-- <select name="city_id" id="cityDetail" class="form-control select2">
-                                                            @foreach ($cities as $city)
-                                                                <option value="{{ $city->id }}"
-                                                                    @if ($city->id == $record->city_id) selected @endif>
-                                                                    {{ $city->name }}</option>
-                                                            @endforeach
-                                                        </select> --}}
-
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <label>State</label>
-                                                    <select name="state_id"
-                                                        onchange="getCities(event,'{{ url('admin/get-cities') }}')"
-                                                        class="form-control select2" required>
-                                                        <option value="" selected>--- select state ---</option>
-                                                        @foreach ($states as $item)
-                                                            <option value="{{ $item->id }}"
-                                                                @if ($item->id == $record->state_id) selected @endif>
-                                                                {{ $item->name }}</option>
-                                                        @endforeach
-                                                    </select>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="form-group">
-                                                    <label for="title">Zip</label>
-                                                    <input type="text" name="zip" value="{{ $record->zip }}"
-                                                        class="form-control " placeholder="Zip" required>
-
-                                                </div>
-                                            </div>
-
+                                           
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-4">
@@ -147,21 +108,75 @@
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="form-row">
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <label for="short_description">Address</label>
+                                                                    <textarea name="address" class="form-control" id="" cols="25" rows="5">{{ $record?->companyDetail->address }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label>City</label>
+                                                                    <input type="text" name="city_name" class="form-control "
+                                                                        value="{{ $record->city_name }}" placeholder="City Name" required>
+                                                                    {{-- <select name="city_id" id="cityDetail" class="form-control select2">
+                                                                            @foreach ($cities as $city)
+                                                                                <option value="{{ $city->id }}"
+                                                                                    @if ($city->id == $record->city_id) selected @endif>
+                                                                                    {{ $city->name }}</option>
+                                                                            @endforeach
+                                                                        </select> --}}
+                
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label>State</label>
+                                                                    <select name="state_id"
+                                                                        onchange="getCities(event,'{{ url('admin/get-cities') }}')"
+                                                                        class="form-control select2" required>
+                                                                        <option value="" selected>--- select state ---</option>
+                                                                        @foreach ($states as $item)
+                                                                            <option value="{{ $item->id }}"
+                                                                                @if ($item->id == $record->state_id) selected @endif>
+                                                                                {{ $item->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label for="title">Zip</label>
+                                                                    <input type="text" name="zip" value="{{ $record->zip }}"
+                                                                        class="form-control " placeholder="Zip" required>
+                
+                                                                </div>
+                                                            </div>
+                
+                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
+                                                                <label class="text-muted" for="Phone">Phone</label>
+                                                                <input type="text" required=""
+                                                                    value="{{ $record?->companyDetail->phone }}"
+                                                                    class="form-control" id="Phone" name="phone"
+                                                                    placeholder="Phone">
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
+                                                                <label class="text-muted" for="latitude">Latitude</label>
+                                                                <input type="text" required=""
+                                                                    value="{{ $record?->companyDetail->latitude }}"
+                                                                    class="form-control" id="latitude" name="latitude"
+                                                                    placeholder="Latitude">
+                                                            </div>
                                                             <div class="col-lg-4 col-md-4 form-group col-sm-12">
                                                                 <label class="text-muted"
-                                                                    for="company_location_state">Location if
-                                                                    different to
-                                                                    company</label>
-                                                                <select class="form-control" id="company_location_state"
-                                                                    name="company_location_state select2">
-                                                                    <option value="">Select</option>
-                                                                    <option value="Alabama"
-                                                                        @if ($record?->companyDetail->company_location_state == 'Alabama') selected @endif>
-                                                                        Alabama</option>
-                                                                    <option value="Wyoming"
-                                                                        @if ($record?->companyDetail->company_location_state == 'Wyoming') selected @endif>
-                                                                        Wyoming</option>
-                                                                </select>
+                                                                    for="longitude">Longitude</label>
+                                                                <input type="text" required=""
+                                                                    value="{{ $record?->companyDetail->longitude }}"
+                                                                    class="form-control" id="longitude" name="longitude"
+                                                                    placeholder="Longitude">
                                                             </div>
                                                             <div class="col-lg-4 col-md-4 form-group col-sm-12">
                                                                 <label class="text-muted"
@@ -188,21 +203,7 @@
                                                                     name="company_group" placeholder="Group">
                                                             </div>
 
-                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
-                                                                <label class="text-muted" for="latitude">Latitude</label>
-                                                                <input type="text" required=""
-                                                                    value="{{ $record?->companyDetail->latitude }}"
-                                                                    class="form-control" id="latitude" name="latitude"
-                                                                    placeholder="Latitude">
-                                                            </div>
-                                                            <div class="col-lg-4 col-md-4 form-group col-sm-12">
-                                                                <label class="text-muted"
-                                                                    for="longitude">Longitude</label>
-                                                                <input type="text" required=""
-                                                                    value="{{ $record?->companyDetail->longitude }}"
-                                                                    class="form-control" id="longitude" name="longitude"
-                                                                    placeholder="Longitude">
-                                                            </div>
+
                                                         </div>
                                                     </div>
                                                 </div>

@@ -15,6 +15,8 @@ class CompanyDetail extends Model
         'company_location_event',
         'company_group',
         'latitude',
+        'phone',
+        'address',
         'longitude',
         'company_website_url',
         'company_destination_url',

@@ -22,6 +22,8 @@ class CreateCompanyDetailsTable extends Migration
             $table->string('company_group')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
+            $table->string('phone')->nullable();
+            $table->text('address')->nullable();
             $table->string('company_website_url')->nullable();
             $table->string('company_destination_url')->nullable();
             $table->string('company_button_text')->nullable();
