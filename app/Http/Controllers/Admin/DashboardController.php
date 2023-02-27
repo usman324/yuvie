@@ -65,7 +65,9 @@ class DashboardController extends Controller
     {
         $video_id = base64_decode($id);
         $record=Video::find($video_id);
-        
+        $user=$record->user;
+        $lat=$user->company->companyDetail->latitude;
+        $lng=$user->company->companyDetail->longitude;
         $url = env('APP_IMAGE_URL') . 'video/' . $record->video;
         $video_view = VideoView::where('video_id', $record->id)->first();
         if (isset($video_view)) {

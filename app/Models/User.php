@@ -64,6 +64,10 @@ class User extends Authenticatable
 
         return $query;
     }
+    public function company(){
+
+        return $this->belongsTo(Company::class, 'company_id','id');
+    }
     public function videos(){
 
         return $this->hasMany(Video::class);
