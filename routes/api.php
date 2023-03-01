@@ -29,7 +29,7 @@ Route::namespace('Api')->middleware('user')->group(function(){
     Route::post('change_status_video', [VideoController::class, 'changeStatusVideo']);
     Route::post('update_video', [VideoController::class, 'updateVideo']);
     Route::post('profile_update', [UserController::class, 'profileUpdate']);
-       Route::post('video_view', [VideoController::class, 'videoView']);
+       Route::post('video_share', [VideoController::class, 'videoShare']);
      Route::post('password_update', [UserController::class, 'passwordUpdate']);
 });
 

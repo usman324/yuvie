@@ -49,4 +49,21 @@ class Video extends Model
         }
         return $total;
     }
+    public function scopeByUserFilter($query, $title)
+    {
+        // dd($title);
+        if (isset($title)) {
+            return  $query->where('title', 'LIKE', "%" . $title . "%");
+        }
+        return $query;
+
+    }
+    public function scopeByCompanyFilter($query, $title)
+    {
+        if (isset($title)) {
+            return  $query->where('title', 'LIKE', "%" . $title . "%");
+        }
+        return $query;
+
+    }
 }

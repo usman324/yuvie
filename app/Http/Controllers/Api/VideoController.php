@@ -23,13 +23,51 @@ class VideoController extends Controller
     public function getVideos(Request $request)
     {
         $user = User::find($request->user_id);
-        $videos = Video::where('company_id', $user->company_id)
-            ->where('user_id', '!=', $user->id)->where('status', 'approved')->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
+        if ($request->status == 'pending') {
+            $videos = Video::where('company_id', $user->company_id)
+                ->where('user_id', '!=', $user->id)->where('status', 'pending')
+                ->byCompanyFilter($request->compnay_filter)->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
+                    return Carbon::parse($date->created_at)->format('D d M');
+                });
+            $user_videos = Video::where('user_id', $user->id)->where('status', 'pending')
+            ->byUserFilter($request->user_filter)->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
                 return Carbon::parse($date->created_at)->format('D d M');
             });
-        $user_videos = Video::where('user_id', $user->id)->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
-            return Carbon::parse($date->created_at)->format('D d M');
-        });
+        } elseif ($request->status == 'shared') {
+            $video_shares = VideoShare::all();
+            $videos = Video::whereIn('id', $video_shares->pluck('video_id'))->where('company_id', $user->company_id)
+                ->where('user_id', '!=', $user->id)->where('status', 'approved')
+                ->byCompanyFilter($request->compnay_filter)->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
+                    return Carbon::parse($date->created_at)->format('D d M');
+                });
+
+            $user_videos = Video::whereIn('id', $video_shares->pluck('video_id'))->where('user_id', $user->id)
+            ->byUserFilter($request->user_filter)->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
+                return Carbon::parse($date->created_at)->format('D d M');
+            });
+        } elseif ($request->status == 'view') {
+            $video_view = VideoView::all();
+            $videos = Video::whereIn('id', $video_view->pluck('video_id'))->where('company_id', $user->company_id)
+                ->where('user_id', '!=', $user->id)->where('status', 'approved')->byCompanyFilter($request->compnay_filter)->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
+                    return Carbon::parse($date->created_at)->format('D d M');
+                });
+
+            $user_videos = Video::whereIn('id', $video_view->pluck('video_id'))->where('user_id', $user->id)->byUserFilter($request->user_filter)->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
+                return Carbon::parse($date->created_at)->format('D d M');
+            });
+        } else {
+            $videos = Video::where('company_id', $user->company_id)
+                ->where('user_id', '!=', $user->id)->where('status', 'approved')
+                ->byCompanyFilter($request->company_filter)
+                ->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
+                    return Carbon::parse($date->created_at)->format('D d M');
+                });
+            $user_videos = Video::where('user_id', $user->id)
+            ->byUserFilter($request->user_filter)
+                ->orderBy('created_at', 'desc')->get()->groupBy(function ($date) {
+                return Carbon::parse($date->created_at)->format('D d M');
+            });
+        }
         $records = [];
         $user_records = [];
         foreach ($videos as $key => $datas) {
@@ -162,7 +200,7 @@ class VideoController extends Controller
         ]);
         return response()->json(['status' => true, 'message' => 'Video Update Successfully', 'data' => $record], 200);
     }
-    public function videoView(Request $request)
+    public function videoShare(Request $request)
     {
         $record = VideoShare::where('video_id', $request->video_id)->first();
         if (isset($record)) {
@@ -243,5 +281,9 @@ class VideoController extends Controller
         ];
         $records[] = ['user' => $data, 'company' => $company_records];
         return response()->json(['status' => true, 'message' => 'Count Record', 'data' => $records], 200);
+    }
+    public function getFilterByStatus(Request $request)
+    {
+        $status = $request->status;
     }
 }
