@@ -71,5 +71,13 @@ class User extends Authenticatable
     public function videos(){
 
         return $this->hasMany(Video::class);
+    } 
+    public function videoShares(){
+
+        return $this->hasMany(VideoShare::class);
+    }
+    public function videoViews()
+    {
+        return $this->hasMany(VideoView::class);
     }
 }
