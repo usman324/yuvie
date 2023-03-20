@@ -118,10 +118,11 @@ class VideoController extends Controller
         }
         $records = [];
         $user_records = [];
+        $compnay_counts=0;
         foreach ($videos as $key => $datas) {
             $now = Carbon::now();
             $yesterday = Carbon::yesterday();
-
+            $compnay_counts += count($datas);
             // $date_object = $now->format('D d M') == $key ? 'Today' : $key;
             $date_object = '';
             if ($now->format('D d M') == $key) {
@@ -166,11 +167,12 @@ class VideoController extends Controller
 
             $records[] = $videos_by_date;
         }
+        $user_counts=0;
         foreach ($user_videos as $key => $datas) {
 
             $now = Carbon::now();
             $yesterday = Carbon::yesterday();
-
+            $user_counts+=count($datas);
             // $date_object = $now->format('D d M') == $key ? 'Today' : $key;
             $date_object = '';
             if ($now->format('D d M') == $key) {
@@ -219,14 +221,14 @@ class VideoController extends Controller
         }
         // $user_records_check=false;
         if($request->user_counter != null && $request->user_counter != 0){
-            $user_records_check = count($user_records) < $request->user_counter ? false : true;
+            $user_records_check = $user_counts < $request->user_counter ? false : true;
         }else{
-            $user_records_check = count($user_records) < 5 ? false : true;
+            $user_records_check = $user_counts < 5 ? false : true;
         }
         if($request->company_counter != null && $request->company_counter != 0){
-            $company_records_check = count($records) < $request->company_counter ? false : true;
+            $company_records_check = $compnay_counts < $request->company_counter ? false : true;
         }else{
-            $company_records_check = count($records) < 5 ? false : true;
+            $company_records_check = $compnay_counts < 5 ? false : true;
         }
 
         return response()->json(['status' => true, 'message' => 'Record Found', 'user_next_video_exist' => $user_records_check,
