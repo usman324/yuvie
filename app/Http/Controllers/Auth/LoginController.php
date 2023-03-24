@@ -88,6 +88,8 @@ class LoginController extends Controller
             $companies = Company::with('companyDetail','companyBranding')->get();
             $user = auth()->user();
             $token = auth()->user()->createToken('Personal Access Token')->accessToken;
+            $user->update(['device_token' => $request->device_token ? $request->device_token : $user->device_token,
+            ]);
             $user['token'] = $token;
             if($user->image){
                 $user['image'] = env('APP_IMAGE_URL').'user/'.$user->image;
@@ -95,6 +97,7 @@ class LoginController extends Controller
                 $user['image'] = asset('theme/img/avatar.png');
             }
             $user['companies'] = $companies;
+           
             return response()->json(['status' => true, 'message' => 'Login Successfully', 'data' => $user], 200);
         }
 

@@ -26,6 +26,7 @@ class User extends Authenticatable
         'is_admin',
         'image',
         'password',
+          'device_token',
     ];
 
     /**
@@ -71,13 +72,5 @@ class User extends Authenticatable
     public function videos(){
 
         return $this->hasMany(Video::class);
-    } 
-    public function videoShares(){
-
-        return $this->hasMany(VideoShare::class);
-    }
-    public function videoViews()
-    {
-        return $this->hasMany(VideoView::class);
     }
 }

@@ -26,6 +26,7 @@ class UserController extends Controller
         $record->update([
             'first_name'=>$request->first_name?$request->first_name:$record->first_name,
             'last_name'=>$request->last_name?$request->last_name:$record->last_name,
+            'device_token'=>$request->device_token?$request->device_token:$record->device_token,
             'image'=>$image_name?$image_name:$record->image,
         ]);
         return response()->json(

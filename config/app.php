@@ -55,6 +55,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL', null),
+    'firebase_key' => env('firebase_key', 'AAAANtj5nIo:APA91bHzp3cHwyWE5LDJJvefLRs3JXlo2Gi46sq_n5mRT9sHFajUhX12DajbYYR5aCX-fO-vN-0RBTvGePoOn7xUZTtB3MocomcyIOr28M99ttNnYvPo6XnvKG7dv_3WkcvDajWsQAaz'),
 
     /*
     |--------------------------------------------------------------------------

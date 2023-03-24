@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\User;
 use App\Models\Video;
+use App\Traits\Main;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +14,7 @@ use Yajra\DataTables\DataTables;
 
 class VideoController extends Controller
 {
+    use Main;
     const TITLE = 'Videos';
     const VIEW = 'admin/video';
     const URL = 'admin/videos';
@@ -117,6 +120,12 @@ class VideoController extends Controller
         $record = Video::find($id);
         $record->update(['status' => $request->is_approve,
         ]);
+        $user = User::find($record->user_id);
+        $users = User::where('company_id', $user->company_id)->get();
+        if($record->status == 'approved'){
+            $this->notification('YuVie LLC', $record->name . ' Video Approved',$user);
+            // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
+        }
         return response()->json(['status' => true, 'message' => 'Status Change'], 200);
     }
     public function destroy($id)
