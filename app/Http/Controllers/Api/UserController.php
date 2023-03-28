@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\NotificationCollection;
 use App\Models\Company;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -12,6 +14,12 @@ use Yajra\DataTables\DataTables;
 class UserController extends Controller
 {
     
+    public function getUserNotification(Request $request)
+    {
+        return new NotificationCollection(
+            Notification::where('user_id', $request->user_id)->get(),
+        );
+    }
     public function profileUpdate(Request $request)
     {
         // dd($request->all());
@@ -33,6 +41,21 @@ class UserController extends Controller
             [
                 'status' => true,
                 'message' => 'Profile Update Successfully',
+                'data'=>$record,
+            ],
+            200
+        );
+    }
+    public function updateDeviceToken(Request $request)
+    {
+        $record=User::find($request->user_id);
+        $record->update([
+            'device_token'=>$request->device_token?$request->device_token:$record->device_token,
+        ]);
+        return response()->json(
+            [
+                'status' => true,
+                'message' => 'Device Token Update Successfully',
                 'data'=>$record,
             ],
             200
