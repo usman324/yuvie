@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\Video;
 use App\Traits\Main;
@@ -125,7 +126,14 @@ class VideoController extends Controller
         if($record->status == 'approved'){
             $this->notification('YuVie LLC', $record->name . ' Video Approved',$user);
             // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
+            Notification::create([
+                'user_id'=>$user->id,
+                'video_id' => $record->id,
+                'title'=>'Video Approved',
+                'description' => $record->name . ' Video Approved',
+            ]);
         }
+        
         return response()->json(['status' => true, 'message' => 'Status Change'], 200);
     }
     public function destroy($id)
