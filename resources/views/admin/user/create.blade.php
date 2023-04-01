@@ -64,7 +64,7 @@
                                         <select name="user_type" class="form-control">
                                             <option value="">select type </option>
                                             <option value="2">Executive</option>
-                                            <option value="3">Management</option>
+                                            <option value="3">Manager</option>
                                             {{-- <option value="4">Staff</option> --}}
                                             <option value="6">Mobile User</option>
                                         </select>

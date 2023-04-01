@@ -30,7 +30,7 @@ class VideoController extends Controller
     }
     public function index(Request $request)
     {
-        $records = Video::all();
+        $records = Video::latest()->get();
         return view(self::VIEW . '.index', get_defined_vars());
     }
     public function create(Request $request)
@@ -124,13 +124,13 @@ class VideoController extends Controller
         $user = User::find($record->user_id);
         $users = User::where('company_id', $user->company_id)->get();
         if($record->status == 'approved'){
-            $this->notification('YuVie LLC', $record->name . ' Video Approved',$user);
+            $this->notification('YuVie LLC', $record->title . ' Video Approved',$user);
             // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
             Notification::create([
                 'user_id'=>$user->id,
                 'video_id' => $record->id,
                 'title'=>'Video Approved',
-                'description' => $record->name . ' Video Approved',
+                'description' => $record->title . ' Video Approved',
             ]);
         }
         

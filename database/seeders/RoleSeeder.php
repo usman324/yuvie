@@ -24,7 +24,7 @@ class RoleSeeder extends Seeder
                 'name' => 'Executive',
                 'guard_name' => 'web'
             ],[
-                'name' => 'Management',
+                'name' => 'Manager',
                 'guard_name' => 'web'
             ], [
                 'name' => 'Staff',

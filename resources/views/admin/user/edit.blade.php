@@ -66,8 +66,8 @@
                                             <option value="">select type </option>
                                             <option value="2" @if ($record->getRoleNames()->first() === 'Executive') selected @endif>
                                                 Executive</option>
-                                            <option value="3" @if ($record->getRoleNames()->first() === 'Management') selected @endif>
-                                                Management</option>
+                                            <option value="3" @if ($record->getRoleNames()->first() === 'Manager') selected @endif>
+                                                Manager</option>
                                             {{-- <option value="4" @if ($record->getRoleNames()->first() === 'Staff') selected @endif>Staff
                                             </option> --}}
                                             <option value="6" @if ($record->getRoleNames()->first() === 'Mobile User') selected @endif>Mobile

@@ -62,7 +62,7 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);
         }
         $user = User::where('email', $request->email)->first();
-        if ($user && $user->getRoleNames()->first() == 'Mobile User' || $user->getRoleNames()->first() == 'Management' && $user->is_admin != true) {
+        if (!is_null($user) && $user?->getRoleNames()->first() == 'Mobile User' || $user?->getRoleNames()->first() == 'Manager' && $user->is_admin != true) {
             if ($this->attemptLogin($request)) {
                 if ($request->hasSession()) {
                     $request->session()->put('auth.password_confirmed_at', time());

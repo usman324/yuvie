@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
+
 class UserController extends Controller
 {
     const TITLE = 'Users';
@@ -21,7 +22,6 @@ class UserController extends Controller
         view()->share([
             'url' => url(self::URL),
             'title' => self::TITLE,
-            // 'image_url' => env('APP_IMAGE_URL') . 'class',
         ]);
     }
     public function toString($value)
@@ -30,19 +30,18 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
-            $records = User::whereIsAdmin(false)->get();
-                
+        $records = User::whereIsAdmin(false)->latest()->get();
         return view(self::VIEW . '.index', get_defined_vars());
     }
 
-   
+
     public function create()
     {
-        $companies=Company::all();
+        $companies = Company::all();
         return view(self::VIEW . '.create', get_defined_vars());
     }
 
-    
+
     public function store(Request $request)
     {
         $request->validate([
@@ -53,11 +52,11 @@ class UserController extends Controller
             'password' => ['required', 'string', 'min:6', 'confirmed'],
             'user_type' => 'required',
         ]);
-        $user=User::create([
-            'company_id'=>$request->company_id,
-            'first_name'=>$request->first_name,
-            'last_name'=>$request->last_name,
-            'email'=>$request->email,
+        $user = User::create([
+            'company_id' => $request->company_id,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
         $user->assignRole($request->user_type);
@@ -70,22 +69,22 @@ class UserController extends Controller
         );
     }
 
-    
+
     public function show($id)
     {
         //
     }
 
-   
+
     public function edit($id)
     {
-        $record=User::find($id);
-        $companies=Company::all();
-        $roles=Role::where('name','!=','Super Admin')->get();
+        $record = User::find($id);
+        $companies = Company::all();
+        $roles = Role::where('name', '!=', 'Super Admin')->get();
         return view(self::VIEW . '.edit', get_defined_vars());
     }
 
-   
+
     public function update(Request $request, $id)
     {
         // dd($request->all());
@@ -96,12 +95,12 @@ class UserController extends Controller
             'email' => 'required', 'string', 'email', 'max:255', 'unique:users',
             'user_type' => 'required',
         ]);
-        $record=User::find($id);
+        $record = User::find($id);
         $record->removeRole($record->getRoleNames()->first());
         $record->update([
-            'company_id'=>$request->company_id?$request->company_id:$record->company_id,
-            'first_name'=>$request->first_name?$request->first_name:$record->first_name,
-            'last_name'=>$request->last_name?$request->last_name:$record->last_name,
+            'company_id' => $request->company_id ? $request->company_id : $record->company_id,
+            'first_name' => $request->first_name ? $request->first_name : $record->first_name,
+            'last_name' => $request->last_name ? $request->last_name : $record->last_name,
             'email' => $request->email ? $request->email : $record->email,
             'password' => $request->password ? Hash::make($request->password) : $record->password,
         ]);
@@ -115,7 +114,7 @@ class UserController extends Controller
         );
     }
 
-   
+
     public function destroy($id)
     {
         $user = User::find($id);

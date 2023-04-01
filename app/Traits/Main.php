@@ -20,7 +20,10 @@ trait Main
                     "notification" => [
                         "title" => $title,
                         "body" => $notification,
+                        "sound"=> 'default',
+                        'vibrate'=> 1,
                     ],
+                   
                 ];
                 $dataString = json_encode($data);
                 $headers = [
@@ -41,13 +44,17 @@ trait Main
     }
     public function notification($title, $body, $data)
     {
+        // dd($data);
         if ($data->device_token != null) {
+
             $SERVER_API_KEY = $SERVER_API_KEY = config('app.firebase_key');
             $data = [
                 "to" => $data->device_token,
                 "notification" => [
                     "title" => $title,
                     "body" => $body,
+                     "sound"=> 'default',
+                     'vibrate'=> 1,
                 ],
 
             ];
@@ -69,7 +76,7 @@ trait Main
             $response = curl_exec($ch);
 
 
-            dd($response);
+            //  dd($response);
         }
     }
 }

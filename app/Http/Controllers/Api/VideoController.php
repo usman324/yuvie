@@ -9,7 +9,9 @@ use App\Models\Company;
 use App\Models\User;
 use App\Models\Video;
 use App\Models\VideoShare;
+use App\Models\Notification;
 use App\Models\VideoView;
+use App\Traits\Main;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -22,6 +24,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class VideoController extends Controller
 {
+    use Main;
 
     public function getVideos(Request $request)
     {
@@ -311,7 +314,7 @@ class VideoController extends Controller
             'type' => $request->type,
             'description' => $request->description,
             'video' => $video_name ? $video_name : null,
-            'status' => $user->getRoleNames()->first() == 'Management' ? 'approved' : 'pending',
+            'status' => $user->getRoleNames()->first() == 'Manager' ? 'approved' : 'pending',
         ]);
         return response()->json(['status' => true, 'message' => 'Video Add Successfully'], 200);
     }
@@ -335,6 +338,7 @@ class VideoController extends Controller
     public function videoShare(Request $request)
     {
         $record = VideoShare::where('video_id', $request->video_id)->first();
+        $user = User::find($record->user_id);;
         if (isset($record)) {
             $record->update([
                 'total_counts' => $record->total_counts + 1,
@@ -345,7 +349,13 @@ class VideoController extends Controller
                 'total_counts' => 1,
             ]);
         }
-
+        $this->notification('YuVie LLC', $record->title . ' Video Shared ', $user);
+        Notification::create([
+            'user_id' => $user->id,
+            'video_id' => $record->id,
+            'title' => 'Video Shared',
+            'description' => $record->title . ' Video Shared',
+        ]);
         return response()->json(['status' => true, 'message' => 'Video View Add Successfully'], 200);
     }
 
@@ -353,9 +363,20 @@ class VideoController extends Controller
     {
 
         $record = Video::find($request->video_id);
+        $user = User::find($record->user_id);
         $record->update([
             'status' => $request->status,
         ]);
+        if ($record->status == 'archive') {
+            $this->notification('YuVie LLC', $record->title . ' Video Archive', $user);
+            // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
+            Notification::create([
+                'user_id' => $user->id,
+                'video_id' => $record->id,
+                'title' => 'Video archive',
+                'description' => $record->title . ' Video Approved',
+            ]);
+        }
         return response()->json(['status' => true, 'message' => 'Status Change'], 200);
     }
 
