@@ -42,7 +42,7 @@
                 <a class="sidebar7__item {{ request()->is('admin/notifications') ? 'active' : '' }}"
                     href="{{ url('admin/notifications') }}">
                     <svg class="icon icon-dashboard">
-                    </svg>Send Notification</a>
+                    </svg>Notifications</a>
             </div>
         </div>
 

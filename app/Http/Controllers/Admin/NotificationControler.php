@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\User;
 use App\Traits\Main;
 use Illuminate\Http\Request;
@@ -28,16 +29,18 @@ class NotificationControler extends Controller
     }
     public function index(Request $request)
     {
+        $companies=Company::all();
         return view(self::VIEW . '.index', get_defined_vars());
     }
     public function store(Request $request)
     {
         $request->validate([
             'title'=>'required',
+            'company_id'=>'required',
             'description' => 'required',
         ]);
-        $users = User::all();
+        $users = User::where('company_id', $request->company_id)->get();
         $this->allUsers($request->title, $users, $request->description);
-        return view(self::VIEW . '.index', get_defined_vars());
+        return response()->json(['status' => true, 'message' => 'Notification Sent Successfully'], 200);
     }
 }

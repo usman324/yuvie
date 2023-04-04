@@ -134,8 +134,8 @@ class VideoController extends Controller
             ]);
         } 
         if($record->status == 'pending'){
-            $users=User::all();
-            $this->sendNotification('Video Created - Not Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $users, $record);
+            // $users=User::all();
+            $this->notification('Video Created - Not Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
         }
         
         return response()->json(['status' => true, 'message' => 'Status Change'], 200);

@@ -17,7 +17,19 @@
                         <div class="login__title login__title_sm ">Notification Detail</div>
                         <hr>
                         <div class="row login__field field">
-                            <div class="col-12">
+                            <div class="col-6">
+                                <div class="login__field field">
+                                    <div class="field__wrap">
+                                        <select name="company_id" class="form-control select2">
+                                            <option value="">select company </option>
+                                            @foreach ($companies as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
                                 <div class="login__field field">
                                     <div class="field__wrap">
                                         <input class="field__input" required type="text" name="title"
@@ -30,7 +42,8 @@
                             <div class="col-12">
                                 <div class="login__field field">
                                     <div class="field__wrap">
-                                        <textarea class="field1__textarea" name="description" id="" cols="30" rows="50" placeholder="Description"></textarea>
+                                        <textarea class="field1__textarea" name="description" id="" cols="30" rows="50"
+                                            placeholder="Description"></textarea>
                                     </div>
                                 </div>
                             </div>

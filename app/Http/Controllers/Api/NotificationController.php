@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class NotificationController extends Controller
 {
@@ -36,15 +37,27 @@ class NotificationController extends Controller
                     'user' => $notification?->user,
                     'video' => [
                         'id' => $notification->id,
-                        'company' => $notification->video->company?->name,
-                        'title' => $notification?->video->title,
-                        'description' => $notification?->video->description,
-                        'status' => $notification?->video->status,
-                        'video' => env('APP_IMAGE_URL') . 'video/' . $notification?->video->video,
-                        'share_link' => url('video/share/' . base64_encode($notification?->video->id)),
+                        'company' => $notification->video?->company?->name,
+                        'video_title' => $notification?->video?->title,
+                        'video_description' => $notification?->video?->description,
+                        'status' => $notification?->video?->status,
+                        'video' => env('APP_IMAGE_URL') . 'video/' . $notification->video?->video,
+                        'share_link' => url('video/share/' . base64_encode($notification->video?->id)),
+                    ],
+                    'user' => [
+                        "id" => $notification->user->id,
+                        "company_id" => $notification?->user->company_id,
+                        "first_name" => $notification?->user->first_name,
+                        "last_name" => $notification?->user->last_name,
+                        "email" => $notification?->user->email,
+                        "image" => $notification?->user->image ? env('APP_IMAGE_URL') . 'user/' . $notification?->user->image : null,
+                        "email_verified_at" => $notification?->user->email_verified_at,
+                        "is_admin" => $notification?->user->is_admin,
+                        "created_at" => $notification?->user->created_at,
+                        "updated_at" => $notification?->user->updated_at,
                     ],
                     'title' => $notification->title,
-                    'description' => $notification->description,
+                    'description' => str_replace("\n"," ", $notification->description),
                 ];
                 $notification_by_date['notification'][] = $record;
             }
