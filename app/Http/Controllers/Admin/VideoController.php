@@ -124,14 +124,18 @@ class VideoController extends Controller
         $user = User::find($record->user_id);
         $users = User::where('company_id', $user->company_id)->get();
         if($record->status == 'approved'){
-            $this->notification('YuVie LLC', $record->title . ' Video Approved',$user);
+            $this->notification('Video Created - Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
             // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
             Notification::create([
                 'user_id'=>$user->id,
                 'video_id' => $record->id,
-                'title'=>'Video Approved',
-                'description' => $record->title . ' Video Approved',
+                'title'=>'Video Created - Approved',
+                'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
             ]);
+        } 
+        if($record->status == 'pending'){
+            $users=User::all();
+            $this->sendNotification('Video Created - Not Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $users, $record);
         }
         
         return response()->json(['status' => true, 'message' => 'Status Change'], 200);

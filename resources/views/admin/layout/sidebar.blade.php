@@ -38,6 +38,12 @@
                     <svg class="icon icon-dashboard">
                     </svg>Videos</a>
             </div>
+            <div class="sidebar7__menu">
+                <a class="sidebar7__item {{ request()->is('admin/notifications') ? 'active' : '' }}"
+                    href="{{ url('admin/notifications') }}">
+                    <svg class="icon icon-dashboard">
+                    </svg>Send Notification</a>
+            </div>
         </div>
 
     </div>

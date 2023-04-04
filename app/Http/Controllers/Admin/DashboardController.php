@@ -80,12 +80,12 @@ class DashboardController extends Controller
                 'total_counts' => 1,
             ]);
         }
-        $this->notification('YuVie LLC', $record->title . ' Video Viewed ', $user);
+        $this->notification('Video Created - Viewed', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
             Notification::create([
                 'user_id' => $user->id,
                 'video_id' => $record->id,
-                'title' => 'Video Viewed',
-                'description' => $record->title . ' Video Viewed',
+                'title' => 'Video Created - Viewed',
+                'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
             ]);
         return view('detail', get_defined_vars());
     }

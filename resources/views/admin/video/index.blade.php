@@ -117,6 +117,7 @@
                         <tr>
                             <th>#Id</th>
                             <th>Company</th>
+                            <th>Creator</th>
                             <th>Video</th>
                             <th>Title</th>
                             <th>Status</th>
@@ -128,10 +129,11 @@
                         $i = 1;
                         ?>
                         @foreach ($records as $item)
-                        @if ($item->user->getRoleNames()->first() == 'Mobile User')
+                            @if ($item->user->getRoleNames()->first() == 'Mobile User')
                                 <tr>
                                     <td>{{ $i }}</td>
                                     <td>{{ $item->company?->name }}</td>
+                                    <td>{{ $item->user?->first_name .' '. $item->user?->last_name }}</td>
                                     <td>
                                         <video width="150" height="100" controls>
                                             <source src="{{ $video_url . '/' . $item->video }}" type="video/mp4">

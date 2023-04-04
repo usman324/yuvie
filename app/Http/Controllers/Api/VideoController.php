@@ -307,7 +307,7 @@ class VideoController extends Controller
             $video->storeAs('public/video', $name);
             $video_name = $name;
         }
-        Video::create([
+        $record=Video::create([
             'user_id' => $request->user_id,
             'company_id' => $request->company_id,
             'title' => $request->title,
@@ -316,6 +316,14 @@ class VideoController extends Controller
             'video' => $video_name ? $video_name : null,
             'status' => $user->getRoleNames()->first() == 'Manager' ? 'approved' : 'pending',
         ]);
+        $users=User::all();
+        $managers=[];
+        foreach($users as $user){
+            if($user->getRoleNames()->first() == 'Manager'){
+                $managers[] = $user;
+            }
+        }
+        $this->sendNotification('Video Created - Awaiting Approval', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $managers, $record);
         return response()->json(['status' => true, 'message' => 'Video Add Successfully'], 200);
     }
     public function updateVideo(Request $request)
@@ -349,12 +357,12 @@ class VideoController extends Controller
                 'total_counts' => 1,
             ]);
         }
-        $this->notification('YuVie LLC', $record->title . ' Video Shared ', $user);
+        $this->notification('Video Created - Shared', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
         Notification::create([
             'user_id' => $user->id,
             'video_id' => $record->id,
-            'title' => 'Video Shared',
-            'description' => $record->title . ' Video Shared',
+            'title' => 'Video Created - Shared',
+            'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
         ]);
         return response()->json(['status' => true, 'message' => 'Video View Add Successfully'], 200);
     }
@@ -368,13 +376,13 @@ class VideoController extends Controller
             'status' => $request->status,
         ]);
         if ($record->status == 'archive') {
-            $this->notification('YuVie LLC', $record->title . ' Video Archive', $user);
+            $this->notification('Video Created - Shared', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
             // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
             Notification::create([
                 'user_id' => $user->id,
                 'video_id' => $record->id,
-                'title' => 'Video archive',
-                'description' => $record->title . ' Video Approved',
+                'title' => 'Video Created - Archive',
+                'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
             ]);
         }
         return response()->json(['status' => true, 'message' => 'Status Change'], 200);

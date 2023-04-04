@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\NotificationControler;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VideoController;
 use App\Http\Controllers\Auth\LoginController;
@@ -53,6 +54,9 @@ Route::middleware('prevent-back-history','super_admin')->prefix('admin')->group(
     Route::post('videos/{id}', [VideoController::class, 'update']);
     Route::delete('videos/{id}', [VideoController::class, 'destroy']);
     Route::post('video_approved/{id}', [VideoController::class, 'videoApproved']);
+     // notification
+    Route::get('notifications', [NotificationControler::class, 'index']);
+    Route::post('notifications', [NotificationControler::class, 'store']);
    
     // end videos
 });

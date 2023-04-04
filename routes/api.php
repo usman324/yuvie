@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\VideoController;
 use Illuminate\Http\Request;
@@ -32,6 +33,7 @@ Route::namespace('Api')->middleware('user')->group(function () {
   Route::post('video_share', [VideoController::class, 'videoShare']);
   Route::post('profile_update', [UserController::class, 'profileUpdate']);
   Route::post('update_device_token', [UserController::class, 'updateDeviceToken']);
-  Route::post('get_user_notification', [UserController::class, 'getUserNotification']);
+  Route::post('get_user_notification', [NotificationController::class, 'getUserNotification']);
+  Route::post('delete_notification', [NotificationController::class, 'deleteNotification']);
   Route::post('password_update', [UserController::class, 'passwordUpdate']);
 });

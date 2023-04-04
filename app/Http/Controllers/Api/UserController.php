@@ -15,53 +15,7 @@ use Yajra\DataTables\DataTables;
 class UserController extends Controller
 {
     
-    public function getUserNotification(Request $request)
-    {
-        $records=[];
-        $notifications= Notification::where('user_id', $request->user_id)
-        ->orderBy('created_at', 'desc')->get()
-        ->groupBy(function ($date) {
-            return Carbon::parse($date->created_at)->format('D d M');
-        });
-        foreach ($notifications as $key => $datas) {
-            $now = Carbon::now();
-            $yesterday = Carbon::yesterday();
-            $date_object = '';
-            if ($now->format('D d M') == $key) {
-                $date_object = 'Today';
-            } elseif ($yesterday->format('D d M') == $key) {
-                $date_object = 'Yesterday';
-            } else {
-                $date_object = $key;
-            }
-            $notification_by_date = [
-                'date' => $date_object,
-            ];
-            foreach ($datas as $key => $notification) {
-                $record=[
-                    'id'=>$notification->id,
-                    'user' => $notification?->user,
-                    'video' => $notification?->video,
-                    'title' => $notification->title,
-                    'description' => $notification->description,
-                ];
-                $notification_by_date['notification'][] = $record;
-            }
-            $records[] = $notification_by_date;
-        }
-        // dd($records);
-        return response()->json(
-            [
-                'status' => true,
-                'message' => 'Record Found',
-                'data'=>$records,
-            ],
-            200
-        );
-        // return new NotificationCollection(
-        //     Notification::where('user_id', $request->user_id)->get(),
-        // );
-    }
+    
     public function profileUpdate(Request $request)
     {
         // dd($request->all());
