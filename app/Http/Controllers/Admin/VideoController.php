@@ -118,13 +118,15 @@ class VideoController extends Controller
     }
     public function videoApproved(Request $request, $id)
     {
+        
         $record = Video::find($id);
         $record->update(['status' => $request->is_approve,
         ]);
+        // dd($request->all());
         $user = User::find($record->user_id);
         $users = User::where('company_id', $user->company_id)->get();
-        if($record->status == 'approved'){
-            $this->notification('Video Created - Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
+        if($record->status == 'approve'){
+            $this->notification('Video Created - Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user,$record);
             // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
             Notification::create([
                 'user_id'=>$user->id,
@@ -133,9 +135,19 @@ class VideoController extends Controller
                 'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
             ]);
         } 
+        if($record->status == 'reject'){
+            $this->notification('Video Created - Rejected', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user,$record);
+            
+            Notification::create([
+                'user_id'=>$user->id,
+                'video_id' => $record->id,
+                'title'=>'Video Created - Rejected',
+                'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
+            ]);
+        } 
         if($record->status == 'pending'){
             // $users=User::all();
-            $this->notification('Video Created - Not Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
+            $this->notification('Video Created - Not Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user,$record);
         }
         
         return response()->json(['status' => true, 'message' => 'Status Change'], 200);

@@ -12,7 +12,7 @@ class NotificationController extends Controller
     public function getUserNotification(Request $request)
     {
         $records = [];
-        $notifications = Notification::where('user_id', $request->user_id)
+        $notifications = Notification::whereHas('video')->where('user_id', $request->user_id)
             ->orderBy('created_at', 'desc')->get()
             ->groupBy(function ($date) {
                 return Carbon::parse($date->created_at)->format('D d M');
@@ -31,26 +31,29 @@ class NotificationController extends Controller
             $notification_by_date = [
                 'date' => $date_object,
             ];
+            $datas->load('video');
             foreach ($datas as $key => $notification) {
+              
                 $record = [
                     'id' => $notification->id,
                     'user' => $notification?->user,
-                    'video' => [
-                        'id' => $notification->id,
+                    
+                    'video' => !is_null($notification->video) ? [
+                        'id' => $notification->video?->id,
                         'company' => $notification->video?->company?->name,
-                        'video_title' => $notification?->video?->title,
-                        'video_description' => $notification?->video?->description,
-                        'status' => $notification?->video?->status,
+                        'video_title' => isset($notification->video?->title) ? $notification->video?->title: "",
+                        'video_description' => isset( $notification->video?->description)?$notification->video?->description : "",
+                        'status' => isset($notification->video?->status)?$notification->video?->status:"",
                         'video' => env('APP_IMAGE_URL') . 'video/' . $notification->video?->video,
                         'share_link' => url('video/share/' . base64_encode($notification->video?->id)),
-                    ],
+                    ]:[],
                     'user' => [
                         "id" => $notification->user->id,
                         "company_id" => $notification?->user->company_id,
                         "first_name" => $notification?->user->first_name,
                         "last_name" => $notification?->user->last_name,
                         "email" => $notification?->user->email,
-                        "image" => $notification?->user->image ? env('APP_IMAGE_URL') . 'user/' . $notification?->user->image : null,
+                        "image" => $notification?->user->image ? env('APP_IMAGE_URL') . 'user/' . $notification?->user->image : "",
                         "email_verified_at" => $notification?->user->email_verified_at,
                         "is_admin" => $notification?->user->is_admin,
                         "created_at" => $notification?->user->created_at,

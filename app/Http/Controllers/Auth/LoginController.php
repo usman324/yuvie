@@ -90,6 +90,7 @@ class LoginController extends Controller
             $token = auth()->user()->createToken('Personal Access Token')->accessToken;
             $user->update(['device_token' => $request->device_token ? $request->device_token : $user->device_token,
             ]);
+             $user['user_type'] = $user?->getRoleNames()->first();
             $user['token'] = $token;
             if($user->image){
                 $user['image'] = env('APP_IMAGE_URL').'user/'.$user->image;
@@ -97,6 +98,9 @@ class LoginController extends Controller
                 $user['image'] = asset('theme/img/avatar.png');
             }
             $user['companies'] = $companies;
+            
+           $user['is_admin'] = $user->is_admin;
+          
            
             return response()->json(['status' => true, 'message' => 'Login Successfully', 'data' => $user], 200);
         }

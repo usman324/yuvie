@@ -20,6 +20,6 @@ class Notification extends Model
     }
     public function video(){
 
-        return $this->belongsTo(Video::class, 'video_id');
+        return $this->belongsTo(Video::class, 'video_id','id');
     }
 }

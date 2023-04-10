@@ -32,7 +32,7 @@ class VideoController extends Controller
         if ($request->company_filter == 'shared') {
             $video_shares = VideoShare::all();
             $videos = Video::whereIn('id', $video_shares->pluck('video_id'))->where('company_id', $user->company_id)
-                ->where('user_id', '!=', $user->id)->where('status', 'approved')->orderBy('created_at', 'desc')
+                ->where('user_id', '!=', $user->id)->where('status', 'approve')->orderBy('created_at', 'desc')
                 // ->paginate(20, ['*'], 'page', $request->company_counter)
                 ->get()
                 ->skip($request->company_counter ?? 0)
@@ -65,7 +65,7 @@ class VideoController extends Controller
                 });
         } else {
             $videos = Video::where('company_id', $user->company_id)
-                ->where('user_id', '!=', $user->id)->where('status', 'approved')
+                ->where('user_id', '!=', $user->id)->where('status', 'approve')
                 ->orderBy('created_at', 'desc')
                 // ->paginate(20, ['*'], 'page', $request->company_counter)
                 ->get()
@@ -314,7 +314,7 @@ class VideoController extends Controller
             'type' => $request->type,
             'description' => $request->description,
             'video' => $video_name ? $video_name : null,
-            'status' => $user->getRoleNames()->first() == 'Manager' ? 'approved' : 'pending',
+            'status' => $user->getRoleNames()->first() == 'Manager' ? 'approve' : 'pending',
         ]);
         $users=User::all();
         $managers=[];
@@ -346,6 +346,7 @@ class VideoController extends Controller
     public function videoShare(Request $request)
     {
         $record = VideoShare::where('video_id', $request->video_id)->first();
+        $video=Video::find($request->video_id);
         $user = User::find($record->user_id);;
         if (isset($record)) {
             $record->update([
@@ -357,7 +358,7 @@ class VideoController extends Controller
                 'total_counts' => 1,
             ]);
         }
-        $this->notification('Video Created - Shared', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
+        $this->notification('Video Created - Shared', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user,$video);
         Notification::create([
             'user_id' => $user->id,
             'video_id' => $record->id,
@@ -369,23 +370,54 @@ class VideoController extends Controller
 
     public function changeStatusVideo(Request $request)
     {
+        try{
 
-        $record = Video::find($request->video_id);
-        $user = User::find($record->user_id);
-        $record->update([
-            'status' => $request->status,
-        ]);
-        if ($record->status == 'archive') {
-            $this->notification('Video Created - Shared', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
-            // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
-            Notification::create([
-                'user_id' => $user->id,
-                'video_id' => $record->id,
-                'title' => 'Video Created - Archive',
-                'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
+            $record = Video::findOrFail($request->video_id);
+            $user = User::findOrFail($record->user_id);
+            $record->update([
+                'status' => $request->status?$request->status:$record->status,
             ]);
+            if ($record->status == 'archive') {
+                // $this->notification('Video Created - Archive', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
+                // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
+                // Notification::create([
+                //     'user_id' => $user->id,
+                //     'video_id' => $record->id,
+                //     'title' => 'Video Created - Archive',
+                //     'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
+                // ]);
+                 return response()->json(['status' => true, 'message' => 'Status Change'], 200);
+            }
+            
+            if ($record->status == 'reject') {
+                $this->notification('Video Created - Rejected', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user,$record);
+                // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
+                Notification::create([
+                    'user_id' => $user->id,
+                    'video_id' => $record->id,
+                    'title' => 'Video Created - Rejected',
+                    'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
+                ]);
+                 return response()->json(['status' => true, 'message' => 'Status Change'], 200);
+            }
+            
+            if ($record->status == 'approve') {
+                $this->notification('Video Created - Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
+                // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
+                Notification::create([
+                    'user_id' => $user->id,
+                    'video_id' => $record->id,
+                    'title' => 'Video Created - Approved',
+                    'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
+                ]);
+                 return response()->json(['status' => true, 'message' => 'Status Change'], 200);
+            }
+            
+               return response()->json(['status' => true, 'message' => 'Status Change'], 200);
+        }catch(Exception $ex){
+         return response()->json(['status' => false, 'message' => 'Something went wrong. Please try later'], 200);
         }
-        return response()->json(['status' => true, 'message' => 'Status Change'], 200);
+       
     }
 
     public function destroy(Request $request)

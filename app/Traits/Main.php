@@ -20,6 +20,8 @@ trait Main
                     "notification" => [
                         "title" => $title,
                         "body" => $notification,
+                        "id" => $record->id,
+                        "status" => $record->status,
                         "sound"=> 'default',
                         'vibrate'=> 1,
                     ],
@@ -47,7 +49,7 @@ trait Main
             }
         }
     }
-    public function notification($title, $body, $data)
+    public function notification($title, $body, $data,$video)
     {
         // dd($data);
         if ($data->device_token != null) {
@@ -58,6 +60,8 @@ trait Main
                 "notification" => [
                     "title" => $title,
                     "body" => $body,
+                    "id" => $video?->id,
+                    "status" => $video?->status,
                      "sound"=> 'default',
                      'vibrate'=> 1,
                 ],

@@ -129,10 +129,10 @@ function getCities(e, url) {
 }
 function videoApproved(e, url) {
     e.preventDefault();
-    if(e.target.value == 'approved'){
+    if(e.target.value == 'approve'){
         is_approve='pending';
     }else{
-        is_approve = 'approved';
+        is_approve = 'approve';
 
     }
     $.ajaxSetup({

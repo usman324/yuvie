@@ -80,7 +80,7 @@ class DashboardController extends Controller
                 'total_counts' => 1,
             ]);
         }
-        $this->notification('Video Created - Viewed', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
+        $this->notification('Video Created - Viewed', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user,$record);
             Notification::create([
                 'user_id' => $user->id,
                 'video_id' => $record->id,

@@ -45,7 +45,7 @@ class DeleteVideo extends Command
         $videos=Video::where('status','archive')->get();
         foreach($videos as $video){
             $user = User::find($video->user_id);
-            $this->notification('YuVie LLC', $video->title . ' Video Delete',$user);
+            $this->notification('YuVie LLC', $video->title . ' Video Delete',$user,$video);
             Notification::create([
                 'user_id'=>$user->id,
                 'video_id' => $video->id,

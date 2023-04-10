@@ -145,7 +145,7 @@
                                     <td>
                                         <label class='switch'>
                                             <input type='checkbox' value='{{ $item->status }}'
-                                                @if ($item->status == 'approved') checked @endif
+                                                @if ($item->status == 'approve') checked @endif
                                                 onchange="videoApproved(event,'{{ url('admin/video_approved/' . $item->id) }}')"><span
                                                 class='slider round'></span></label>
                                         {{-- {{ $item->status }} --}}
