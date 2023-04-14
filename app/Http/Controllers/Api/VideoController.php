@@ -402,7 +402,7 @@ class VideoController extends Controller
             }
             
             if ($record->status == 'approve') {
-                $this->notification('Video Created - Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
+                $this->notification('Video Created - Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user,$record);
                 // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
                 Notification::create([
                     'user_id' => $user->id,

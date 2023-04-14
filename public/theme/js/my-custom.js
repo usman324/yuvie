@@ -130,7 +130,7 @@ function getCities(e, url) {
 function videoApproved(e, url) {
     e.preventDefault();
     if(e.target.value == 'approve'){
-        is_approve='pending';
+        is_approve='reject';
     }else{
         is_approve = 'approve';
 

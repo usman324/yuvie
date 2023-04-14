@@ -27,6 +27,7 @@ class User extends Authenticatable
         'image',
         'password',
           'device_token',
+          'device_id',
     ];
 
     /**

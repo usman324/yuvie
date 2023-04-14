@@ -88,8 +88,8 @@ class LoginController extends Controller
             $companies = Company::with('companyDetail','companyBranding')->get();
             $user = auth()->user();
             $token = auth()->user()->createToken('Personal Access Token')->accessToken;
-            $user->update(['device_token' => $request->device_token ? $request->device_token : $user->device_token,
-            ]);
+            // $user->update(['device_token' => $request->device_token ? $request->device_token : $user->device_token,
+            // ]);
              $user['user_type'] = $user?->getRoleNames()->first();
             $user['token'] = $token;
             if($user->image){

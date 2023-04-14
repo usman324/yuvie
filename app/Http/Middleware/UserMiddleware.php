@@ -16,7 +16,6 @@ class UserMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        // dd($request->user('api'));
         if ($request->user('api') && auth('api')->check() && auth('api')->user()?->hasRole('Mobile User') || auth('api')->user()?->hasRole('Manager')) {
             return $next($request);
         }
