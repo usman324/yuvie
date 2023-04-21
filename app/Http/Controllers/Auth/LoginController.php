@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\User;
+use App\Models\Video;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
@@ -85,23 +87,89 @@ class LoginController extends Controller
 
         if ($request->is('api/*')) {
             $this->attemptLogin($request);
-            $companies = Company::with('companyDetail','companyBranding')->get();
+            $companies = Company::with('companyDetail', 'companyBranding')->get();
             $user = auth()->user();
             $token = auth()->user()->createToken('Personal Access Token')->accessToken;
             // $user->update(['device_token' => $request->device_token ? $request->device_token : $user->device_token,
             // ]);
-             $user['user_type'] = $user?->getRoleNames()->first();
+            $user_type = $user?->getRoleNames()->first();
+            $pending_records=[];
+            if ($user_type == 'Manager') {
+                $videos = Video::where('company_id', $user->company_id)
+                    ->where('user_id', '!=', $user->id)->where('status', 'pending')
+                    ->orderBy('created_at', 'desc')
+                    // ->paginate(20, ['*'], 'page', $request->company_counter)
+                    ->get()
+                    ->skip($request->company_counter ?? 0)
+                    ->take($request->company_counter != null && $request->company_counter != 0 ? $request->company_counter : 5)
+                    ->groupBy(function ($date) {
+                        return Carbon::parse($date->created_at)->format('D d M');
+                    });
+                $compnay_counts = 0;
+                foreach ($videos as $key => $datas) {
+                    $now = Carbon::now();
+                    $yesterday = Carbon::yesterday();
+                    $compnay_counts += count($datas);
+                    // $date_object = $now->format('D d M') == $key ? 'Today' : $key;
+                    $date_object = '';
+                    if ($now->format('D d M') == $key) {
+                        $date_object = 'Today';
+                    } elseif ($yesterday->format('D d M') == $key) {
+                        $date_object = 'Yesterday';
+                    } else {
+                        $date_object = $key;
+                    }
+                    $videos_by_date = [
+                        'date' => $date_object,
+                    ];
+                    foreach ($datas as $video) {
+                        $record = [
+                            'id' => $video->id,
+                            'user' => [
+                                "id" => $video->user->id,
+                                "company_id" => $video->user->company_id,
+                                "first_name" => isset($video->user->first_name) ? $video->user->first_name : '',
+                                "last_name" => isset($video->user->last_name) ? $video->user->last_name : '',
+                                "email" => isset($video->user->email) ? $video->user->email : '',
+                                "image" => isset($video->user->image) ? $video->user->image : '',
+                                "email_verified_at" => isset($video->user->email_verified_at) ? $video->user->email_verified_at : "",
+                                "is_admin" => $video->user->is_admin,
+                                "created_at" => $video->user->created_at,
+                                "updated_at" => $video->user->updated_at,
+                                "total_videos" => count($video->user->videos),
+
+                            ],
+                            "video_share_counts" => count($video->videoShare),
+                            "video_view_counts" => count($video->videoView),
+                            'company' => $video->company?->name,
+                            'title' => $video->title,
+                            'description' => $video->description,
+                            'status' => $video->status,
+                            'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
+                            'share_link' => url('video/share/' . base64_encode($video->id)),
+
+                        ];
+                        $videos_by_date['video'][] = $record;
+                    }
+
+                    $pending_records[] = $videos_by_date;
+                }
+            } else {
+                $pending_records=[];
+            }
+            $user['user_type'] = $user_type;
             $user['token'] = $token;
-            if($user->image){
-                $user['image'] = env('APP_IMAGE_URL').'user/'.$user->image;
-            }else{
+            if ($user->image) {
+                $user['image'] = env('APP_IMAGE_URL') . 'user/' . $user->image;
+            } else {
                 $user['image'] = asset('theme/img/avatar.png');
             }
             $user['companies'] = $companies;
-            
-           $user['is_admin'] = $user->is_admin;
-          
-           
+
+            $user['is_admin'] = $user->is_admin;
+            $user['pending'] = $pending_records;
+
+
             return response()->json(['status' => true, 'message' => 'Login Successfully', 'data' => $user], 200);
         }
 

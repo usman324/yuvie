@@ -144,11 +144,11 @@ class VideoController extends Controller
                     'user' => [
                         "id" => $video->user->id,
                         "company_id" => $video->user->company_id,
-                        "first_name" => $video->user->first_name,
-                        "last_name" => $video->user->last_name,
-                        "email" => $video->user->email,
-                        "image" => $video->user->image,
-                        "email_verified_at" => $video->user->email_verified_at,
+                        "first_name" => isset($video->user->first_name) ? $video->user->first_name : '',
+                        "last_name" => isset($video->user->last_name) ? $video->user->last_name : '',
+                        "email" => isset($video->user->email) ? $video->user->email : '',
+                        "image" => isset($video->user->image) ? env('APP_IMAGE_URL') . 'user/' . $video->user->image : '',
+                        "email_verified_at" => isset($video->user->email_verified_at) ? $video->user->email_verified_at : "",
                         "is_admin" => $video->user->is_admin,
                         "created_at" => $video->user->created_at,
                         "updated_at" => $video->user->updated_at,
@@ -196,10 +196,10 @@ class VideoController extends Controller
                     'user' => [
                         "id" => $video->user->id,
                         "company_id" => $video->user->company_id,
-                        "first_name" => $video->user->first_name,
-                        "last_name" => $video->user->last_name,
-                        "email" => $video->user->email,
-                        "image" => $video->user->image,
+                        "first_name" => isset($video->user->first_name) ? $video->user->first_name : "",
+                        "last_name" => isset($video->user->last_name) ? $video->user->last_name : "",
+                        "email" => isset($video->user->email) ? $video->user->email : "",
+                        "image" => isset($video->user->image) ? env('APP_IMAGE_URL') . 'user/' . $video->user->image : '',
                         "email_verified_at" => $video->user->email_verified_at,
                         "is_admin" => $video->user->is_admin,
                         "created_at" => $video->user->created_at,
@@ -220,7 +220,8 @@ class VideoController extends Controller
                 $videos_by_date['video'][] = $record;
             }
 
-            $user_records[] = $videos_by_date;
+            // $user_records[] = $videos_by_date;
+            $user_records = $videos_by_date;
         }
         // $user_records_check=false;
         if ($request->user_counter != null && $request->user_counter != 0) {
@@ -235,8 +236,11 @@ class VideoController extends Controller
         }
 
         return response()->json([
-            'status' => true, 'message' => 'Record Found', 'user_next_video_exist' => $user_records_check,
-            'company_next_video_exist' => $company_records_check != [] ? true : false, 'data' => $records, 'userData' => $user_records
+            'status' => true, 'message' => 'Record Found',
+            'user_next_video_exist' => $user_records_check,
+            'company_next_video_exist' => $company_records_check != [] ? true : false,
+            'data' => $records,
+            'userData' => $user_records
         ], 200);
     }
     public function getVideoById(Request $request)
@@ -245,16 +249,16 @@ class VideoController extends Controller
         $record = [
             'id' => $video->id,
             'user' => [
-                "id" => $video->user->id,
-                "company_id" => $video->user->company_id,
-                "first_name" => $video->user->first_name,
-                "last_name" => $video->user->last_name,
-                "email" => $video->user->email,
-                "image" => $video->user->image,
-                "email_verified_at" => $video->user->email_verified_at,
-                "is_admin" => $video->user->is_admin,
-                "created_at" => $video->user->created_at,
-                "updated_at" => $video->user->updated_at,
+                "id" => $video->user->id ? $video->user->id : '',
+                "company_id" => $video->user->company_id ? $video->user->company_id : '',
+                "first_name" => $video->user->first_name ? $video->user->first_name : '',
+                "last_name" => $video->user->last_name ? $video->user->last_name : '',
+                "email" => $video->user->email ? $video->user->email : '',
+                "image" => isset($video->user->image) ? env('APP_IMAGE_URL') . 'user/' . $video->user->image : '',
+                "email_verified_at" => $video->user->email_verified_at ? $video->user->email_verified_at : '',
+                "is_admin" => $video->user->is_admin ? $video->user->is_admin : '',
+                "created_at" => $video->user->created_at ? $video->user->created_at : '',
+                "updated_at" => $video->user->updated_at ? $video->user->updated_at : '',
                 "total_videos" => count($video->user->videos),
 
             ],
@@ -307,7 +311,7 @@ class VideoController extends Controller
             $video->storeAs('public/video', $name);
             $video_name = $name;
         }
-        $record=Video::create([
+        $record = Video::create([
             'user_id' => $request->user_id,
             'company_id' => $request->company_id,
             'title' => $request->title,
@@ -316,10 +320,10 @@ class VideoController extends Controller
             'video' => $video_name ? $video_name : null,
             'status' => $user->getRoleNames()->first() == 'Manager' ? 'approve' : 'pending',
         ]);
-        $users=User::all();
-        $managers=[];
-        foreach($users as $user){
-            if($user->getRoleNames()->first() == 'Manager'){
+        $users = User::all();
+        $managers = [];
+        foreach ($users as $user) {
+            if ($user->getRoleNames()->first() == 'Manager') {
                 $managers[] = $user;
             }
         }
@@ -346,7 +350,7 @@ class VideoController extends Controller
     public function videoShare(Request $request)
     {
         $record = VideoShare::where('video_id', $request->video_id)->first();
-        $video=Video::find($request->video_id);
+        $video = Video::find($request->video_id);
         $user = User::find($record->user_id);;
         if (isset($record)) {
             $record->update([
@@ -358,7 +362,7 @@ class VideoController extends Controller
                 'total_counts' => 1,
             ]);
         }
-        $this->notification('Video Created - Shared', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user,$video);
+        $this->notification('Video Created - Shared', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user, $video);
         Notification::create([
             'user_id' => $user->id,
             'video_id' => $record->id,
@@ -370,12 +374,12 @@ class VideoController extends Controller
 
     public function changeStatusVideo(Request $request)
     {
-        try{
+        try {
 
             $record = Video::findOrFail($request->video_id);
             $user = User::findOrFail($record->user_id);
             $record->update([
-                'status' => $request->status?$request->status:$record->status,
+                'status' => $request->status ? $request->status : $record->status,
             ]);
             if ($record->status == 'archive') {
                 // $this->notification('Video Created - Archive', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user);
@@ -386,11 +390,11 @@ class VideoController extends Controller
                 //     'title' => 'Video Created - Archive',
                 //     'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
                 // ]);
-                 return response()->json(['status' => true, 'message' => 'Status Change'], 200);
+                return response()->json(['status' => true, 'message' => 'Status Change'], 200);
             }
-            
+
             if ($record->status == 'reject') {
-                $this->notification('Video Created - Rejected', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user,$record);
+                $this->notification('Video Created - Rejected', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user, $record);
                 // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
                 Notification::create([
                     'user_id' => $user->id,
@@ -398,11 +402,11 @@ class VideoController extends Controller
                     'title' => 'Video Created - Rejected',
                     'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
                 ]);
-                 return response()->json(['status' => true, 'message' => 'Status Change'], 200);
+                return response()->json(['status' => true, 'message' => 'Status Change'], 200);
             }
-            
+
             if ($record->status == 'approve') {
-                $this->notification('Video Created - Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user,$record);
+                $this->notification('Video Created - Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user, $record);
                 // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
                 Notification::create([
                     'user_id' => $user->id,
@@ -410,14 +414,13 @@ class VideoController extends Controller
                     'title' => 'Video Created - Approved',
                     'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
                 ]);
-                 return response()->json(['status' => true, 'message' => 'Status Change'], 200);
+                return response()->json(['status' => true, 'message' => 'Status Change'], 200);
             }
-            
-               return response()->json(['status' => true, 'message' => 'Status Change'], 200);
-        }catch(Exception $ex){
-         return response()->json(['status' => false, 'message' => 'Something went wrong. Please try later'], 200);
+
+            return response()->json(['status' => true, 'message' => 'Status Change'], 200);
+        } catch (Exception $ex) {
+            return response()->json(['status' => false, 'message' => 'Something went wrong. Please try later'], 200);
         }
-       
     }
 
     public function destroy(Request $request)
