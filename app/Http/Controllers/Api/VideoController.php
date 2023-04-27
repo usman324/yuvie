@@ -200,7 +200,7 @@ class VideoController extends Controller
                         "last_name" => isset($video->user->last_name) ? $video->user->last_name : "",
                         "email" => isset($video->user->email) ? $video->user->email : "",
                         "image" => isset($video->user->image) ? env('APP_IMAGE_URL') . 'user/' . $video->user->image : '',
-                        "email_verified_at" => $video->user->email_verified_at,
+                        "email_verified_at" => isset($video->user->email_verified_at) ? $video->user->email_verified_at : "",
                         "is_admin" => $video->user->is_admin,
                         "created_at" => $video->user->created_at,
                         "updated_at" => $video->user->updated_at,
@@ -220,8 +220,8 @@ class VideoController extends Controller
                 $videos_by_date['video'][] = $record;
             }
 
-            // $user_records[] = $videos_by_date;
-            $user_records = $videos_by_date;
+            $user_records[] = $videos_by_date;
+            // $user_records = $videos_by_date;
         }
         // $user_records_check=false;
         if ($request->user_counter != null && $request->user_counter != 0) {
@@ -448,7 +448,8 @@ class VideoController extends Controller
                     $company_user_share_total += $company_user_share_video->totalShareCounts();
                 }
                 $company_record = [
-                    'name' => $company_user->first_name,
+                    'first_name' => $company_user->first_name ? $company_user->first_name : '',
+                    'last_name' => $company_user->last_name ? $company_user->last_name : '',
                     'image' => $company_user->image ? env('APP_IMAGE_URL') . 'user/' . $company_user->image : asset('theme/img/avatar.png'),
                     'videos' => $company_user->videos->count(),
                     'pending' => $company_user->videos->where('status', 'pending')->count(),
@@ -468,7 +469,8 @@ class VideoController extends Controller
             $user_share_total += $user_share_video->totalShareCounts();
         }
         $data = [
-            'name' => $user->first_name,
+            'first_name' => $user->first_name ? $user->first_name : '',
+            'last_name' => $user->last_name ? $user->last_name : '',
             'videos' => $user->videos->count(),
             'pending' => $user->videos->where('status', 'pending')->count(),
             'views' => $user_video_total,
