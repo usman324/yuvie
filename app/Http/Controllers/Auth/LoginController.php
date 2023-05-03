@@ -170,7 +170,7 @@ class LoginController extends Controller
             $user['pending'] = $pending_records;
 
 
-            return response()->json(['status' => true, 'message' => 'Login Successfully', 'data' => $user], 200);
+            return response()->json(['status' => true, 'message' => 'Login Successfully', 'data' => [$user]], 200);
         }
 
         return $request->wantsJson()

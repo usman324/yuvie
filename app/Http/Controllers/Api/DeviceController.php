@@ -159,7 +159,9 @@ class DeviceController extends Controller
                 ->get()
                 ->skip($request->user_counter ?? 0)
                 ->take($request->user_counter != null && $request->user_counter != 0 ? $request->user_counter : 5)
-                
+                ->groupBy(function ($date) {
+                    return Carbon::parse($date->created_at)->format('D d M');
+                });
             //    dd($user_videos);
         }
         $records = [];

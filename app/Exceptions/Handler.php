@@ -27,7 +27,7 @@ class Handler extends ExceptionHandler
         'password',
         'password_confirmation',
     ];
-      /**
+    /**
      * Report or log an exception.
      *
      * @param  \Throwable  $exception
@@ -52,7 +52,7 @@ class Handler extends ExceptionHandler
         });
     }
 
-       /**
+    /**
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -72,16 +72,17 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'status' => false,
                     'message' => $error[0],
+                    'data' => [],
                     // 'errors' => [
                     //     $exception->validator->errors()
                     // ]
                 ], 500);
             }
 
-            return response()->json(['status' => false, 'message' => $exception->getMessage()], 500);
+            return response()->json(['status' => false, 'message' => $exception->getMessage(), 'data' => []], 500);
         }
         return parent::render($request, $exception);
-        
+
         // return $request->expectsJson()
         //     ? $this->prepareJsonResponse($request, $exception)
         //     : $this->prepareResponse($request, $exception);

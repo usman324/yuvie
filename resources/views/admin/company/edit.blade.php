@@ -400,7 +400,7 @@
                                                                                 </use>
                                                                             </svg></a>
                                                                         <a href='javascript:'
-                                                                            onclick="deleteRecordAjax('{{ url('admin/videos' . $item->id) }}')"
+                                                                            onclick="deleteRecordAjax('{{ url('admin/videos/' . $item->id) }}')"
                                                                             class='toggle' data-target='editClass'><svg
                                                                                 class="icon icon-arrow-prev">
                                                                                 <use
