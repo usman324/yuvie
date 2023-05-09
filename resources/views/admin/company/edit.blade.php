@@ -65,7 +65,7 @@
 
                                         </div>
                                         <div class="row mt-2">
-                                           
+
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-4">
@@ -119,8 +119,10 @@
                                                             <div class="col-lg-4 col-md-4 form-group col-sm-12">
                                                                 <div class="form-group">
                                                                     <label>City</label>
-                                                                    <input type="text" name="city_name" class="form-control "
-                                                                        value="{{ $record->city_name }}" placeholder="City Name" required>
+                                                                    <input type="text" name="city_name"
+                                                                        class="form-control "
+                                                                        value="{{ $record->city_name }}"
+                                                                        placeholder="City Name" required>
                                                                     {{-- <select name="city_id" id="cityDetail" class="form-control select2">
                                                                             @foreach ($cities as $city)
                                                                                 <option value="{{ $city->id }}"
@@ -128,7 +130,7 @@
                                                                                     {{ $city->name }}</option>
                                                                             @endforeach
                                                                         </select> --}}
-                
+
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-4 col-md-4 form-group col-sm-12">
@@ -137,25 +139,27 @@
                                                                     <select name="state_id"
                                                                         onchange="getCities(event,'{{ url('admin/get-cities') }}')"
                                                                         class="form-control select2" required>
-                                                                        <option value="" selected>--- select state ---</option>
+                                                                        <option value="" selected>--- select state
+                                                                            ---</option>
                                                                         @foreach ($states as $item)
                                                                             <option value="{{ $item->id }}"
                                                                                 @if ($item->id == $record->state_id) selected @endif>
                                                                                 {{ $item->name }}</option>
                                                                         @endforeach
                                                                     </select>
-                
+
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-4 col-md-4 form-group col-sm-12">
                                                                 <div class="form-group">
                                                                     <label for="title">Zip</label>
-                                                                    <input type="text" name="zip" value="{{ $record->zip }}"
-                                                                        class="form-control " placeholder="Zip" required>
-                
+                                                                    <input type="text" name="zip"
+                                                                        value="{{ $record->zip }}" class="form-control "
+                                                                        placeholder="Zip" required>
+
                                                                 </div>
                                                             </div>
-                
+
                                                             <div class="col-lg-4 col-md-4 form-group col-sm-12">
                                                                 <label class="text-muted" for="Phone">Phone</label>
                                                                 <input type="text" required=""
@@ -359,6 +363,21 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane " id="videos" role="tabpanel">
+                                        <div class="sorting1">
+                                            <div class="sorting1__row">
+                                                <div class="sorting1__options">
+                                                    <a href="{{ url('admin/add_company_video/' . $record->id) }}"
+                                                        class="sorting1__btn btn rounded-pill text-white"
+                                                        style="background-color:#ff5926 "><svg class="icon icon-plus">
+                                                            <use
+                                                                xlink:href="{{ asset('theme/img/sprite.svg#icon-plus') }}">
+                                                            </use>
+                                                        </svg>
+                                                        <span class="btn__text">New Video</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row mt-2">
                                             <table id="myTable" class="table rounded table-bordered table-striped">
                                                 <thead>

@@ -26,7 +26,7 @@ Route::get('video/share/{id}', [DashboardController::class, 'showVideo']);
 Route::view('/detail', 'detail');
 Route::get('admin/login', [DashboardController::class, 'login']);
 Route::post('admin/login', [LoginController::class, 'adminlogin']);
-Route::middleware('prevent-back-history','super_admin')->prefix('admin')->group(function () {
+Route::middleware('prevent-back-history', 'super_admin')->prefix('admin')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index']);
     // users
     Route::get('users', [UserController::class, 'index']);
@@ -49,15 +49,16 @@ Route::middleware('prevent-back-history','super_admin')->prefix('admin')->group(
     Route::get('videos', [VideoController::class, 'index']);
     Route::get('videos/create', [VideoController::class, 'create']);
     Route::post('videos', [VideoController::class, 'store']);
+    Route::get('add_company_video/{id}', [VideoController::class, 'addCompanyVideo']);
     Route::get('videos/{id}/edit', [VideoController::class, 'edit']);
     Route::get('videos/{id}', [VideoController::class, 'show']);
     Route::post('videos/{id}', [VideoController::class, 'update']);
     Route::delete('videos/{id}', [VideoController::class, 'destroy']);
     Route::post('video_approved/{id}', [VideoController::class, 'videoApproved']);
-     // notification
+    // notification
     Route::get('notifications', [NotificationControler::class, 'index']);
     Route::post('notifications', [NotificationControler::class, 'store']);
-   
+
     // end videos
 });
 Route::get('clear-cache', function () {

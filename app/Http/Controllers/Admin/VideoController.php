@@ -35,16 +35,25 @@ class VideoController extends Controller
     }
     public function create(Request $request)
     {
-        $companies=Company::all();
+        $companies = Company::all();
         return view(self::VIEW . '.create', get_defined_vars());
+    }
+    public function addCompanyVideo(Request $request, $id)
+    {
+        $companies = Company::where('id', $id)->get();
+        $company_id=$id;
+        return view(self::VIEW . '.add_company_video', get_defined_vars());
     }
     public function store(Request $request)
     {
         ini_set('memory_limit', '1000M');
         $request->validate([
+            'type' => 'required',
             'company_id' => 'required',
+            'title' => 'required',
+            // 'description' => 'required',
             'video' => 'required|file', 'mimes:mp4',
-            'thumbnail_image' => 'required|file', 'mimes:jpg,png',
+            // 'thumbnail_image' => 'required|file', 'mimes:jpg,png',
         ]);
         $video = $request->video;
         $thumbnail_image = $request->thumbnail_image;
@@ -65,14 +74,15 @@ class VideoController extends Controller
         Video::create([
             'user_id' => Auth::id(),
             'company_id' => $request->company_id,
+            'title' => $request->title,
+            'description' => $request->description,
             'video' => $video_name ? $video_name : null,
-            'thumbnail_image' => $thumbnail_image_name ? $thumbnail_image_name : null,
         ]);
         return response()->json(['status' => true, 'message' => 'Video Add Successfully'], 200);
     }
     public function edit($id)
     {
-        $companies=Company::all();
+        $companies = Company::all();
         $record = Video::find($id);
         return view(self::VIEW . '.edit', get_defined_vars());
     }
@@ -109,7 +119,7 @@ class VideoController extends Controller
         $record->update([
             'company_id' => $request->company_id ? $request->company_id : $record->company_id,
             'video' => $video_name ? $video_name : $record->video,
-            'title' => $request->title?$request->title:$request->title,
+            'title' => $request->title ? $request->title : $request->title,
             'type' => $request->type,
             'description' => $request->description ? $request->description : $request->description,
             // 'thumbnail_image' => $thumbnail_image_name ? $thumbnail_image_name : $record->thumbnail_image,
@@ -118,38 +128,39 @@ class VideoController extends Controller
     }
     public function videoApproved(Request $request, $id)
     {
-        
+
         $record = Video::find($id);
-        $record->update(['status' => $request->is_approve,
+        $record->update([
+            'status' => $request->is_approve,
         ]);
         // dd($request->all());
         $user = User::find($record->user_id);
         $users = User::where('company_id', $user->company_id)->get();
-        if($record->status == 'approve'){
-            $this->notification('Video Created - Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user,$record);
+        if ($record->status == 'approve') {
+            $this->notification('Video Created - Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user, $record);
             // $this->sendNotification('YuVie LLC', $record->name . ' Video Approved',$users);
             Notification::create([
-                'user_id'=>$user->id,
+                'user_id' => $user->id,
                 'video_id' => $record->id,
-                'title'=>'Video Created - Approved',
+                'title' => 'Video Created - Approved',
                 'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
             ]);
-        } 
-        if($record->status == 'reject'){
-            $this->notification('Video Created - Rejected', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user,$record);
-            
-            Notification::create([
-                'user_id'=>$user->id,
-                'video_id' => $record->id,
-                'title'=>'Video Created - Rejected',
-                'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
-            ]);
-        } 
-        if($record->status == 'pending'){
-            // $users=User::all();
-            $this->notification('Video Created - Not Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user,$record);
         }
-        
+        if ($record->status == 'reject') {
+            $this->notification('Video Created - Rejected', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user, $record);
+
+            Notification::create([
+                'user_id' => $user->id,
+                'video_id' => $record->id,
+                'title' => 'Video Created - Rejected',
+                'description' => $record->title . PHP_EOL . $record->created_at->format('M d Y'),
+            ]);
+        }
+        if ($record->status == 'pending') {
+            // $users=User::all();
+            $this->notification('Video Created - Not Approved', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $user, $record);
+        }
+
         return response()->json(['status' => true, 'message' => 'Status Change'], 200);
     }
     public function destroy($id)
