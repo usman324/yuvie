@@ -58,13 +58,21 @@
                                     </div>
                                     <div class="row mt-2">
 
-                                        <div class="col-12">
+                                        <div class="col-6">
                                             <div class="form-group">
                                                 <label for="title">Video
                                                     <small>(MP4 1280 x 720)</small>
                                                 </label>
                                                 <input type="file" class="dropify form-control " data-height="100"
                                                     name="video" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label for="title">Thumbnail image <small>(JPG or PNG
+                                                        1280 x 720)</small></label>
+                                                <input type="file" class="dropify form-control " data-height="100"
+                                                    name="thumbnail_image" required>
                                             </div>
                                         </div>
                                     </div>

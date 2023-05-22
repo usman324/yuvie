@@ -139,6 +139,7 @@ class VideoController extends Controller
                 'date' => $date_object,
             ];
             foreach ($datas as $video) {
+                 if ($video?->user?->is_admin != true) {
                 $record = [
                     'id' => $video->id,
                     'user' => [
@@ -155,17 +156,19 @@ class VideoController extends Controller
                         "total_videos" => count($video->user->videos),
 
                     ],
-                    "video_share_counts" => count($video->videoShare),
-                    "video_view_counts" => count($video->videoView),
-                    'company' => $video->company?->name,
-                    'title' => $video->title,
-                    'description' => $video->description,
+                   "video_share_counts" => count($video->videoShare),
+                        "video_view_counts" => count($video->videoView),
+                        'company' => $video->company?->name?$video->company?->name:'',
+                        'title' => $video->title?$video->title:'',
+                        'description' => $video->description?$video->description:'',
                     'status' => $video->status,
                     'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
+                    'thumbnail_image' => $video->thumbnail_image ? env('APP_IMAGE_URL') . 'video/' . $video->thumbnail_image  : '',
                     'share_link' => url('video/share/' . base64_encode($video->id)),
 
                 ];
                 $videos_by_date['video'][] = $record;
+                 }
             }
 
             $records[] = $videos_by_date;
@@ -209,11 +212,12 @@ class VideoController extends Controller
                     ],
                     "video_share_counts" => count($video->videoShare),
                     "video_view_counts" => count($video->videoView),
-                    'company' => $video->company?->name,
-                    'title' => $video->title,
-                    'description' => $video->description,
+                    'company' => $video->company?->name?$video->company?->name:'',
+                    'title' => $video->title?$video->title:'',
+                    'description' => $video->description?$video->description:'',
                     'status' => $video->status,
                     'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
+                    'thumbnail_image' => $video->thumbnail_image ? env('APP_IMAGE_URL') . 'video/' . $video->thumbnail_image  : '',
                     'share_link' => url('video/share/' . base64_encode($video->id)),
 
                 ];
@@ -264,11 +268,12 @@ class VideoController extends Controller
             ],
             "video_share_counts" => count($video->videoShare),
             "video_view_counts" => count($video->videoView),
-            'company' => $video->company?->name,
-            'title' => $video->title,
-            'description' => $video->description,
+           'company' => $video->company?->name?$video->company?->name:'',
+            'title' => $video->title?$video->title:'',
+            'description' => $video->description?$video->description:'',
             'status' => $video->status,
             'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
+            'thumbnail_image' => $video->thumbnail_image ? env('APP_IMAGE_URL') . 'video/' . $video->thumbnail_image  : '',
             'share_link' => url('video/share/' . base64_encode($video->id)),
 
         ];
@@ -301,15 +306,22 @@ class VideoController extends Controller
             'title' => 'required',
             'type' => 'required',
             'description' => 'required',
+            'thumbnail_image' => 'required',
         ]);
         $video = $request->video_file;
         $thumbnail_image = $request->thumbnail_image;
         $user = User::find($request->user_id);
         $video_name = '';
+        $thumbnail_image_name = '';
         if ($video) {
             $name = rand(10, 100) . time() . '.' . $video->getClientOriginalExtension();
             $video->storeAs('public/video', $name);
             $video_name = $name;
+        }
+        if ($thumbnail_image) {
+            $name = rand(10, 100) . time() . '.' . $thumbnail_image->getClientOriginalExtension();
+            $thumbnail_image->storeAs('public/video', $name);
+            $thumbnail_image_name = $name;
         }
         $record = Video::create([
             'user_id' => $request->user_id,
@@ -318,6 +330,7 @@ class VideoController extends Controller
             'type' => $request->type,
             'description' => $request->description,
             'video' => $video_name ? $video_name : null,
+            'thumbnail_image' => $thumbnail_image_name ? $thumbnail_image_name : null,
             'status' => $user->getRoleNames()->first() == 'Manager' ? 'approve' : 'pending',
         ]);
         $users = User::all();

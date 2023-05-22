@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Video extends Model
 {
     use HasFactory;
-    protected $fillable=[
+    protected $fillable = [
         'user_id',
         'company_id',
         'video',
@@ -19,32 +19,38 @@ class Video extends Model
         'thumbnail_image',
     ];
 
-    public function user(){
-        
+    public function user()
+    {
+
         return $this->belongsTo(User::class, 'user_id')->withDefault();
     }
-    public function company(){
-        
+    public function company()
+    {
+
         return $this->belongsTo(Company::class, 'company_id')->withDefault();
     }
-    public function videoView(){
+    public function videoView()
+    {
 
         return $this->hasMany(VideoView::class);
     }
-    public function videoShare(){
+    public function videoShare()
+    {
 
         return $this->hasMany(VideoShare::class);
     }
-    public function totalCounts(){
-        $total=0;
-        foreach($this->videoView as $data){
+    public function totalCounts()
+    {
+        $total = 0;
+        foreach ($this->videoView as $data) {
             $total += $data->total_counts;
         }
         return $total;
     }
-    public function totalShareCounts(){
-        $total=0;
-        foreach($this->videoShare as $data){
+    public function totalShareCounts()
+    {
+        $total = 0;
+        foreach ($this->videoShare as $data) {
             $total += $data->total_counts;
         }
         return $total;
@@ -56,7 +62,6 @@ class Video extends Model
             return  $query->where('title', 'LIKE', "%" . $title . "%");
         }
         return $query;
-
     }
     public function scopeByCompanyFilter($query, $title)
     {
@@ -64,6 +69,9 @@ class Video extends Model
             return  $query->where('title', 'LIKE', "%" . $title . "%");
         }
         return $query;
-
+    }
+    public function getAttributeDescription($value)
+    {
+        return is_null($value) ? '' : $value;
     }
 }

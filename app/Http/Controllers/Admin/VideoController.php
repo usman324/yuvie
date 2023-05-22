@@ -41,7 +41,7 @@ class VideoController extends Controller
     public function addCompanyVideo(Request $request, $id)
     {
         $companies = Company::where('id', $id)->get();
-        $company_id=$id;
+        $company_id = $id;
         return view(self::VIEW . '.add_company_video', get_defined_vars());
     }
     public function store(Request $request)
@@ -53,7 +53,7 @@ class VideoController extends Controller
             'title' => 'required',
             // 'description' => 'required',
             'video' => 'required|file', 'mimes:mp4',
-            // 'thumbnail_image' => 'required|file', 'mimes:jpg,png',
+            'thumbnail_image' => 'required|file', 'mimes:jpg,png',
         ]);
         $video = $request->video;
         $thumbnail_image = $request->thumbnail_image;
@@ -77,6 +77,8 @@ class VideoController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'video' => $video_name ? $video_name : null,
+            'thumbnail_image' => $thumbnail_image_name ? $thumbnail_image_name : null,
+
         ]);
         return response()->json(['status' => true, 'message' => 'Video Add Successfully'], 200);
     }
@@ -98,31 +100,31 @@ class VideoController extends Controller
         $request->validate([
             'company_id' => 'required',
             'video' => 'nullable|file', 'mimes:mp4',
-            // 'thumbnail_image' => 'nullable|file', 'mimes:jpg,png',
+            'thumbnail_image' => 'nullable|file', 'mimes:jpg,png',
         ]);
         $video = $request->video;
-        // $thumbnail_image = $request->thumbnail_image;
+        $thumbnail_image = $request->thumbnail_image;
 
         $video_name = '';
-        // $thumbnail_image_name = '';
+        $thumbnail_image_name = '';
 
         if ($video) {
             $name = rand(10, 100) . time() . '.' . $video->getClientOriginalExtension();
             $video->storeAs('public/video', $name);
             $video_name = $name;
         }
-        // if ($thumbnail_image) {
-        //     $name = rand(10, 100) . time() . '.' . $thumbnail_image->getClientOriginalExtension();
-        //     $thumbnail_image->storeAs('public/video', $name);
-        //     $thumbnail_image_name = $name;
-        // }
+        if ($thumbnail_image) {
+            $name = rand(10, 100) . time() . '.' . $thumbnail_image->getClientOriginalExtension();
+            $thumbnail_image->storeAs('public/video', $name);
+            $thumbnail_image_name = $name;
+        }
         $record->update([
             'company_id' => $request->company_id ? $request->company_id : $record->company_id,
             'video' => $video_name ? $video_name : $record->video,
             'title' => $request->title ? $request->title : $request->title,
             'type' => $request->type,
             'description' => $request->description ? $request->description : $request->description,
-            // 'thumbnail_image' => $thumbnail_image_name ? $thumbnail_image_name : $record->thumbnail_image,
+            'thumbnail_image' => $thumbnail_image_name ? $thumbnail_image_name : $record->thumbnail_image,
         ]);
         return response()->json(['status' => true, 'message' => 'Video Update Successfully'], 200);
     }

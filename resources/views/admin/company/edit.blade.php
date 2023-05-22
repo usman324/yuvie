@@ -396,7 +396,7 @@
 
                                                     @if (!$record->videos->isEmpty())
                                                         @foreach ($record->videos as $item)
-                                                            @if ($item->user->getRoleNames()->first() != 'Mobile User')
+                                                            @if ($item->user->getRoleNames()->first() != 'Mobile User' && $item->user->getRoleNames()->first() != 'Manager') 
                                                                 <tr>
                                                                     <td>{{ $i }}</td>
                                                                     <td>{{ $item->company?->name }}</td>
@@ -411,7 +411,7 @@
                                                                         {{ $item->title }}
                                                                     </td>
                                                                     <td>
-                                                                        <a href='{{ url('admin/videos/' . $item->id . '/edit') }}'
+                                                                        <a href='{{ url('admin/videos/' . $item->id . '/edit?q=1') }}'
                                                                             class='toggle' data-target='editClass'><svg
                                                                                 class="icon icon-arrow-prev">
                                                                                 <use

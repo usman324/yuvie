@@ -129,11 +129,11 @@
                         $i = 1;
                         ?>
                         @foreach ($records as $item)
-                            @if ($item->user->getRoleNames()->first() == 'Mobile User')
+                            @if ($item->user->getRoleNames()->first() == 'Mobile User' || $item->user->getRoleNames()->first() == 'Manager')
                                 <tr>
                                     <td>{{ $i }}</td>
                                     <td>{{ $item->company?->name }}</td>
-                                    <td>{{ $item->user?->first_name .' '. $item->user?->last_name }}</td>
+                                    <td>{{ $item->user?->first_name . ' ' . $item->user?->last_name }}</td>
                                     <td>
                                         <video width="150" height="100" controls>
                                             <source src="{{ $video_url . '/' . $item->video }}" type="video/mp4">
@@ -162,7 +162,7 @@
                                             class='toggle' data-target='editClass'><svg class="icon icon-arrow-prev">
                                                 <use xlink:href="{{ asset('theme/img/sprite.svg#icon-trash') }}"></use>
                                             </svg></a>
-                                            {{-- <a href='{{ $url . '/' . $item->id  }}' class='toggle'
+                                        {{-- <a href='{{ $url . '/' . $item->id  }}' class='toggle'
                                                 data-target='editClass'><svg class="icon icon-arrow-prev">
                                                     <use xlink:href="{{ asset('theme/img/sprite.svg#icon-eye') }}"></use>
                                                 </svg></a> --}}

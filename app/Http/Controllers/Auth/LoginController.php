@@ -93,7 +93,7 @@ class LoginController extends Controller
             // $user->update(['device_token' => $request->device_token ? $request->device_token : $user->device_token,
             // ]);
             $user_type = $user?->getRoleNames()->first();
-            $pending_records=[];
+            $pending_records = [];
             if ($user_type == 'Manager') {
                 $videos = Video::where('company_id', $user->company_id)
                     ->where('user_id', '!=', $user->id)->where('status', 'pending')
@@ -142,10 +142,11 @@ class LoginController extends Controller
                             "video_share_counts" => count($video->videoShare),
                             "video_view_counts" => count($video->videoView),
                             'company' => $video->company?->name,
-                            'title' => $video->title,
-                            'description' => $video->description,
-                            'status' => $video->status,
-                            'video' => env('APP_IMAGE_URL') . 'video/' . $video->video,
+                            'title' => $video->title ?? '',
+                            'description' => $video->description ?? '',
+                            'status' => $video->status ?? '',
+                            'video' => env('APP_IMAGE_URL') . 'video/' . $video->video ?? '',
+                            'thumbnail_image' => $video->thumbnail_image ? env('APP_IMAGE_URL') . 'video/' . $video->thumbnail_image : '',
                             'share_link' => url('video/share/' . base64_encode($video->id)),
 
                         ];
@@ -155,7 +156,7 @@ class LoginController extends Controller
                     $pending_records[] = $videos_by_date;
                 }
             } else {
-                $pending_records=[];
+                $pending_records = [];
             }
             $user['user_type'] = $user_type;
             $user['token'] = $token;

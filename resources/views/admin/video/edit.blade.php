@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="row mt-2">
 
-                                        <div class="col-12">
+                                        <div class="col-6">
                                             <div class="form-group">
                                                 <label for="title">Video
                                                     <small>(MP4 1280 x 720)</small>
@@ -70,7 +70,7 @@
                                                     name="video" required>
                                             </div>
                                         </div>
-                                        {{-- <div class="col-6">
+                                        <div class="col-6">
                                             <div class="form-group">
                                                 <label for="title">Thumbnail image <small>(JPG or PNG
                                                         1280 x 720)</small></label>
@@ -78,7 +78,7 @@
                                                     data-default-file="{{ $video_url . '/' . $record->thumbnail_image }}"
                                                     name="thumbnail_image" required>
                                             </div>
-                                        </div> --}}
+                                        </div>
 
                                     </div>
                                     <div class="row">

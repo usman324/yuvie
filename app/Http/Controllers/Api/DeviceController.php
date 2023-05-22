@@ -184,33 +184,36 @@ class DeviceController extends Controller
                 'date' => $date_object,
             ];
             foreach ($datas as $video) {
-                $record = [
-                    'id' => $video->id,
-                    'user' => [
-                        "id" => $video->user?->id,
-                        "company_id" => isset($video->user?->company_id) ?$video->user?->company_id:'',
-                        "first_name" =>  isset($video->user?->first_name)?$video->user?->first_name:'',
-                        "last_name" => isset($video->user?->last_name) ?$video->user?->last_name:'',
-                        "email" =>  isset($video->user?->email)?$video->user?->email :'',
-                        "image" => isset($video->user->image) ? env('APP_IMAGE_URL') . 'user/' . $video->user->image : '',
-                        "email_verified_at" => isset($video->user?->email_verified_at)?$video->user?->email_verified_at:'',
-                        "is_admin" => isset($video->user?->is_admin)?$video->user?->is_admin:'',
-                        "created_at" => isset($video->user->created_at)?$video->user->created_at:'',
-                        "updated_at" => isset($video->user->updated_at)?$video->user->updated_at:'',
-                        "total_videos" => count($video->user->videos),
-
-                    ],
-                    "video_share_counts" => count($video->videoShare),
-                    "video_view_counts" => count($video->videoView),
-                    'company' => isset($video->company?->name)?$video->company?->name:'',
-                    'title' => isset($video->title)?$video->title:"",
-                    'description' => $video->description ??"",
-                    'status' => $video->status??"",
-                    'video' => env('APP_IMAGE_URL') . 'video/' . $video->video ??'',
-                    'share_link' => url('video/share/' . base64_encode($video->id)) ??'',
-
-                ];
-                $videos_by_date['video'][] = $record;
+                 if ($video?->user?->is_admin != true) {
+                    $record = [
+                        'id' => $video->id,
+                        'user' => [
+                            "id" => $video->user?->id,
+                            "company_id" => isset($video->user?->company_id) ? $video->user?->company_id : '',
+                            "first_name" =>  isset($video->user?->first_name) ? $video->user?->first_name : '',
+                            "last_name" => isset($video->user?->last_name) ? $video->user?->last_name : '',
+                            "email" =>  isset($video->user?->email) ? $video->user?->email : '',
+                            "image" => isset($video->user->image) ? env('APP_IMAGE_URL') . 'user/' . $video->user->image : '',
+                            "email_verified_at" => isset($video->user?->email_verified_at) ? $video->user?->email_verified_at : '',
+                            "is_admin" => isset($video->user?->is_admin) ? $video->user?->is_admin : '',
+                            "created_at" => isset($video->user->created_at) ? $video->user->created_at : '',
+                            "updated_at" => isset($video->user->updated_at) ? $video->user->updated_at : '',
+                            "total_videos" => count($video->user->videos),
+    
+                        ],
+                        "video_share_counts" => count($video->videoShare),
+                        "video_view_counts" => count($video->videoView),
+                        'company' => isset($video->company?->name) ? $video->company?->name : '',
+                        'title' => isset($video->title) ? $video->title : "",
+                        'description' => $video->description ?$video->description: "",
+                        'status' => $video->status ?? "",
+                        'video' => env('APP_IMAGE_URL') . 'video/' . $video->video ?? '',
+                        'thumbnail_image' => $video->thumbnail_image ? env('APP_IMAGE_URL') . 'video/' . $video->thumbnail_image  : '',
+                        'share_link' => url('video/share/' . base64_encode($video->id)) ?? '',
+    
+                    ];
+                    $videos_by_date['video'][] = $record;
+                 }
             }
 
             $records[] = $videos_by_date;
@@ -240,26 +243,27 @@ class DeviceController extends Controller
                     'id' => $video->id,
                     'user' => [
                         "id" => $video->user?->id,
-                        "company_id" => isset($video->user?->company_id) ?$video->user?->company_id:'',
-                        "first_name" =>  isset($video->user?->first_name)?$video->user?->first_name:'',
-                        "last_name" => isset($video->user?->last_name) ?$video->user?->last_name:'',
-                        "email" =>  isset($video->user?->email)?$video->user?->email :'',
+                        "company_id" => isset($video->user?->company_id) ? $video->user?->company_id : '',
+                        "first_name" =>  isset($video->user?->first_name) ? $video->user?->first_name : '',
+                        "last_name" => isset($video->user?->last_name) ? $video->user?->last_name : '',
+                        "email" =>  isset($video->user?->email) ? $video->user?->email : '',
                         "image" => isset($video->user->image) ? env('APP_IMAGE_URL') . 'user/' . $video->user->image : '',
-                        "email_verified_at" => isset($video->user?->email_verified_at)?$video->user?->email_verified_at:'',
-                        "is_admin" => isset($video->user?->is_admin)?$video->user?->is_admin:'',
-                        "created_at" => isset($video->user->created_at)?$video->user->created_at:'',
-                        "updated_at" => isset($video->user->updated_at)?$video->user->updated_at:'',
+                        "email_verified_at" => isset($video->user?->email_verified_at) ? $video->user?->email_verified_at : '',
+                        "is_admin" => isset($video->user?->is_admin) ? $video->user?->is_admin : '',
+                        "created_at" => isset($video->user->created_at) ? $video->user->created_at : '',
+                        "updated_at" => isset($video->user->updated_at) ? $video->user->updated_at : '',
                         "total_videos" => count($video->user->videos),
 
                     ],
                     "video_share_counts" => count($video->videoShare),
                     "video_view_counts" => count($video->videoView),
-                    'company' => isset($video->company?->name)?$video->company?->name:'',
-                    'title' => isset($video->title)?$video->title:"",
-                    'description' => $video->description ??"",
-                    'status' => $video->status??"",
-                    'video' => env('APP_IMAGE_URL') . 'video/' . $video->video ??'',
-                    'share_link' => url('video/share/' . base64_encode($video->id)) ??'',
+                    'company' => isset($video->company?->name) ? $video->company?->name : '',
+                    'title' => isset($video->title) ? $video->title : "",
+                    'description' => $video->description ?$video->description: "",
+                    'status' => $video->status ?? "",
+                    'video' => env('APP_IMAGE_URL') . 'video/' . $video->video ?? '',
+                    'thumbnail_image' => $video->thumbnail_image ? env('APP_IMAGE_URL') . 'video/' . $video->thumbnail_image  : '',
+                    'share_link' => url('video/share/' . base64_encode($video->id)) ?? '',
 
                 ];
                 $videos_by_date['video'][] = $record;
@@ -294,6 +298,7 @@ class DeviceController extends Controller
             'title' => 'required',
             'type' => 'required',
             'description' => 'required',
+            'thumbnail_image' => 'required',
         ]);
         $video = $request->video_file;
         $thumbnail_image = $request->thumbnail_image;
@@ -301,10 +306,16 @@ class DeviceController extends Controller
             $user = User::where('device_id', $request->device_id)->first();
             if (!is_null($user)) {
                 $video_name = '';
+                $thumbnail_image_name = '';
                 if ($video) {
                     $name = rand(10, 100) . time() . '.' . $video->getClientOriginalExtension();
                     $video->storeAs('public/video', $name);
                     $video_name = $name;
+                }
+                if ($thumbnail_image) {
+                    $name = rand(10, 100) . time() . '.' . $thumbnail_image->getClientOriginalExtension();
+                    $thumbnail_image->storeAs('public/video', $name);
+                    $thumbnail_image_name = $name;
                 }
                 $record = Video::create([
                     'user_id' => $user->id,
@@ -313,8 +324,9 @@ class DeviceController extends Controller
                     'type' => $request->type,
                     'description' => $request->description,
                     'video' => $video_name ? $video_name : null,
+                    'thumbnail_image' => $thumbnail_image_name ? $thumbnail_image_name : null,
                     // 'status' => $user->getRoleNames()->first() == 'Manager' ? 'approve' : 'pending',
-                       'status' =>  'approve',
+                    'status' =>  'approve',
                 ]);
                 $users = User::all();
                 $managers = [];
