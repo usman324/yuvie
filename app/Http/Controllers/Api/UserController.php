@@ -30,15 +30,35 @@ class UserController extends Controller
         }
         $record = User::find($request->user_id);
         $record->update([
+            'color' => $request->color ? $request->color : $record->color,
             'first_name' => $request->first_name ? $request->first_name : $record->first_name,
             'last_name' => $request->last_name ? $request->last_name : $record->last_name,
             'device_token' => $request->device_token ? $request->device_token : $record->device_token,
+            'photo_remove' => $request->photo_remove,
             'image' => $image_name ? $image_name : $record->image,
         ]);
         return response()->json(
             [
                 'status' => true,
-                'message' => 'Profile Update Successfully',
+                'message' => 'Profile has been updated successfully',
+                'data' => $record,
+            ],
+            200
+        );
+    }
+    public function deletePicture(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required'
+        ]);
+        $record = User::find($request->user_id);
+        $record->update([
+            'image' => null,
+        ]);
+        return response()->json(
+            [
+                'status' => true,
+                'message' => 'Picture has been deleted successfully',
                 'data' => $record,
             ],
             200
@@ -61,12 +81,13 @@ class UserController extends Controller
                     'first_name' => $request->first_name ? $request->first_name : $record->first_name,
                     'last_name' => $request->last_name ? $request->last_name : $record->last_name,
                     'device_token' => $request->device_token ? $request->device_token : $record->device_token,
+                    'photo_remove' => $request->photo_remove,
                     'image' => $image_name ? $image_name : $record->image,
                 ]);
                 return response()->json(
                     [
                         'status' => true,
-                        'message' => 'Profile Update Successfully',
+                        'message' => 'Profile has been updated successfully',
                         'data' => $record,
                     ],
                     200
@@ -93,7 +114,7 @@ class UserController extends Controller
         return response()->json(
             [
                 'status' => true,
-                'message' => 'Device Token Update Successfully',
+                'message' => 'Device Token has been updated successfully',
                 'data' => $record,
             ],
             200
@@ -121,7 +142,7 @@ class UserController extends Controller
             return response()->json(
                 [
                     'status' => true,
-                    'message' => 'Password Update Successfully',
+                    'message' => 'Password has been updated successfully',
                     'data' => $record,
                 ],
                 200

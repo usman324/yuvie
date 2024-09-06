@@ -23,7 +23,9 @@
                                         <select name="company_id" class="form-control select2">
                                             <option value="">select company </option>
                                             @foreach ($companies as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                <option value="{{ $item->id }}"
+                                                    @if (request()->q == $item->id) selected @endif>{{ $item->name }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -31,7 +33,7 @@
                             </div>
                         </div>
                         <div class="row login__field field">
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="login__field field">
                                     <div class="field__wrap">
                                         <input class="field__input" required type="text" name="first_name"
@@ -39,7 +41,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="login__field field">
                                     <div class="field__wrap">
                                         <input class="field__input" required type="text" name="last_name"
@@ -47,7 +49,14 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="col-4">
+                                <div class="login__field field">
+                                    <div class="field__wrap">
+                                        <input class="field__input" required type="file" name="image"
+                                            placeholder="Last Name">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="row login__field field">
                             <div class="col-6">

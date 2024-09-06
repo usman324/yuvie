@@ -26,11 +26,12 @@ class DeviceController extends Controller
             $record = [
                 "id" => $user->id,
                 "device_id" => $user->device_id ? $user->device_id : '',
+                "color" => $user->color ? $user->color : '',
                 "company_id" => $user->company_id ? $user->company_id : '',
                 "first_name" => $user->first_name ? $user->first_name : '',
                 "last_name" => $user->last_name ? $user->last_name : '',
                 "email" => $user->email ? $user->email : '',
-                "image" => $user->image ? env('APP_IMAGE_URL') . 'user/' . $user->image : asset('theme/img/avatar.png'),
+                "image" => $user->image ? env('APP_IMAGE_URL') . 'user/' . $user->image : '',
                 "device_token" => $user->device_token ? $user->device_token : '',
                 "email_verified_at" => $user->email_verified_at ? $user->email_verified_at : '',
                 "is_admin" => $user->is_admin ? $user->is_admin : '',
@@ -43,28 +44,29 @@ class DeviceController extends Controller
             return response()->json(['status' => true, 'message' => 'Login Successfully', 'data' => $record], 200);
         } else {
             $company = Company::where('name', 'Discover Yuvie')->first();
-            $user = User::create([
+            $new_user = User::create([
                 'device_id' => $request->device_id,
                 'company_id' => $company ? $company->id : null,
             ]);
-            $user->assignRole(6);
-            auth()->login($user);
+            $new_user->assignRole(6);
+            auth()->login($new_user);
             $token = auth()->user()->createToken('Personal Access Token')->accessToken;
             $record = [
-                "id" => $user->id,
-                "device_id" => $user->device_id ? $user->device_id : '',
-                "company_id" => $user->company_id ? $user->company_id : '',
+                "id" => $new_user->id,
+                "device_id" => $new_user->device_id ? $new_user->device_id : '',
+                "color" => $new_user->color ? $new_user->color : '',
+                "company_id" => $new_user->company_id ? $new_user->company_id : '',
                 "first_name" => '',
                 "last_name" => '',
                 "email" => '',
-                "image" => $user->image ? env('APP_IMAGE_URL') . 'user/' . $user->image : asset('theme/img/avatar.png'),
+                "image" => $new_user->image ? env('APP_IMAGE_URL') . 'user/' . $new_user->image : '',
                 "device_token" => '',
                 "email_verified_at" => '',
                 "is_admin" => '',
                 "created_at" => '',
                 "updated_at" => '',
                 "user_type" => '',
-                "user_type" => $user?->getRoleNames()->first(),
+                "user_type" => $new_user?->getRoleNames()->first(),
                 'token' => $token,
                 'companies' => $companies,
             ];
@@ -184,7 +186,7 @@ class DeviceController extends Controller
                 'date' => $date_object,
             ];
             foreach ($datas as $video) {
-                 if ($video?->user?->is_admin != true) {
+                if ($video?->user?->is_admin != true) {
                     $record = [
                         'id' => $video->id,
                         'user' => [
@@ -193,27 +195,28 @@ class DeviceController extends Controller
                             "first_name" =>  isset($video->user?->first_name) ? $video->user?->first_name : '',
                             "last_name" => isset($video->user?->last_name) ? $video->user?->last_name : '',
                             "email" =>  isset($video->user?->email) ? $video->user?->email : '',
+                            "color" =>  isset($video->user?->color) ? $video->user?->color : '',
                             "image" => isset($video->user->image) ? env('APP_IMAGE_URL') . 'user/' . $video->user->image : '',
                             "email_verified_at" => isset($video->user?->email_verified_at) ? $video->user?->email_verified_at : '',
                             "is_admin" => isset($video->user?->is_admin) ? $video->user?->is_admin : '',
                             "created_at" => isset($video->user->created_at) ? $video->user->created_at : '',
                             "updated_at" => isset($video->user->updated_at) ? $video->user->updated_at : '',
                             "total_videos" => count($video->user->videos),
-    
+
                         ],
                         "video_share_counts" => count($video->videoShare),
                         "video_view_counts" => count($video->videoView),
                         'company' => isset($video->company?->name) ? $video->company?->name : '',
                         'title' => isset($video->title) ? $video->title : "",
-                        'description' => $video->description ?$video->description: "",
+                        'description' => $video->description ? $video->description : "",
                         'status' => $video->status ?? "",
-                        'video' => env('APP_IMAGE_URL') . 'video/' . $video->video ?? '',
+                        'video' => $video->video ? env('APP_IMAGE_URL') . 'video/' . $video->video : '',
                         'thumbnail_image' => $video->thumbnail_image ? env('APP_IMAGE_URL') . 'video/' . $video->thumbnail_image  : '',
                         'share_link' => url('video/share/' . base64_encode($video->id)) ?? '',
-    
+
                     ];
                     $videos_by_date['video'][] = $record;
-                 }
+                }
             }
 
             $records[] = $videos_by_date;
@@ -247,6 +250,7 @@ class DeviceController extends Controller
                         "first_name" =>  isset($video->user?->first_name) ? $video->user?->first_name : '',
                         "last_name" => isset($video->user?->last_name) ? $video->user?->last_name : '',
                         "email" =>  isset($video->user?->email) ? $video->user?->email : '',
+                        "color" =>  isset($video->user?->color) ? $video->user?->color : '',
                         "image" => isset($video->user->image) ? env('APP_IMAGE_URL') . 'user/' . $video->user->image : '',
                         "email_verified_at" => isset($video->user?->email_verified_at) ? $video->user?->email_verified_at : '',
                         "is_admin" => isset($video->user?->is_admin) ? $video->user?->is_admin : '',
@@ -259,8 +263,8 @@ class DeviceController extends Controller
                     "video_view_counts" => count($video->videoView),
                     'company' => isset($video->company?->name) ? $video->company?->name : '',
                     'title' => isset($video->title) ? $video->title : "",
-                    'description' => $video->description ?$video->description: "",
-                    'status' => $video->status ?? "",
+                    'description' => $video->description ? $video->description : "",
+                    'status' => $video->status ? $video->status : "",
                     'video' => env('APP_IMAGE_URL') . 'video/' . $video->video ?? '',
                     'thumbnail_image' => $video->thumbnail_image ? env('APP_IMAGE_URL') . 'video/' . $video->thumbnail_image  : '',
                     'share_link' => url('video/share/' . base64_encode($video->id)) ?? '',
@@ -295,10 +299,10 @@ class DeviceController extends Controller
         $request->validate([
             'device_id' => 'required',
             'video_file' => 'required',
-            'title' => 'required',
+            // 'title' => 'required',
             'type' => 'required',
-            'description' => 'required',
-            'thumbnail_image' => 'required',
+            // 'description' => 'required',
+            // 'thumbnail_image' => 'required',
         ]);
         $video = $request->video_file;
         $thumbnail_image = $request->thumbnail_image;
@@ -337,7 +341,7 @@ class DeviceController extends Controller
                 }
                 $this->sendNotification('Video Created - Awaiting Approval', $record->title . PHP_EOL . $record->created_at->format('M d Y'), $managers, $record);
 
-                return response()->json(['status' => true, 'message' => 'Video Add Successfully'], 200);
+                return response()->json(['status' => true, 'message' => 'Video has been created successfully'], 200);
             } else {
                 return response()->json(['status' => false, 'message' => 'User Not Found'], 500);
             }

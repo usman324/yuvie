@@ -51,6 +51,7 @@ class NotificationController extends Controller
                         "id" => $notification->user->id,
                         "company_id" => $notification?->user->company_id,
                         "first_name" => $notification?->user->first_name,
+                        "color" => $notification?->user->color,
                         "last_name" => $notification?->user->last_name,
                         "email" => $notification?->user->email,
                         "image" => $notification?->user->image ? env('APP_IMAGE_URL') . 'user/' . $notification?->user->image : "",
@@ -83,7 +84,7 @@ class NotificationController extends Controller
             return response()->json(
                 [
                     'status' => true,
-                    'message' => 'Notification Deleted Successfully',
+                    'message' => 'Notification has been deleted successfully',
                 ],
                 200
             );

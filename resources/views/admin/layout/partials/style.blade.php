@@ -24,9 +24,11 @@
 <meta property="og:description" content="Description Here">
 <meta property="og:site_name" content="Site Name, i.e. Moz">
 <meta property="fb:admins" content="Facebook numeric ID">
-<link rel="stylesheet" media="all" href="{{ asset('theme/css/app.css') }}">
-<link rel="stylesheet" media="all" href="{{ asset('theme/css/sweetalert.min.css') }}">
+<link rel="stylesheet" href="{{ asset('theme/css/app.css') }}">
 <link rel="stylesheet" media="all" href="{{ asset('theme/css/bootstrap.min.css') }}">
+
+<link rel="stylesheet" media="all" href="{{ asset('theme/css/sweetalert.min.css') }}">
+
 {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"> --}}
 <link rel="stylesheet" media="all" href="{{ asset('theme/css/toastr.min.css') }}">
 <link href="{{ asset('theme/js/dropify/css/dropify.min.css') }}" rel="stylesheet">

@@ -6,7 +6,7 @@
 @section('content')
     <div class="sorting1">
         <div class="sorting1__row">
-            <h1 class="sorting1__title title">Notification Create</h1>
+            <h1 class="sorting1__title title">Notification</h1>
         </div>
     </div>
     <div class="products">

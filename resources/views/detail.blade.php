@@ -6,13 +6,33 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>YuVie LLC</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="https://yuvie.bhattimobiles.com/public/theme/img/favicon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://yuvie.bhattimobiles.com/public/theme/img/favicon.png">
-<link rel="icon" type="image/png" sizes="16x16" href="https://yuvie.bhattimobiles.com/public/theme/img/favicon.png">
+    <title>{{ $user?->company ? $user?->company->name : 'YuVie LLC' }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    {{-- <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('theme/img/favicon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('theme/img/favicon.png') }}"> --}}
+    <link rel="icon"
+        href="{{ $user?->company?->getLogo() ? env('APP_IMAGE_URL') . 'watermark/' . $user?->company?->getLogo() : asset('theme/img/favicon.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:title" content="{{ $record->title }}" />
+    <meta property="og:description" content="{{ $record->description }}" />
+    <meta property="og:image:url" content="{{ $url_thumbnail }}" />
+    <meta property="og:image" content="{{ $url_thumbnail }}" />
+    <meta property="twitter:image:url" content="{{ $url_thumbnail }}" />
+    <meta property="twitter:image" content="{{ $url_thumbnail }}" />
+    {{-- <meta property="twitter:image" content="{{ $url_thumbnail }}" /> --}}
+    <meta property="og:image:size" content="300" />
+    <style>
+        .yu-video-main-container {
+            justify-content: center !important;
+        }
+
+        .yu-video-Wrapper {
+            max-width: 1150px;
+        }
+    </style>
 </head>
 
 <body>
@@ -23,7 +43,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="yu-container">
-                        <div class="yu-sidebar">
+                        <div class="yu-sidebar d-none">
                             <div class="yu-logo-container">
                                 <div class="yu-logo">
                                     <img src="{{ asset('assets/images/logo.png') }}">
@@ -62,7 +82,6 @@
                                                 {{ $user?->company->zip }}<br>
                                                 {{ $user?->company->city_name }}<br>
                                                 United States
-
                                             @else
                                                 1125 NE 125th St #400<br>
                                                 North Miami<br>
@@ -88,7 +107,8 @@
                                                 loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                                         @endif --}}
                                         <div id="gmaps-markers" class="gmaps"
-                                            style="height:190px !important;border:0; width: 100%;border-radius: 8px;"></div>
+                                            style="height:190px !important;border:0; width: 100%;border-radius: 8px;">
+                                        </div>
 
                                     </div>
                                 </div>
@@ -96,16 +116,17 @@
                         </div>
                         @if ($record->type == 'landscape')
                             <div class="yu-video-Wrapper">
-                                <div class="yu-video-title">{{ $record->title }}</div>
+                                <div class="yu-video-title d-none">{{ $record->title }}</div>
                                 <div class="yu-video-container">
-                                    <video controls id="primaryVideo">
+                                    <video controls id="primaryVideo"
+                                        onplay="notify(event,'{{ url('show-video-notify/' . base64_encode($record->id)) }}')">
                                         <source src="{{ $url }}" type="video/mp4" />
                                     </video>
                                 </div>
-                                <div class="book-test-drive-container">
+                                <div class="book-test-drive-container  d-none">
                                     <button class="btn btn-primary">Book a Test Drive</button>
                                 </div>
-                                <div class="yu-related-videos-wrapper">
+                                <div class="yu-related-videos-wrapper  d-none">
                                     <div class="yu-related-video-title">Related videos</div>
                                     <div class="yu-related-video-container">
                                         <div class="yu-related-video-thumbnail">
@@ -134,20 +155,22 @@
                             </div>
                         @else
                             <div class="yu-video-Wrapper yu-video-Wrapper-vertical">
-                                <div class="yu-video-title">{{ $record->title }}</div>
+                                <div class="yu-video-title d-none">{{ $record->title }}</div>
                                 <div class="yu-video-main-container">
                                     <div class="yu-video-main-container-left">
                                         <div class="yu-video-container">
-                                            <video controls id="primaryVideo">
+                                            <video controls
+                                                onplay="notify(event,'{{ url('show-video-notify/' . base64_encode($record->id)) }}')"
+                                                id="primaryVideo">
                                                 <source src="{{ $url }}" type="video/mp4" />
                                             </video>
                                         </div>
-                                        <div class="book-test-drive-container">
+                                        <div class="book-test-drive-container  d-none">
                                             <button class="btn btn-primary">Book a Test Drive</button>
                                         </div>
                                     </div>
 
-                                    <div class="yu-related-videos-wrapper">
+                                    <div class="yu-related-videos-wrapper  d-none">
                                         <div class="yu-related-video-title">Related videos</div>
                                         <div class="yu-related-video-container">
                                             <div class="yu-related-video-thumbnail">
@@ -202,6 +225,31 @@
     <script src="https://maps.google.com/maps/api/js?key=AIzaSyCtSAR45TFgZjOs4nBFFZnII-6mMHLfSYI"></script>
     <script src="{{ asset('assets/js/gmaps/gmaps.min.js') }}"></script>
     @include('partial.map')
+    <script>
+        function notify(e, url) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: url,
+                method: 'post',
+                // data: {
+                //     is_approve: is_approve,
+                // },
+                success: function(response) {
+                    // showSuccess(response.message, 'success')
+                    // setTimeout(function() {
+                    //     location.reload();
+                    // }, 1500)
+                }
+            });
+
+
+        }
+    </script>
 </body>
 
 </html>

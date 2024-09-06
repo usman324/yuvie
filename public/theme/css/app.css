@@ -1918,7 +1918,7 @@ img.mfp-img {
 }
 
 .richText .richText-editor table td, .richText .richText-editor table th {
-  padding: 10px;
+  /* padding: 10px; */
   border: #EFEFEF solid 1px;
 }
 
@@ -11050,7 +11050,7 @@ body.dark .dropdown__body {
   border-color: #44444F;
 }
 
-.sorting {
+/* .sorting {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -11058,7 +11058,7 @@ body.dark .dropdown__body {
   -ms-flex-align: center;
   align-items: center;
   margin-bottom: 30px;
-}
+} */
 
 .sorting__title {
   margin-right: 30px;
@@ -13160,7 +13160,7 @@ body.dark .schedule__more:hover {
   color: #92929D;
 }
 
-.datepicker th,
+/* .datepicker th, */
 .datepicker td {
   vertical-align: middle;
   text-align: center;
@@ -21069,12 +21069,12 @@ body.dark .forums__view {
   margin-bottom: 30px;
 }
 
-.code__content table th,
+/* .code__content table th, */
 .code__content table td {
   white-space: nowrap;
 }
 
-.code__content table th {
+/* .code__content table th {
   height: 40px;
   padding: 0 15px;
   vertical-align: middle;
@@ -21086,15 +21086,15 @@ body.dark .forums__view {
   font-weight: 600;
   text-transform: uppercase;
   color: #92929D;
-}
+} */
 
-.code__content table th:first-child {
+/* .code__content table th:first-child {
   border-radius: 12px 0 0 12px;
-}
+} */
 
-.code__content table th:last-child {
+/* .code__content table th:last-child {
   border-radius: 0 12px 12px 0;
-}
+} */
 
 .code__content table td {
   height: 70px;
@@ -32667,8 +32667,8 @@ body.dark .statistics__line {
     margin-bottom: 20px;
   }
   .code__content table th {
-    height: 30px;
-    padding: 0 10px;
+    /* height: 30px;
+    padding: 0 10px; */
     font-size: 11px;
   }
   .code__content table th:first-child {

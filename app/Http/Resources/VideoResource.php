@@ -21,6 +21,8 @@ class VideoResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'video' =>env('APP_IMAGE_URL').'video/'.$this->video,
+            'outer_video' => $this->outer_video ? env('APP_IMAGE_URL') . 'video/' . $this->outer_video : '',
+            'intro_video' => $this->intro_video ? env('APP_IMAGE_URL') . 'video/' . $this->intro_video : '',
             // 'thumbnail_image' =>env('APP_IMAGE_URL').'video/'.$this->thumbnail_image,
         ];
     }

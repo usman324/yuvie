@@ -18,6 +18,8 @@ class CreateVideosTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('company_id');
             $table->string('video')->nullable();
+            $table->string('intro_video')->nullable();
+            $table->string('outer_video')->nullable();
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->string('thumbnail_image')->nullable();

@@ -1,6 +1,7 @@
 @extends('admin.layout.master')
 @section('style')
     <title>{{ 'YuVie-Business:' . $title }}</title>
+    @include('admin.layout.partials.datatable_style')
     <style>
         .switch {
             position: relative;
@@ -66,73 +67,78 @@
 @section('content')
     <div class="sorting1">
         <div class="sorting1__row">
-            <h1 class="sorting1__title title">{{ $title }} List</h1>
+            <h1 class="sorting1__title title">{{ $title }}</h1>
             <div class="sorting1__variants">
-                <div class="sorting1__text">Show:</div><select class="sorting1__select">
-                    <option selected>All {{ $title }}</option>
-                    <option>All {{ $title }}</option>
+                <div class="sorting1__text ">Company:</div>
+                {{-- <select class="sorting1__select" style="margin-left: 10px;" onchange="getVideo(event)">
+                    <option value="">Select company</option>
+                    @foreach ($companies as $item)
+                        @if (request()->company)
+                            <option value="{{ $item->id }}" @if (request()->company == $item->id) selected @endif>
+                                {{ $item->name }}</option>
+                        @else
+                            <option value="{{ $item->id }}" @if ($company?->id == $item->id) selected @endif>
+                                {{ $item->name }}</option>
+                        @endif
+                    @endforeach
+                </select> --}}
+                <select name="company_id" id="company_id" class="form-control select2"
+                    onchange="getCompanyUser(event,'{{ url('admin/get-company-user') }}')">
+                    <option value="">Select Company </option>
+                    @foreach ($companies as $item)
+                        @if (request()->company)
+                            <option value="{{ $item->id }}" @if (request()->company == $item->id) selected @endif>
+                                {{ $item->name }}</option>
+                        @else
+                            <option value="{{ $item->id }}" @if ($company?->id == $item->id) selected @endif>
+                                {{ $item->name }}</option>
+                        @endif
+                    @endforeach
+                </select>
+                <div class="sorting1__text pl-3">User:</div>
+                <select name="user_id" id="user_id" class="form-control select2" >
+                    <option value="">Select User </option>
+                    @foreach ($users as $item)
+                        @if (request()->user)
+                            <option value="{{ $item->id }}" @if (request()->user == $item->id) selected @endif>
+                                {{ $item->first_name . ' ' . $item->last_name }}</option>
+                        @else
+                            <option value="{{ $item->id }}">
+                                {{ $item->first_name . ' ' . $item->last_name }}</option>
+                        @endif
+                    @endforeach
                 </select>
             </div>
             <div class="sorting1__options">
-                <div class="dropdown js-dropdown"><a class="dropdown__head js-dropdown-head" href="#">
-                        <div class="dropdown__text">Sort by:</div>
-                        <div class="dropdown__category">Default</div>
-                    </a>
-                    <div class="dropdown__body js-dropdown-body">
-                        <label class="checkbox checkbox_sm checkbox_green">
-                            <input class="checkbox__input" type="checkbox" />
-                            <span class="checkbox__in"><span class="checkbox__tick"></span><span
-                                    class="checkbox__text">Project
-                                    Name</span></span></label><label class="checkbox checkbox_sm checkbox_green"><input
-                                class="checkbox__input" type="checkbox" checked="checked" /><span class="checkbox__in"><span
-                                    class="checkbox__tick"></span><span class="checkbox__text">Newest
-                                    Project</span></span></label><label class="checkbox checkbox_sm checkbox_green"><input
-                                class="checkbox__input" type="checkbox" checked="checked" /><span class="checkbox__in"><span
-                                    class="checkbox__tick"></span><span class="checkbox__text">Due
-                                    Date</span></span></label><label class="checkbox checkbox_sm checkbox_green"><input
-                                class="checkbox__input" type="checkbox" /><span class="checkbox__in"><span
-                                    class="checkbox__tick"></span><span class="checkbox__text">Project
-                                    Type</span></span></label>
-                    </div>
-                </div>
-                <a class="sorting1__filters" href="#">
-                    <svg class="icon icon-filters">
-                        <use xlink:href="{{ asset('theme/img/sprite.svg#icon-filters') }}"></use>
-                    </svg>
-                </a>
-                {{-- <a href="{{ $url . '/create' }}" class="sorting1__btn btn rounded-pill text-white"
-                    style="background-color:#ff5926 "><svg class="icon icon-plus">
-                        <use xlink:href="{{ asset('theme/img/sprite.svg#icon-plus') }}"></use>
-                    </svg>
-                    <span class="btn__text">New Video</span>
-                </a> --}}
+
             </div>
         </div>
     </div>
-    <div class="products">
-        <div class="products__container">
-            <div class="products__body">
-                <table id="myTable" class="table rounded table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>#Id</th>
-                            <th>Company</th>
-                            <th>Creator</th>
-                            <th>Video</th>
-                            <th>Title</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $i = 1;
-                        ?>
-                        @foreach ($records as $item)
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table id="myTable" class="table rounded table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#Id</th>
+                                    {{-- <th>Company</th> --}}
+                                    <th>Creator</th>
+                                    <th>Video</th>
+                                    <th>Hashtags</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $i = 1;
+                                ?>
+                                {{-- @foreach ($records as $item)
                             @if ($item->user->getRoleNames()->first() == 'Mobile User' || $item->user->getRoleNames()->first() == 'Manager')
                                 <tr>
                                     <td>{{ $i }}</td>
-                                    <td>{{ $item->company?->name }}</td>
                                     <td>{{ $item->user?->first_name . ' ' . $item->user?->last_name }}</td>
                                     <td>
                                         <video width="150" height="100" controls>
@@ -140,7 +146,7 @@
                                         </video>
                                     </td>
                                     <td>
-                                        {{ $item->title }}
+                                        {{ str_replace('@', '#', $item->title) }}
                                     </td>
                                     <td>
                                         <label class='switch'>
@@ -148,11 +154,8 @@
                                                 @if ($item->status == 'approve') checked @endif
                                                 onchange="videoApproved(event,'{{ url('admin/video_approved/' . $item->id) }}')"><span
                                                 class='slider round'></span></label>
-                                        {{-- {{ $item->status }} --}}
                                     </td>
-                                    {{-- <td><img style="width:250px; height:80px;" class="header7__pic header7__pic_white w-25"
-                                            src="{{ $video_url . '/' . $item->thumbnail_image }}" alt="">
-                                    </td> --}}
+                                   
                                     <td>
                                         <a href='{{ $url . '/' . $item->id . '/edit' }}' class='toggle'
                                             data-target='editClass'><svg class="icon icon-arrow-prev">
@@ -162,10 +165,6 @@
                                             class='toggle' data-target='editClass'><svg class="icon icon-arrow-prev">
                                                 <use xlink:href="{{ asset('theme/img/sprite.svg#icon-trash') }}"></use>
                                             </svg></a>
-                                        {{-- <a href='{{ $url . '/' . $item->id  }}' class='toggle'
-                                                data-target='editClass'><svg class="icon icon-arrow-prev">
-                                                    <use xlink:href="{{ asset('theme/img/sprite.svg#icon-eye') }}"></use>
-                                                </svg></a> --}}
                                     </td>
                                 </tr>
 
@@ -173,11 +172,13 @@
                                 $i++;
                                 ?>
                             @endif
-                        @endforeach
+                        @endforeach --}}
 
 
-                    </tbody>
-                </table>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -185,4 +186,85 @@
 
 @stop
 @section('script')
+    @include('admin.layout.partials.datatable_script')
+    <script>
+        $(function() {
+            myTable = $('#myTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{{ $url }}',
+                    dataType: "json",
+                    type: "GET",
+                    data: function(data) {
+                        data.company = $("#company_id").val();
+                        data.user = $("#user_id").val();
+                    },
+                },
+                columns: [{
+                    data: 'id'
+                }, {
+                    data: 'user'
+                }, {
+                    data: 'video'
+                }, {
+                    data: 'title'
+                }, {
+                    data: 'status'
+                }, {
+                    data: 'actions'
+                }],
+                buttons: datatable_buttons,
+                ...datatable_setting
+            });
+            // myTable.columns.adjust().draw()
+        });
+        $('#company_id,#user_id')
+            .change(function() {
+                myTable.draw();
+            });
+
+        var urlParams = new URLSearchParams(window.location.search);
+        // function getVideo(e) {
+        //     let company = e.target.value;
+        //     window.location.href = "{{ url('admin/videos') }}" + data
+        // }
+
+        // function getUser(e) {
+        //     let user = e.target.value;
+        //     window.location.href = "{{ url('admin/videos?user=') }}" + user
+        // }
+        function getCompanyUser(e, url) {
+            let company_id = e.target.value;
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: url,
+                method: "post",
+                data: {
+                    company_id: company_id,
+                },
+                success: function(response) {
+                    $("#user_id").html();
+                    $("#user_id").html(response);
+                },
+            });
+        }
+
+        function getVideo(e) {
+            let company = e.target.value;
+            // let user = urlParams.get('user') ? urlParams.get('user') : '' ;
+            window.location.href = "{{ url('admin/videos?company=') }}" + company + "&user=";
+        }
+
+        function getUser(e) {
+            let user = e.target.value;
+            let company = urlParams.get('company') ? urlParams.get('company') : '';
+            window.location.href = "{{ url('admin/videos?company=') }}" + company + "&user=" +
+                user;
+        }
+    </script>
 @stop

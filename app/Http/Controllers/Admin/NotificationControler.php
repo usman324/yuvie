@@ -41,6 +41,6 @@ class NotificationControler extends Controller
         ]);
         $users = User::where('company_id', $request->company_id)->get();
         $this->allUsers($request->title, $users, $request->description);
-        return response()->json(['status' => true, 'message' => 'Notification Sent Successfully'], 200);
+        return response()->json(['status' => true, 'message' => 'Notification has been sent successfully'], 200);
     }
 }

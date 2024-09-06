@@ -34,6 +34,18 @@
                                     <a class="nav-link" data-toggle="tab" href="#videos" role="tab">Videos
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#stickers" role="tab">Stickers
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#fonts" role="tab">Fonts
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#music" role="tab">Background Music
+                                    </a>
+                                </li>
                             </ul>
                             <form id="add-company" enctype="multipart/form-data">
 
@@ -91,15 +103,14 @@
                                             </div>
 
                                         </div>
-                                        <div class="row mt-2">
+                                        {{-- <div class="row mt-2">
                                             <div class="col-12">
                                                 <div class="form-group">
                                                     <label for="short_description">Description</label>
                                                     <textarea name="description" class="form-control" id="" cols="25" rows="5">{{ $record->description }}</textarea>
                                                 </div>
                                             </div>
-
-                                        </div>
+                                        </div> --}}
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="card mb-4">
@@ -335,7 +346,7 @@
 
                                         </div>
                                         <div class="row mt-2">
-                                            <div class="col-5">
+                                            <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="title">Social Media Logo: Large <small>(JPG or PNG 256 x
                                                             128)</small></label>
@@ -344,22 +355,22 @@
                                                         name="social_media_logo_large" required>
                                                 </div>
                                             </div>
-                                            <div class="col-4">
+                                            {{-- <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="title">Background Music <small>(mp3)</small> </label>
                                                     <input type="file" class="dropify form-control " data-height="100"
                                                         data-default-file="{{ $image_url . '/' . $record?->companyBranding->background_music }}"
                                                         name="background_music" required>
                                                 </div>
-                                            </div>
-                                            <div class="col-3">
+                                            </div> --}}
+                                            {{-- <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="title">Video Watermark</label>
                                                     <input type="file" class="dropify form-control " data-height="100"
                                                         data-default-file="{{ $image_url . '/' . $record?->companyBranding->video_watermark }}"
                                                         name="video_watermark" required>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                     <div class="tab-pane " id="videos" role="tabpanel">
@@ -396,14 +407,14 @@
 
                                                     @if (!$record->videos->isEmpty())
                                                         @foreach ($record->videos as $item)
-                                                            @if ($item->user->getRoleNames()->first() != 'Mobile User' && $item->user->getRoleNames()->first() != 'Manager') 
+                                                            @if ($item->user->getRoleNames()->first() != 'Mobile User' && $item->user->getRoleNames()->first() != 'Manager')
                                                                 <tr>
                                                                     <td>{{ $i }}</td>
                                                                     <td>{{ $item->company?->name }}</td>
                                                                     <td>
                                                                         <video width="150" height="100" controls>
                                                                             <source
-                                                                                src="{{ $video_url . '/' . $item->video }}"
+                                                                                src="{{ $video_url . '/' . $item->intro_video }}"
                                                                                 type="video/mp4">
                                                                         </video>
                                                                     </td>
@@ -433,6 +444,248 @@
                                                                 $i++;
                                                                 ?>
                                                             @endif
+                                                        @endforeach
+                                                    @else
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                    @endif
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane " id="stickers" role="tabpanel">
+                                        <div class="sorting1">
+                                            <div class="sorting1__row">
+                                                <div class="sorting1__options">
+                                                    <a href="{{ url('admin/stickers/create?q=' . $record->id) }}"
+                                                        class="sorting1__btn btn rounded-pill text-white"
+                                                        style="background-color:#ff5926 "><svg class="icon icon-plus">
+                                                            <use
+                                                                xlink:href="{{ asset('theme/img/sprite.svg#icon-plus') }}">
+                                                            </use>
+                                                        </svg>
+                                                        <span class="btn__text">New Sticker</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <table id="myTable" class="table rounded table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#Id</th>
+                                                        <th>Company</th>
+                                                        <th>Image</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $i = 1;
+                                                    ?>
+
+                                                    @if (!$record->stickers->isEmpty())
+                                                        @foreach ($record->stickers as $item)
+                                                            <tr>
+                                                                <td>{{ $i }}</td>
+                                                                <td>{{ $item->company?->name }}</td>
+                                                                <td>
+
+                                                                    <img style='height: 70px !important'
+                                                                        src="{{ $sticker_url . '/' . $item->image }}">
+                                                                </td>
+
+                                                                <td>
+                                                                    <a href='{{ url('admin/stickers/' . $item->id . '/edit') }}'
+                                                                        class='toggle' data-target='editClass'><svg
+                                                                            class="icon icon-arrow-prev">
+                                                                            <use
+                                                                                xlink:href="{{ asset('theme/img/sprite.svg#icon-edit') }}">
+                                                                            </use>
+                                                                        </svg></a>
+                                                                    <a href='javascript:'
+                                                                        onclick="deleteRecordAjax('{{ url('admin/stickers/' . $item->id) }}')"
+                                                                        class='toggle' data-target='editClass'><svg
+                                                                            class="icon icon-arrow-prev">
+                                                                            <use
+                                                                                xlink:href="{{ asset('theme/img/sprite.svg#icon-trash') }}">
+                                                                            </use>
+                                                                        </svg></a>
+                                                                </td>
+                                                            </tr>
+
+                                                            <?php
+                                                            $i++;
+                                                            ?>
+                                                        @endforeach
+                                                    @else
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                    @endif
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane " id="fonts" role="tabpanel">
+                                        <div class="sorting1">
+                                            <div class="sorting1__row">
+                                                <div class="sorting1__options">
+                                                    <a href="{{ url('admin/fonts/create?q=' . $record->id) }}"
+                                                        class="sorting1__btn btn rounded-pill text-white"
+                                                        style="background-color:#ff5926 "><svg class="icon icon-plus">
+                                                            <use
+                                                                xlink:href="{{ asset('theme/img/sprite.svg#icon-plus') }}">
+                                                            </use>
+                                                        </svg>
+                                                        <span class="btn__text">New Font</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <table id="myTable" class="table rounded table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#Id</th>
+                                                        <th>Company</th>
+                                                        <th>Font</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $i = 1;
+                                                    ?>
+
+                                                    @if (!$record->fonts->isEmpty())
+                                                        @foreach ($record->fonts as $item)
+                                                            <tr>
+                                                                <td>{{ $i }}</td>
+                                                                <td>{{ $item->company?->name }}</td>
+                                                                <td>
+                                                                    {{ $item->file_name }}
+                                                                    {{-- <img style='height: 70px !important'
+                                                                        src="{{ $sticker_url . '/' . $item->image }}"> --}}
+                                                                </td>
+                                                                <td>
+                                                                    <a href='{{ url('admin/fonts/' . $item->id . '/edit') }}'
+                                                                        class='toggle' data-target='editClass'><svg
+                                                                            class="icon icon-arrow-prev">
+                                                                            <use
+                                                                                xlink:href="{{ asset('theme/img/sprite.svg#icon-edit') }}">
+                                                                            </use>
+                                                                        </svg></a>
+                                                                    <a href='javascript:'
+                                                                        onclick="deleteRecordAjax('{{ url('admin/fonts/' . $item->id) }}')"
+                                                                        class='toggle' data-target='editClass'><svg
+                                                                            class="icon icon-arrow-prev">
+                                                                            <use
+                                                                                xlink:href="{{ asset('theme/img/sprite.svg#icon-trash') }}">
+                                                                            </use>
+                                                                        </svg></a>
+                                                                </td>
+                                                            </tr>
+                                                            <?php
+                                                            $i++;
+                                                            ?>
+                                                        @endforeach
+                                                    @else
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                    @endif
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane " id="music" role="tabpanel">
+                                        <div class="sorting1">
+                                            <div class="sorting1__row">
+                                                <div class="sorting1__options">
+                                                    <a href="{{ url('admin/background-musics/create?q=' . $record->id) }}"
+                                                        class="sorting1__btn btn rounded-pill text-white"
+                                                        style="background-color:#ff5926 "><svg class="icon icon-plus">
+                                                            <use
+                                                                xlink:href="{{ asset('theme/img/sprite.svg#icon-plus') }}">
+                                                            </use>
+                                                        </svg>
+                                                        <span class="btn__text">New Background Music</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <table id="myTable" class="table rounded table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#Id</th>
+                                                        <th>Name</th>
+                                                        <th>Audio</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tableBodyContents">
+                                                    <?php
+                                                    $i = 1;
+                                                    ?>
+                                                    @if (!$record->backgroundMusics->isEmpty())
+                                                        @foreach ($record->backgroundMusics->sortBy('order_sort') as $item)
+                                                            <tr class="tableRow" data-id="{{ $item->id }}">
+                                                                <td>{{ $i }}</td>
+                                                                <td>{{ $item->name }}</td>
+                                                                <td>
+                                                                    <audio controls>
+                                                                        <source
+                                                                            src='{{ $music_url . '/' . $item->audio }}'
+                                                                            type='audio/ogg'>
+                                                                    </audio>
+                                                                    {{-- <img style='height: 70px !important'
+                                                                        src="{{ $sticker_url . '/' . $item->image }}"> --}}
+                                                                </td>
+                                                                <td>
+                                                                    {{-- <a href='{{ url('admin/background-musics/' . $item->id . '/edit') }}'
+                                                                        class='toggle' data-target='editClass'><svg
+                                                                            class="icon icon-arrow-prev">
+                                                                            <use
+                                                                                xlink:href="{{ asset('theme/img/sprite.svg#icon-edit') }}">
+                                                                            </use>
+                                                                        </svg></a> --}}
+                                                                    <a href='javascript:'
+                                                                        onclick="deleteRecordAjax('{{ url('admin/background-musics/' . $item->id) }}')"
+                                                                        class='toggle' data-target='editClass'><svg
+                                                                            class="icon icon-arrow-prev">
+                                                                            <use
+                                                                                xlink:href="{{ asset('theme/img/sprite.svg#icon-trash') }}">
+                                                                            </use>
+                                                                        </svg></a>
+                                                                </td>
+                                                            </tr>
+                                                            <?php
+                                                            $i++;
+                                                            ?>
                                                         @endforeach
                                                     @else
                                                         <tr>
@@ -481,5 +734,46 @@
     </div>
 @stop
 @section('script')
+    <script src="{{ asset('jquery_ui.js') }}"></script>
+    <script>
+        $("#tableBodyContents").sortable({
+            items: "tr",
+            cursor: 'move',
+            opacity: 0.6,
+            update: function() {
+                sendOrderToServer();
+            }
+        });
+
+        function sendOrderToServer() {
+
+            var order = [];
+            var token = $('meta[name="csrf-token"]').attr('content');
+
+            $('tr.tableRow').each(function(index, element) {
+                order.push({
+                    id: $(this).attr('data-id'),
+                    position: index + 1
+                });
+            });
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "{{ url('music-reorder') }}",
+                data: {
+                    order: order,
+                    _token: token
+                },
+                success: function(response) {
+                    if (response.status == "success") {
+                        console.log(response);
+                    } else {
+                        console.log(response);
+                    }
+                }
+            });
+        }
+    </script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script> --}}
 @stop

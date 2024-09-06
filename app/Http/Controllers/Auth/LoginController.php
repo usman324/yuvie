@@ -87,8 +87,16 @@ class LoginController extends Controller
 
         if ($request->is('api/*')) {
             $this->attemptLogin($request);
-            $companies = Company::with('companyDetail', 'companyBranding')->get();
             $user = auth()->user();
+           $company = Company::find($user->company_id);
+            if ($company->name != 'YuVie') {
+                $companies = Company::with('companyDetail', 'companyBranding')
+                    ->where('id', $user->company_id)
+                    ->get();
+            } else {
+                $companies = Company::with('companyDetail', 'companyBranding')
+                    ->get();
+            }
             $token = auth()->user()->createToken('Personal Access Token')->accessToken;
             // $user->update(['device_token' => $request->device_token ? $request->device_token : $user->device_token,
             // ]);
@@ -131,6 +139,7 @@ class LoginController extends Controller
                                 "first_name" => isset($video->user->first_name) ? $video->user->first_name : '',
                                 "last_name" => isset($video->user->last_name) ? $video->user->last_name : '',
                                 "email" => isset($video->user->email) ? $video->user->email : '',
+                                "color" => isset($video->user->color) ? $video->user->color : '',
                                 "image" => isset($video->user->image) ? $video->user->image : '',
                                 "email_verified_at" => isset($video->user->email_verified_at) ? $video->user->email_verified_at : "",
                                 "is_admin" => $video->user->is_admin,
@@ -163,12 +172,16 @@ class LoginController extends Controller
             if ($user->image) {
                 $user['image'] = env('APP_IMAGE_URL') . 'user/' . $user->image;
             } else {
-                $user['image'] = asset('theme/img/avatar.png');
+                $user['image'] = '';
+                // $user['image'] = asset('theme/img/avatar.png');
             }
+           $user['company_brand_url'] = env('APP_IMAGE_URL').'/company_branding'.'/';
             $user['companies'] = $companies;
 
             $user['is_admin'] = $user->is_admin;
+            $user['photo_remove'] = $user->photo_remove;
             $user['pending'] = $pending_records;
+            $user['color'] = $user->color ? $user->color : '';
 
 
             return response()->json(['status' => true, 'message' => 'Login Successfully', 'data' => [$user]], 200);

@@ -2,9 +2,8 @@
     <div class="sidebar7__top"><button class="sidebar7__close js-sidebar7-close"><svg class="icon icon-close">
                 <use xlink:href="img/sprite.svg#icon-close"></use>
             </svg></button><a class="sidebar7__logo" href="#">
-                <img class="sidebar7__pic sidebar7__pic_black"
-                src="img/logo.svg" alt="" /><img class="sidebar7__pic sidebar7__pic_white"
-                src="img/logo-white.svg" alt="" /></a></div>
+            <img class="sidebar7__pic sidebar7__pic_black" src="img/logo.svg" alt="" /><img
+                class="sidebar7__pic sidebar7__pic_white" src="img/logo-white.svg" alt="" /></a></div>
     <div class="sidebar7__wrapper">
         <div class="sidebar7__box">
             <div class="sidebar7__category">Main</div>
@@ -33,10 +32,40 @@
                     </svg>Users</a>
             </div>
             <div class="sidebar7__menu">
-                <a class="sidebar7__item {{ request()->is('admin/videos')  ? 'active' : '' }}"
+                <a class="sidebar7__item {{ request()->is('admin/videos') ? 'active' : '' }}"
                     href="{{ url('admin/videos') }}">
                     <svg class="icon icon-dashboard">
                     </svg>Videos</a>
+            </div>
+            {{-- <div class="sidebar7__menu">
+                <a class="sidebar7__item {{ request()->is('admin/file-managers') ? 'active' : '' }}"
+                    href="{{ url('admin/file-managers') }}">
+                    <svg class="icon icon-dashboard">
+                    </svg>Folder</a>
+            </div>  --}}
+            <div class="sidebar7__menu">
+                <a class="sidebar7__item {{ request()->is('admin/stickers') ? 'active' : '' }}"
+                    href="{{ url('admin/stickers') }}">
+                    <svg class="icon icon-dashboard">
+                    </svg>Stickers</a>
+            </div>
+            <div class="sidebar7__menu">
+                <a class="sidebar7__item {{ request()->is('admin/fonts') ? 'active' : '' }}"
+                    href="{{ url('admin/fonts') }}">
+                    <svg class="icon icon-dashboard">
+                    </svg>Fonts</a>
+            </div>
+            <div class="sidebar7__menu">
+                <a class="sidebar7__item {{ request()->is('admin/background-musics') ? 'active' : '' }}"
+                    href="{{ url('admin/background-musics') }}">
+                    <svg class="icon icon-dashboard">
+                    </svg>Background Music</a>
+            </div>
+            <div class="sidebar7__menu">
+                <a class="sidebar7__item {{ request()->is('admin/watermarks') ? 'active' : '' }}"
+                    href="{{ url('admin/watermarks') }}">
+                    <svg class="icon icon-dashboard">
+                    </svg>Watermark</a>
             </div>
             <div class="sidebar7__menu">
                 <a class="sidebar7__item {{ request()->is('admin/notifications') ? 'active' : '' }}"
@@ -47,12 +76,12 @@
         </div>
 
     </div>
-    <label class="switch switch_theme">
+    {{-- <label class="switch switch_theme">
         <input class="switch__input js-switch-theme" type="checkbox" />
         <span class="switch__in"><span class="switch__box"></span><span class="switch__icon">
                 <svg class="icon icon-moon">
                     <use xlink:href="{{ asset('theme/img/sprite.svg#icon-moon') }}"></use>
                 </svg><svg class="icon icon-sun">
                     <use xlink:href="{{ asset('theme/img/sprite.svg#icon-sun') }}"></use>
-                </svg></span></span></label>
+                </svg></span></span></label> --}}
 </div>

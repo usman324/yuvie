@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     use HasFactory;
-    protected $fillable=[
+    protected $fillable = [
         'state_id',
         'city_id',
         'name',
@@ -20,8 +20,9 @@ class Company extends Model
         'city_name',
         'description',
     ];
-    public function companyDetail(){
-        return $this->hasOne(CompanyDetail::class,'company_id');
+    public function companyDetail()
+    {
+        return $this->hasOne(CompanyDetail::class, 'company_id');
     }
     public function companyBranding()
     {
@@ -31,10 +32,37 @@ class Company extends Model
     {
         return $this->hasMany(Video::class);
     }
-    public function state(){
+    public function stickers()
+    {
+        return $this->hasMany(Sticker::class);
+    }
+    public function fonts()
+    {
+        return $this->hasMany(Font::class);
+    }
+    public function backgroundMusics()
+    {
+        return $this->hasMany(BackgroundMusic::class);
+    }
+    public function state()
+    {
         return $this->belongsTo(State::class, 'state_id');
     }
-    public function city(){
+    public function city()
+    {
         return $this->belongsTo(City::class, 'city_id');
+    }
+    public function getDescriptionAttribute($value)
+    {
+        return is_null($value) ? '' : $value;
+    }
+
+    public function companyWaterMark()
+    {
+        return $this->hasMany(WaterMark::class)->first();
+    }
+    public function getLogo()
+    {
+        return $this?->companyWaterMark()?->video_watermark;
     }
 }

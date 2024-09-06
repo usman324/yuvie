@@ -9,9 +9,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+
 class User extends Authenticatable
 {
-    use HasApiTokens,HasRoles, HasFactory, Notifiable;
+    use HasApiTokens, HasRoles, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -26,8 +27,10 @@ class User extends Authenticatable
         'is_admin',
         'image',
         'password',
-          'device_token',
-          'device_id',
+        'device_token',
+        'device_id',
+        'color',
+        'photo_remove',
     ];
 
     /**
@@ -66,12 +69,36 @@ class User extends Authenticatable
 
         return $query;
     }
-    public function company(){
+    public function company()
+    {
 
-        return $this->belongsTo(Company::class, 'company_id','id');
+        return $this->belongsTo(Company::class, 'company_id', 'id');
     }
-    public function videos(){
+    public function videos()
+    {
 
         return $this->hasMany(Video::class);
     }
+    public function approvedVideo()
+    {
+
+        return $this->hasMany(Video::class)->where('status', 'approve');
+    }
+    public function scopeByCompany($query, $id)
+    {
+        if (isset($id)) {
+            return  $query->where('company_id', $id);
+        }
+        return $query->whereHas('company', function ($q) {
+            $q->where('name', 'YuVie');
+            // $q->where('name', 'LIKE', "%" . 'YuVie' . "%");
+        });
+    }
+    // public function scopeByUser($query, $id)
+    // {
+    //     if (isset($id)) {
+    //         return  $query->where('id', $id);
+    //     }
+    //     return $query;
+    // }
 }

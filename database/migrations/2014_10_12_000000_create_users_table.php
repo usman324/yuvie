@@ -18,8 +18,10 @@ return new class extends Migration
             $table->unsignedBigInteger('company_id')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('color')->nullable();
             $table->string('device_id')->nullable();
             $table->string('image')->nullable();
+            $table->string('photo_remove')->nullable();
             $table->string('device_token')->nullable();
             $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();

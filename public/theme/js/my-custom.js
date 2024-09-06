@@ -38,7 +38,7 @@ function deleteRecordAjax(url) {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (data) {
-                    showSuccess('Record Deleted Successfully.');
+                    showSuccess('Record has been deleted successfully.');
                     setTimeout(() => {
                         location.reload();
                     }, 1500);
@@ -127,6 +127,46 @@ function getCities(e, url) {
         },
     });
 }
+
+function getUser(e, url) {
+    let state_id=e.target.value;
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            state_id: state_id,
+        },
+        success: function (response) {
+            $("#userDetail").html();
+            $("#userDetail").html(response);
+        },
+    });
+}
+function getCompanyUser(e, url) {
+    let state_id=e.target.value;
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: url,
+        method: "post",
+        data: {
+            state_id: state_id,
+        },
+        success: function (response) {
+            $("#user_id").html();
+            $("#user_id").html(response);
+        },
+    });
+}
+
 function videoApproved(e, url) {
     e.preventDefault();
     if(e.target.value == 'approve'){

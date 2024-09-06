@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="row login__field field">
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="login__field field">
                                     <div class="field__wrap">
                                         <input class="field__input" required type="text"
@@ -40,7 +40,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="login__field field">
                                     <div class="field__wrap">
                                         <input class="field__input" required type="text" value="{{ $record->last_name }}"
@@ -48,7 +48,14 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="col-4">
+                                <div class="login__field field">
+                                    <div class="field__wrap">
+                                        <input class="field__input" required type="file" name="image"
+                                            placeholder="Last Name">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="row login__field field">
                             <div class="col-6">

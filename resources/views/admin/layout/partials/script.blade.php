@@ -1,3 +1,5 @@
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
+
 <script src="{{ asset('theme/js/app.js') }}"></script>
 <script src="{{ asset('theme/js/common.js') }}"></script>
 <script src="{{ asset('theme/js/charts.js') }}"></script>

@@ -51,6 +51,7 @@
                 tooltip: {
                     enabled: false
                 }
+                
             },
             legend: {
                 show: false

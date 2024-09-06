@@ -5,15 +5,15 @@
 @section('content')
     <div class="overview">
         <div class="overview__list">
-            
+
             <div class="overview__card" style="height:110px">
                 <div class="overview__main">
                     <div class="overview__title">Companies</div>
                 </div>
                 <div class="overview__flex">
-                    <div class="overview__number">{{$companies}}</div>
+                    <div class="overview__number">{{ $companies }}</div>
                     <div class="overview__status overview__status_up">
-                      <svg class="icon icon-arrow-top">
+                        <svg class="icon icon-arrow-top">
                             <use xlink:href="img/sprite.svg#icon-arrow-top"></use>
                         </svg>
                     </div>
@@ -26,27 +26,27 @@
                 <div class="overview__flex">
                     <div class="overview__number">{{ $users }}</div>
                     <div class="overview__status overview__status_up">
-                      <svg class="icon icon-arrow-top">
-                            <use xlink:href="img/sprite.svg#icon-arrow-top"></use>
-                        </svg>
-                    </div>
-                </div>
-            </div> 
-           
-            <div class="overview__card" style="height:110px">
-                <div class="overview__main">
-                    <div class="overview__title">Videos</div>
-                </div>
-                <div class="overview__flex">
-                    <div class="overview__number">{{$videos}}</div>
-                    <div class="overview__status overview__status_up">
-                      <svg class="icon icon-arrow-top">
+                        <svg class="icon icon-arrow-top">
                             <use xlink:href="img/sprite.svg#icon-arrow-top"></use>
                         </svg>
                     </div>
                 </div>
             </div>
-            
+
+            <div class="overview__card" style="height:110px">
+                <div class="overview__main">
+                    <div class="overview__title">Videos</div>
+                </div>
+                <div class="overview__flex">
+                    <div class="overview__number">{{ $videos }}</div>
+                    <div class="overview__status overview__status_up">
+                        <svg class="icon icon-arrow-top">
+                            <use xlink:href="img/sprite.svg#icon-arrow-top"></use>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="overview__row">
             <div class="overview__col overview__col_w67">
@@ -85,38 +85,41 @@
                                             Off Notifications from Janeta</a></div>
                                 </div>
                             </div>
-                                <div class="statistics__group">
-                                    @foreach ($latest_users as $item)
-                                        <div class="statistics__item">
-                                            <div class="ava">
-                                                @if ($item->image)
-                                                    <img class="ava__pic" src="{{ $image_url . '/' . $item->image }}"
-                                                        alt="">
-                                                @else
-                                                    <img class="ava__pic" src="{{ asset('theme/img/user.jpeg') }}"
-                                                        alt="">
-                                                @endif
-    
+                            <div class="statistics__group">
+                                @foreach ($latest_companies as $item)
+                                    <div class="statistics__item">
+                                        <div class="ava">
+                                            @if ($item?->companyBranding->profile_logo)
+                                                <img class="ava__pic"
+                                                    src="{{ $image_url . '/' . $item?->companyBranding->profile_logo }}"
+                                                    alt="">
+                                            @else
+                                                <img class="ava__pic" src="{{ asset('theme/img/user.jpeg') }}"
+                                                    alt="">
+                                            @endif
+
+                                        </div>
+                                        <div class="statistics__details">
+                                            <div class="statistics__man">{{ $item->first_name . ' ' . $item->last_name }}
                                             </div>
-                                            <div class="statistics__details">
-                                                <div class="statistics__man">{{ $item->first_name . ' ' . $item->last_name }}
-                                                </div>
-                                                <div class="statistics__id">Customer ID#{{ $item->id }}</div>
-                                            </div>
-                                            <div class="statistics__actions">
-                                                <button class="statistics__action"><svg class="icon icon-email">
-                                                        <use xlink:href="img/sprite.svg#icon-email"></use>
-                                                    </svg></button><button class="statistics__action">
-                                                    <svg class="icon icon-block">
-                                                        <use xlink:href="img/sprite.svg#icon-block"></use>
-                                                    </svg></button>
+                                            <div class="statistics__id">Address <br>{{ $item?->companyDetail->address }}
                                             </div>
                                         </div>
-                                    @endforeach
-    
-                                </div>
+                                        <div class="statistics__actions">
+                                            <button class="statistics__action"><svg class="icon icon-email">
+                                                    <use xlink:href="img/sprite.svg#icon-email"></use>
+                                                </svg></button><button class="statistics__action">
+                                                <svg class="icon icon-block">
+                                                    <use xlink:href="img/sprite.svg#icon-block"></use>
+                                                </svg></button>
+                                        </div>
+                                    </div>
+                                @endforeach
+
+                            </div>
                         </div>
-                        <div class="statistics__foot"><a class="statistics__view" href="{{url('admin/users')}}">View more Customers</a>
+                        <div class="statistics__foot"><a class="statistics__view" href="{{ url('admin/companies') }}">View
+                                more Customers</a>
                         </div>
                     </div>
                 </div>
@@ -129,8 +132,7 @@
                         <div class="overview__title">Top Retail Sales Locations</div>
                         <div class="overview__flex">
                             <div class="overview__number">15.870</div>
-                            <div class="overview__flag"><img class="overview__pic" src="img/flag-usa.svg"
-                                    alt="">
+                            <div class="overview__flag"><img class="overview__pic" src="img/flag-usa.svg" alt="">
                             </div>
                         </div>
                         <div class="overview__info">Our most customers in US</div>
@@ -161,6 +163,7 @@
                         <div class="overview__map">
                             <div class="js-map-svg" style="width: 100%; height: 355px;"></div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -169,5 +172,5 @@
     </div>
 @stop
 @section('script')
-@include('admin.dashboard.partial.chart')
+    @include('admin.dashboard.partial.chart')
 @stop
