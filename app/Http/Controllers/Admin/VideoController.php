@@ -9,6 +9,7 @@ use App\Models\Notification;
 use App\Models\User;
 use App\Models\Video;
 use App\Traits\Main;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,11 @@ class VideoController extends Controller
     public function index(Request $request)
     {
 
+
+        // Replace with actual company ID
+
+        // Get the date 2 months ago
+      
         // $records = Video::byCompany($request->company)
         //     ->byUser($request->user)
         //     ->latest()
@@ -109,13 +115,16 @@ class VideoController extends Controller
             // 'title' => 'required',
             // 'description' => 'required',
             // 'video' => 'required|file', 'mimes:mp4',
-            'thumbnail_image' => 'nullable|file', 'mimes:jpg,png',
-            'video' => 'nullable|file', 'mimes:mp4',
-            'outer_video' => 'nullable|file', 'mimes:mp4',
+            'thumbnail_image' => 'nullable|file',
+            'mimes:jpg,png',
+            'video' => 'nullable|file',
+            'mimes:mp4',
+            'outer_video' => 'nullable|file',
+            'mimes:mp4',
             // 'intro_video' => 'nullable|file', 'mimes:mp4',
         ]);
         try {
-           
+
             $video = $request->video;
             $thumbnail_image = $request->thumbnail_image;
 
@@ -188,10 +197,14 @@ class VideoController extends Controller
         $record = Video::find($id);
         $request->validate([
             'company_id' => 'required',
-            'video' => 'nullable|file', 'mimes:mp4',
-            'outer_video' => 'nullable|file', 'mimes:mp4',
-            'intro_video' => 'nullable|file', 'mimes:mp4',
-            'thumbnail_image' => 'nullable|file', 'mimes:jpg,png',
+            'video' => 'nullable|file',
+            'mimes:mp4',
+            'outer_video' => 'nullable|file',
+            'mimes:mp4',
+            'intro_video' => 'nullable|file',
+            'mimes:mp4',
+            'thumbnail_image' => 'nullable|file',
+            'mimes:jpg,png',
         ]);
         $video = $request->video;
         $outer_video = $request->outer_video;

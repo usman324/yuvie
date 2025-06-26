@@ -35,6 +35,7 @@ class DashboardController extends Controller
     }
     public function index(Request $request)
     {
+        // Get all videos for the company older than 2 months
         $users = User::count();
         $companies = Company::count();
         $videos = Video::count();
